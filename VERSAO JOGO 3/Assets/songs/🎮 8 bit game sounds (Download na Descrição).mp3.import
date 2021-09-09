@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/í ¼í¾® 8 bit game sounds (Download na DescriÃ§Ã£o).mp3-d7f2c86366865e151653264130646da8.mp3str"
+
+[deps]
+
+source_file="res://Assets/songs/í ¼í¾® 8 bit game sounds (Download na DescriÃ§Ã£o).mp3"
+dest_files=[ "res://.import/í ¼í¾® 8 bit game sounds (Download na DescriÃ§Ã£o).mp3-d7f2c86366865e151653264130646da8.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

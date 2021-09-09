@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/Darth Vader NOOOOOOOOO! Sound Effect.mp3-03a1afd16628418078c4fa3b3037adb4.mp3str"
+
+[deps]
+
+source_file="res://Assets/songs/Darth Vader NOOOOOOOOO! Sound Effect.mp3"
+dest_files=[ "res://.import/Darth Vader NOOOOOOOOO! Sound Effect.mp3-03a1afd16628418078c4fa3b3037adb4.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

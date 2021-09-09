@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/The-Prodigy-Invaders-Must-Die.mp3-5c979f574d130e23bebf8fe07793616f.mp3str"
+
+[deps]
+
+source_file="res://Assets/songs/The-Prodigy-Invaders-Must-Die.mp3"
+dest_files=[ "res://.import/The-Prodigy-Invaders-Must-Die.mp3-5c979f574d130e23bebf8fe07793616f.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

@@ -1,0 +1,51 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Panel.gd" type="Script" id=1]
+[ext_resource path="res://Assets/tumblr_mrt0bh3j211ric1wdo2_1280.jpg" type="Texture" id=5]
+
+[node name="RAiZ" type="Node"]
+
+[node name="Image" type="TextureRect" parent="."]
+margin_left = 0.262848
+margin_top = 1.77741
+margin_right = 1280.26
+margin_bottom = 722.777
+texture = ExtResource( 5 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="BOTAO_0" type="Node" parent="."]
+
+[node name="Panel" type="Panel" parent="BOTAO_0"]
+margin_left = 549.729
+margin_top = 257.464
+margin_right = 724.729
+margin_bottom = 356.464
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_group_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="BOTAO_0/Panel"]
+margin_left = 44.5675
+margin_top = 19.3406
+margin_right = 120.568
+margin_bottom = 33.3406
+text = "FIRST GAME"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Button" type="Button" parent="BOTAO_0/Panel"]
+margin_left = 26.0
+margin_top = 48.0
+margin_right = 148.0
+margin_bottom = 68.0
+text = "CRAP GAME"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[connection signal="pressed" from="BOTAO_0/Panel/Button" to="BOTAO_0/Panel" method="_on_Button_pressed"]

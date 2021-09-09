@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/Bird Singing Sound Effect ~ Free Sound Effects.mp3-db1485a4a277d7d4ba140d79385e7b03.mp3str"
+
+[deps]
+
+source_file="res://Assets/songs/Bird Singing Sound Effect ~ Free Sound Effects.mp3"
+dest_files=[ "res://.import/Bird Singing Sound Effect ~ Free Sound Effects.mp3-db1485a4a277d7d4ba140d79385e7b03.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

@@ -1,0 +1,46 @@
+[gd_scene load_steps=11 format=2]
+
+[ext_resource path="res://Assets/Inimigos/meteor_squareDetailedSmall.png" type="Texture" id=1]
+[ext_resource path="res://Assets/Inimigos/meteor_small.png" type="Texture" id=2]
+[ext_resource path="res://Assets/Inimigos/meteor_detailedLarge.png" type="Texture" id=3]
+[ext_resource path="res://Assets/Inimigos/meteor_large.png" type="Texture" id=4]
+[ext_resource path="res://Assets/Inimigos/meteor_squareLarge.png" type="Texture" id=5]
+[ext_resource path="res://Assets/Inimigos/meteor_detailedSmall.png" type="Texture" id=6]
+[ext_resource path="res://Assets/Inimigos/meteor_squareDetailedLarge.png" type="Texture" id=7]
+[ext_resource path="res://inimigos.gd" type="Script" id=8]
+
+[sub_resource type="SpriteFrames" id=1]
+animations = [ {
+"frames": [ ExtResource( 2 ), ExtResource( 7 ), ExtResource( 1 ), ExtResource( 6 ) ],
+"loop": true,
+"name": "mudar",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 4 ), ExtResource( 6 ), ExtResource( 5 ), ExtResource( 2 ), ExtResource( 3 ) ],
+"loop": true,
+"name": "andar",
+"speed": 5.0
+} ]
+
+[sub_resource type="CircleShape2D" id=2]
+radius = 12.7401
+
+[node name="inimigos" type="Area2D" groups=[
+"Grupo_Inimigos",
+]]
+script = ExtResource( 8 )
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+position = Vector2( 0.144873, -0.142807 )
+scale = Vector2( 0.289173, 0.271834 )
+frames = SubResource( 1 )
+animation = "mudar"
+frame = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( -0.396866, -0.793705 )
+shape = SubResource( 2 )
+
+[node name="VisibilityNotifier2D" type="VisibilityNotifier2D" parent="."]
+
+[connection signal="screen_exited" from="VisibilityNotifier2D" to="." method="_on_VisibilityNotifier2D_screen_exited"]

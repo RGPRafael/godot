@@ -1,0 +1,54 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://CenaPrincipal.gd" type="Script" id=1]
+[ext_resource path="res://Scenes/Player.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Scenes/inimigos.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Scenes/Interface.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Assets/songs/gameover.wav" type="AudioStream" id=5]
+[ext_resource path="res://Assets/songs/The-Prodigy-Invaders-Must-Die.mp3" type="AudioStream" id=6]
+[ext_resource path="res://Assets/songs/í ¼í¾® 8 bit game sounds (Download na DescriÃ§Ã£o).mp3" type="AudioStream" id=7]
+
+[node name="Main" type="Node"]
+script = ExtResource( 1 )
+Mob = ExtResource( 3 )
+
+[node name="Player" parent="." instance=ExtResource( 2 )]
+position = Vector2( 1132.01, 456 )
+
+[node name="MobTimer" type="Timer" parent="."]
+wait_time = 0.5
+
+[node name="ScoreTimer" type="Timer" parent="."]
+
+[node name="StartTimer" type="Timer" parent="."]
+wait_time = 2.0
+one_shot = true
+
+[node name="StartPosition" type="Position2D" parent="."]
+position = Vector2( 1145.5, 460.495 )
+
+[node name="InimigoPosition_start" type="Position2D" parent="."]
+position = Vector2( 155.668, 76.6846 )
+
+[node name="HUD" parent="." instance=ExtResource( 4 )]
+
+[node name="Arvore_inimigos" type="Node2D" parent="."]
+position = Vector2( 158.821, 79.4102 )
+
+[node name="Musicas" type="Node" parent="."]
+
+[node name="musica" type="AudioStreamPlayer" parent="Musicas"]
+stream = ExtResource( 6 )
+
+[node name="somdemorte" type="AudioStreamPlayer" parent="Musicas"]
+stream = ExtResource( 5 )
+
+[node name="Musica_Menu" type="AudioStreamPlayer" parent="Musicas"]
+stream = ExtResource( 7 )
+
+[connection signal="emite_tiro" from="Player" to="." method="_on_Player_emite_tiro"]
+[connection signal="hit" from="Player" to="." method="game_over"]
+[connection signal="timeout" from="MobTimer" to="." method="_on_MobTimer_timeout"]
+[connection signal="timeout" from="ScoreTimer" to="." method="_on_ScoreTimer_timeout"]
+[connection signal="timeout" from="StartTimer" to="." method="_on_StartTimer_timeout"]
+[connection signal="start_game" from="HUD" to="." method="new_game"]

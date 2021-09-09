@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/Radio Static - Sound Effect.mp3-e18dcfbf220a2aa7e26b521d4379f85e.mp3str"
+
+[deps]
+
+source_file="res://Assets/songs/Radio Static - Sound Effect.mp3"
+dest_files=[ "res://.import/Radio Static - Sound Effect.mp3-e18dcfbf220a2aa7e26b521d4379f85e.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0
