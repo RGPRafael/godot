@@ -9,7 +9,7 @@ export (PackedScene) var Mob
 var score
 var geracao = 0
 var num_inimigos = 10
-signal stop_inimigos
+var dead_inimigos = 0
 var jogador_existe = false
 var posicao_jogador = Vector2()
 
@@ -23,7 +23,7 @@ func game_over():
 	if life == 0:
 
 		$ScoreTimer.stop()
-		$MobTimer.stop()
+		#$MobTimer.stop()
 		$HUD.show_game_over()
 		get_tree().call_group("Grupo_Inimigos", "queue_free")
 		
@@ -36,7 +36,8 @@ func game_over():
 func new_game():
 
 	score = 0
-
+	geracao = 0
+	dead_inimigos = 0
 	$Player.start($StartPosition.position, 3)
 	$StartTimer.start()
 	$HUD.update_score(score)
@@ -46,7 +47,7 @@ func new_game():
 	
 	
 func _on_MobTimer_timeout():
-	print(posicao_jogador)
+	#print(posicao_jogador)
 	
 	# Create a Mob instance and add it to the scene.
 	

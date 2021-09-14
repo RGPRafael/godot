@@ -5,25 +5,22 @@ var screen_size  # Size of the game window.
 export var bala_velocidade = 1000
 var bala =  preload("res://Scenes/Disparo.tscn")
 
-var pode_atirar =  true
+var pode_atirar =  false
 export var fire_rate = 0.5
 
 signal emite_tiro
 signal hit
 
 func _ready():
-	
 	CenaPrincipal.jogador_existe  = true
 	screen_size = get_viewport_rect().size
 	hide()
-	
 
-	
 func _process(delta):
 	CenaPrincipal.posicao_jogador = global_position
 	var velocity = Vector2()  # The player's movement vector.
 	look_at(get_global_mouse_position())
-	
+
 	if Input.is_action_pressed("shoot") and pode_atirar:
 		var bala_objeto = bala.instance()
 		#bala_objeto.position = position
@@ -83,17 +80,17 @@ func start(pos, VIDAS):
 	life = VIDAS
 	show()
 	$CollisionShape2D.disabled = false
-
+	pode_atirar =  true
 
 #func _on_Player_body_entered(_body):
 
 
 
 func _on_Player_area_entered(_area):
-	if  life == 0 :
+	if life == 0:
 		hide()  # Player disappears after being hit.
 		$CollisionShape2D.set_deferred("disabled", true)
-	else : 	
+	else: 	
 		life = life - 1
 	emit_signal("hit")
 
