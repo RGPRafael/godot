@@ -9,6 +9,7 @@ export (PackedScene) var Mob
 var score
 var geracao = 0
 var num_inimigos = 10
+signal stop_inimigos
 var jogador_existe = false
 var posicao_jogador = Vector2()
 
@@ -60,8 +61,9 @@ func _on_MobTimer_timeout():
 	#$Arvore_inimigos.add_child(mob)
 	add_child(mob)
 	mob.position = $InimigoPosition_start.position
-
 	geracao += 1
+	if geracao == num_inimigos:
+		$MobTimer.stop()
 
 
 
