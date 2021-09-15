@@ -3,7 +3,7 @@ extends Area2D
 
 export var min_speed = 150  # Minimum speed range.
 export var max_speed = 250  # Maximum speed range.
-var v =  Vector2.ZERO
+var v = Vector2.ZERO
 	
 #export var alive = 1
 

@@ -10,6 +10,7 @@ export var fire_rate = 0.5
 
 signal emite_tiro
 signal hit
+signal hit_inimigo
 
 func _ready():
 	CenaPrincipal.jogador_existe  = true
@@ -36,6 +37,7 @@ func _process(delta):
 		yield(get_tree().create_timer(fire_rate),'timeout')
 		pode_atirar = true
 		#bala_objeto.free()
+		#var what = $SaidaDeTiro.connect("hit_disparo", self, "_on_Disparo_hit_disparo")
 
 		
 	if Input.is_action_pressed("move_right"):
