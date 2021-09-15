@@ -17,7 +17,6 @@ var posicao_jogador = Vector2()
 func _ready():
 	randomize()
 
-
 func game_over():
 	var life = $Player.life
 	if life == 0:
@@ -31,10 +30,7 @@ func game_over():
 		var s =  'Life : ' + str(life)
 		$HUD.show_message(s)
 	
-	
-
 func new_game():
-
 	score = 0
 	geracao = 0
 	dead_inimigos = 0
@@ -43,8 +39,6 @@ func new_game():
 	$HUD.update_score(score)
 		
 	$HUD.show_message("Get Ready")
-	
-	
 	
 func _on_MobTimer_timeout():
 	#print(posicao_jogador)
@@ -56,8 +50,6 @@ func _on_MobTimer_timeout():
 	#	var mob = Mob.instance()
 	#	$Arvore_inimigos.add_child(mob)
 	#	mob.position = $InimigoPosition_start.position
-
-
 	var mob = Mob.instance()
 	#$Arvore_inimigos.add_child(mob)
 	add_child(mob)
@@ -66,19 +58,26 @@ func _on_MobTimer_timeout():
 	if geracao == num_inimigos:
 		$MobTimer.stop()
 
-
-
 func _on_ScoreTimer_timeout():
 	score += 1
-
 
 func _on_StartTimer_timeout():
 	$MobTimer.start()
 	$ScoreTimer.start()
 
-
-
 func _on_Player_emite_tiro():
-	#print('tiro')
-
-	pass # Replace with function body.
+	var tiro = get_node("Disparo")
+	tiro.connect("hit_disparo", self, "_on_Disparo_hit_disparo")
+	
+func _on_Disparo_hit_disparo():
+	dead_inimigos += 1
+	var s =  'Killed : ' + str(dead_inimigos)
+	$HUD.show_message(s)
+	if dead_inimigos == num_inimigos:
+		game_win()
+	
+func game_win():
+	$ScoreTimer.stop()
+	#$MobTimer.stop()
+	$HUD.show_game_win()
+	get_tree().call_group("Grupo_Inimigos", "queue_free")

@@ -19,6 +19,19 @@ func show_game_over():
 	yield(get_tree().create_timer(1), "timeout")
 	$Start.show()
 	
+	
+func show_game_win():
+	show_message("You Win")
+	# Wait until the MessageTimer has counted down.
+	
+	yield($MessageTimer, "timeout")
+
+	$MessageLabel.text = "AGAIN?!"
+	$MessageLabel.show()
+	# Make a one-shot timer and wait for it to finish.
+	yield(get_tree().create_timer(1), "timeout")
+	$Start.show()
+	
 func update_score(score):
 	$ScoreLabel.text = str(score)
 	#$MessageLabel.show() 

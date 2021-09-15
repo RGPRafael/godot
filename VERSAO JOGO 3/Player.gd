@@ -10,7 +10,6 @@ export var fire_rate = 0.5
 
 signal emite_tiro
 signal hit
-signal hit_inimigo
 
 func _ready():
 	CenaPrincipal.jogador_existe  = true
@@ -18,6 +17,7 @@ func _ready():
 	hide()
 
 func _process(delta):
+	
 	CenaPrincipal.posicao_jogador = global_position
 	var velocity = Vector2()  # The player's movement vector.
 	look_at(get_global_mouse_position())
@@ -30,7 +30,8 @@ func _process(delta):
 		bala_objeto.rotation_degrees = rotation_degrees
 		#bala_objeto.apply_impulse(Vector2(), Vector2(bala_velocidade, 0).rotated(rotation)) 
 
-		get_tree().get_root().add_child(bala_objeto)
+		get_parent().add_child(bala_objeto)
+		#get_tree().get_root().add_child(bala_objeto)
 		
 		pode_atirar = false
 		emit_signal('emite_tiro')
@@ -72,11 +73,8 @@ func _process(delta):
 	position.y = clamp(position.y, 0, screen_size.y)
 	
 
-
 #func _on_Player_body_entered(_body):
 
-	
-	
 func start(pos, VIDAS):
 	position = pos
 	life = VIDAS
@@ -86,8 +84,6 @@ func start(pos, VIDAS):
 
 #func _on_Player_body_entered(_body):
 
-
-
 func _on_Player_area_entered(_area):
 	if life == 0:
 		hide()  # Player disappears after being hit.
@@ -95,4 +91,4 @@ func _on_Player_area_entered(_area):
 	else: 	
 		life = life - 1
 	emit_signal("hit")
-
+	

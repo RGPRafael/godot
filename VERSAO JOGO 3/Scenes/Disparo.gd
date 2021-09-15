@@ -18,12 +18,7 @@ func _on_Disparo_area_entered(area):
 	#yield(get_tree().create_timer(0.2), "timeout") # Com este timer, os tiros seguintes param de funcionar
 	if area != null:
 		area.free()
-
-
+	
 func _on_Disparo_VisibilityNotifier2D_screen_exited():
 	queue_free()
-
-	
-func _on_Disparo_hit_disparo():
-	pass
 	
