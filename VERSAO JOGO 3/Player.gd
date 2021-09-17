@@ -8,15 +8,20 @@ var bala =  preload("res://Scenes/Disparo.tscn")
 var pode_atirar =  true
 export var fire_rate = 0.5
 
-signal emite_tiro
 signal hit
+
+func node_name():
+	return str(name.replace("@", "").replace(str(int(name)), ""))
+
 
 func _ready():
 	
 	CenaPrincipal.jogador_existe  = true
 	screen_size = get_viewport_rect().size
 	hide()
-	
+	#print(name)
+	node_name()
+	#print(name)
 
 	
 func _process(delta):
@@ -31,15 +36,20 @@ func _process(delta):
 		#bala_objeto.rotation = rotation
 		bala_objeto.rotation_degrees = rotation_degrees
 		#bala_objeto.apply_impulse(Vector2(), Vector2(bala_velocidade, 0).rotated(rotation)) 
-
+		
+		var p = get_path_to(CenaPrincipal)
+		var p1 = get_path()
+		#print( p ,' ',  p1)
+		#get_tree().get_root().get_node(p1).add_child(bala_objeto)
 		get_tree().get_root().add_child(bala_objeto)
 		
+		
 		pode_atirar = false
-		emit_signal('emite_tiro')
+
 		yield(get_tree().create_timer(fire_rate),'timeout')
+		
 		pode_atirar = true
 		#bala_objeto.free()
-
 		
 	if Input.is_action_pressed("ui_right"):
 		velocity.x += 1

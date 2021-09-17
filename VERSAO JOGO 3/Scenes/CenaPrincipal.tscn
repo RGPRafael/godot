@@ -16,7 +16,6 @@ Mob = ExtResource( 3 )
 position = Vector2( 1132.01, 456 )
 
 [node name="MobTimer" type="Timer" parent="."]
-wait_time = 0.5
 
 [node name="ScoreTimer" type="Timer" parent="."]
 
@@ -46,7 +45,6 @@ stream = ExtResource( 5 )
 [node name="Musica_Menu" type="AudioStreamPlayer" parent="Musicas"]
 stream = ExtResource( 7 )
 
-[connection signal="emite_tiro" from="Player" to="." method="_on_Player_emite_tiro"]
 [connection signal="hit" from="Player" to="." method="game_over"]
 [connection signal="timeout" from="MobTimer" to="." method="_on_MobTimer_timeout"]
 [connection signal="timeout" from="ScoreTimer" to="." method="_on_ScoreTimer_timeout"]
