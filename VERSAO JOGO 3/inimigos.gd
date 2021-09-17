@@ -3,6 +3,7 @@ extends Area2D
 
 export var min_speed = 150  # Minimum speed range.
 export var max_speed = 250  # Maximum speed range.
+<<<<<<< HEAD
 
 export var life = false
 export var atingido = false
@@ -10,6 +11,9 @@ signal inimigo_atingido
 var dogde = false
 
 var v =  Vector2.ZERO
+=======
+var v = Vector2.ZERO
+>>>>>>> 998f2ef2d5bbc3c5a4e80d7855be725a0d88b446
 	
 
 
