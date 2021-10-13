@@ -10,20 +10,10 @@ export var fire_rate = 0.5
 
 signal hit
 
-func node_name():
-	return str(name.replace("@", "").replace(str(int(name)), ""))
-
-
 func _ready():
 	CenaPrincipal.jogador_existe  = true
 	screen_size = get_viewport_rect().size
 	hide()
-<<<<<<< HEAD
-	#print(name)
-	node_name()
-	#print(name)
-=======
->>>>>>> 998f2ef2d5bbc3c5a4e80d7855be725a0d88b446
 
 func _process(delta):
 	
@@ -38,39 +28,25 @@ func _process(delta):
 		#bala_objeto.rotation = rotation
 		bala_objeto.rotation_degrees = rotation_degrees
 		#bala_objeto.apply_impulse(Vector2(), Vector2(bala_velocidade, 0).rotated(rotation)) 
-<<<<<<< HEAD
-		
-		var p = get_path_to(CenaPrincipal)
-		var p1 = get_path()
-		#print( p ,' ',  p1)
-		#get_tree().get_root().get_node(p1).add_child(bala_objeto)
-		get_tree().get_root().add_child(bala_objeto)
-=======
 
 		get_parent().add_child(bala_objeto)
 		#get_tree().get_root().add_child(bala_objeto)
->>>>>>> 998f2ef2d5bbc3c5a4e80d7855be725a0d88b446
-		
 		
 		pode_atirar = false
 
 		yield(get_tree().create_timer(fire_rate),'timeout')
-		
 		pode_atirar = true
 		#bala_objeto.free()
-<<<<<<< HEAD
-=======
 		#var what = $SaidaDeTiro.connect("hit_disparo", self, "_on_Disparo_hit_disparo")
 
->>>>>>> 998f2ef2d5bbc3c5a4e80d7855be725a0d88b446
 		
-	if Input.is_action_pressed("move_right"):
+	if Input.is_action_pressed("move_right") or Input.is_action_pressed("ui_right"):
 		velocity.x += 1
-	if Input.is_action_pressed("move_left"):
+	if Input.is_action_pressed("move_left") or Input.is_action_pressed("ui_left"):
 		velocity.x -= 1
-	if Input.is_action_pressed("move_down"):
+	if Input.is_action_pressed("move_down") or Input.is_action_pressed("ui_down"):
 		velocity.y += 1
-	if Input.is_action_pressed("move_up"):
+	if Input.is_action_pressed("move_up") or Input.is_action_pressed("ui_up"):
 		velocity.y -= 1
 	
 	if velocity.length() > 0:
@@ -111,7 +87,6 @@ func _on_Player_area_entered(_area):
 	if life == 0:
 		hide()  # Player disappears after being hit.
 		$CollisionShape2D.set_deferred("disabled", true)
-	else: 	
-		life = life - 1
+
 	emit_signal("hit")
 	

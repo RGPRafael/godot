@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://CenaPrincipal.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/Player.tscn" type="PackedScene" id=2]
@@ -7,6 +7,13 @@
 [ext_resource path="res://Assets/songs/gameover.wav" type="AudioStream" id=5]
 [ext_resource path="res://Assets/songs/The-Prodigy-Invaders-Must-Die.mp3" type="AudioStream" id=6]
 [ext_resource path="res://Assets/songs/í ¼í¾® 8 bit game sounds (Download na DescriÃ§Ã£o).mp3" type="AudioStream" id=7]
+[ext_resource path="res://Assets/fonts/Xolonium-Regular.ttf" type="DynamicFontData" id=8]
+[ext_resource path="res://Assets/UI/HPbar.jpg" type="Texture" id=9]
+[ext_resource path="res://Scenes/UI.gd" type="Script" id=10]
+
+[sub_resource type="DynamicFont" id=1]
+size = 30
+font_data = ExtResource( 8 )
 
 [node name="Main" type="Node"]
 script = ExtResource( 1 )
@@ -16,6 +23,7 @@ Mob = ExtResource( 3 )
 position = Vector2( 1132.01, 456 )
 
 [node name="MobTimer" type="Timer" parent="."]
+wait_time = 0.5
 
 [node name="ScoreTimer" type="Timer" parent="."]
 
@@ -28,6 +36,67 @@ position = Vector2( 1145.5, 460.495 )
 
 [node name="InimigoPosition_start" type="Position2D" parent="."]
 position = Vector2( 155.668, 76.6846 )
+
+[node name="UI" type="CanvasLayer" parent="."]
+script = ExtResource( 10 )
+
+[node name="ColorRect" type="ColorRect" parent="UI"]
+self_modulate = Color( 0.027451, 0.027451, 0.027451, 0.470588 )
+margin_top = 629.0
+margin_right = 1278.0
+margin_bottom = 720.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HBoxContainer" type="HBoxContainer" parent="UI/ColorRect"]
+margin_top = 1.0
+margin_right = 1278.0
+margin_bottom = 90.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Control" type="Control" parent="UI/ColorRect/HBoxContainer"]
+margin_bottom = 89.0
+
+[node name="LIFE" type="Label" parent="UI/ColorRect/HBoxContainer"]
+margin_left = 4.0
+margin_top = 26.0
+margin_right = 94.0
+margin_bottom = 63.0
+custom_fonts/font = SubResource( 1 )
+text = "LIFE: "
+align = 1
+valign = 1
+
+[node name="Quantidade" type="Label" parent="UI/ColorRect/HBoxContainer"]
+margin_left = 98.0
+margin_top = 19.0
+margin_right = 198.0
+margin_bottom = 69.0
+rect_min_size = Vector2( 100, 50 )
+custom_fonts/font = SubResource( 1 )
+text = "-"
+align = 1
+valign = 1
+
+[node name="BarradeVida" type="TextureProgress" parent="UI/ColorRect/HBoxContainer"]
+margin_left = 202.0
+margin_top = 34.0
+margin_right = 802.0
+margin_bottom = 54.0
+rect_min_size = Vector2( 600, 20 )
+size_flags_horizontal = 4
+size_flags_vertical = 4
+value = 100.0
+texture_under = ExtResource( 9 )
+texture_progress = ExtResource( 9 )
+tint_under = Color( 0.262745, 0.298039, 0.266667, 1 )
+tint_progress = Color( 0.984314, 0.0588235, 0.254902, 1 )
+nine_patch_stretch = true
+
+[node name="Tween" type="Tween" parent="UI/ColorRect/HBoxContainer/BarradeVida"]
 
 [node name="HUD" parent="." instance=ExtResource( 4 )]
 
@@ -45,8 +114,9 @@ stream = ExtResource( 5 )
 [node name="Musica_Menu" type="AudioStreamPlayer" parent="Musicas"]
 stream = ExtResource( 7 )
 
-[connection signal="hit" from="Player" to="." method="game_over"]
+[connection signal="hit" from="Player" to="." method="player_damage"]
 [connection signal="timeout" from="MobTimer" to="." method="_on_MobTimer_timeout"]
 [connection signal="timeout" from="ScoreTimer" to="." method="_on_ScoreTimer_timeout"]
 [connection signal="timeout" from="StartTimer" to="." method="_on_StartTimer_timeout"]
+[connection signal="bar_is_low" from="UI" to="." method="Verifica_barradevida"]
 [connection signal="start_game" from="HUD" to="." method="new_game"]

@@ -11,7 +11,7 @@ config_version=4
 [application]
 
 config/name="Versao DEMO JOGO 3"
-run/main_scene="res://Scenes/TUTOTIAL GODOT.tscn"
+run/main_scene="res://RAiZ.tscn"
 config/icon="res://icon.png"
 
 [autoload]

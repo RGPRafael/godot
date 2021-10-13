@@ -8,100 +8,77 @@ export (PackedScene) var Mob
 
 var score
 var geracao = 0
-<<<<<<< HEAD
-var num_inimigos = 5
-var inimigos_atingidos = 0
-=======
-var num_inimigos = 10
+var num_inimigos = 50
+var inimigos_vivos = 0
 var dead_inimigos = 0
->>>>>>> 998f2ef2d5bbc3c5a4e80d7855be725a0d88b446
 var jogador_existe = false
 var posicao_jogador = Vector2()
-var player_life 
+var base_health  = 100
+var damage = 20
+var life_jogador
+var can_damage = true
 
 
 func _ready():
 	randomize()
-
-<<<<<<< HEAD
-
-func verifica_inimigo():
-	pass
-	
-	
-	
-func _process(delta):
-	if inimigos_atingidos == 10:
-		print("HERE")
-		#$HUD.show_message("PROXIMA GERAcAO")
-		inimigos_atingidos = 0
-	
-	pass
 	
 
-=======
->>>>>>> 998f2ef2d5bbc3c5a4e80d7855be725a0d88b446
-func game_over():
-	player_life = $Player.life
-	if player_life == 0:
 
-		$ScoreTimer.stop()
-		#$MobTimer.stop()
-		$HUD.show_game_over()
-		get_tree().call_group("Grupo_Inimigos", "queue_free")
-		
-	$HUD.life(player_life)
-	
-	
-	
-func create_enemys():
-	#var mob = Mob.instance()
-	#$Arvore_inimigos.add_child(mob)
-	#add_child(mob)
-	#mob.position = $InimigoPosition_start.position
-	
-	
-<<<<<<< HEAD
-	for i in range(num_inimigos):
-		var mob = Mob.instance()
-		add_child(mob)
-		mob.position = $InimigoPosition_start.position
-		yield(get_tree().create_timer(0.5), "timeout")
-		#mob.connect("area_entered", CenaPrincipal, "funciona")
-	
-	var enemies = get_tree().get_nodes_in_group("Grupo_Inimigos")
-	print('enemys: ', enemies)
-	pass
-		
 
-=======
->>>>>>> 998f2ef2d5bbc3c5a4e80d7855be725a0d88b446
+
+func player_damage():
+	if 	can_damage:
+		print("can_damage")
+		base_health = base_health - damage
+		$UI.update_health_bar(base_health)
+	
 func new_game():
 	score = 0
-<<<<<<< HEAD
-	player_life = 3
-	$Player.start($StartPosition.position, player_life)
-=======
 	geracao = 0
 	dead_inimigos = 0
-	$Player.start($StartPosition.position, 3)
->>>>>>> 998f2ef2d5bbc3c5a4e80d7855be725a0d88b446
+	base_health = 100
+	inimigos_vivos = 0
+	life_jogador = 3
+	$Player.start($StartPosition.position,life_jogador)
 	$StartTimer.start()
+	
 	$HUD.update_score(score)
-	$HUD.life(player_life)
-		
 	$HUD.show_message("Get Ready")
-<<<<<<< HEAD
-	#$MobTimer.wait_time = 5
-	create_enemys()
 	
-func _on_MobTimer_timeout():
+	$UI.prepare_bar(base_health)
+	$UI.qt_vida(life_jogador)
+		
+	
+	
+func Verifica_barradevida() :
+	print("Verifica_barradevida")
+	can_damage = false
+	life_jogador = life_jogador - 1
 
-=======
+	if life_jogador == 0:
+		$UI.qt_vida(life_jogador)
+		game_over()
 	
+	else:
+		base_health = 100
+		$UI.qt_vida(life_jogador)
+		$UI.prepare_bar(base_health)
+		yield(get_tree().create_timer(0.5), "timeout")#padding
+	
+	$Player.life = life_jogador
+	can_damage = true
+
+func game_over():
+	$Player.pode_atirar = false
+	$ScoreTimer.stop()
+	$MobTimer.stop()
+	$HUD.show_game_over()
+	$UI.stop_bar()
+	get_tree().call_group("Grupo_Inimigos", "queue_free")
+
+
 func _on_MobTimer_timeout():
 	#print(posicao_jogador)
->>>>>>> 998f2ef2d5bbc3c5a4e80d7855be725a0d88b446
 	
 	# Create a Mob instance and add it to the scene.
 	
@@ -110,32 +87,21 @@ func _on_MobTimer_timeout():
 	#	var mob = Mob.instance()
 	#	$Arvore_inimigos.add_child(mob)
 	#	mob.position = $InimigoPosition_start.position
-<<<<<<< HEAD
-
-	#geracao += 1
-
-	pass
-=======
 	var mob = Mob.instance()
 	#$Arvore_inimigos.add_child(mob)
 	add_child(mob)
 	mob.position = $InimigoPosition_start.position
-	geracao += 1
-	if geracao == num_inimigos:
+	inimigos_vivos += 1
+	if inimigos_vivos == num_inimigos:
 		$MobTimer.stop()
->>>>>>> 998f2ef2d5bbc3c5a4e80d7855be725a0d88b446
 
 func _on_ScoreTimer_timeout():
-	#score += 1
-	pass
+	score += 1
 
 func _on_StartTimer_timeout():
 	$MobTimer.start()
 	$ScoreTimer.start()
 
-<<<<<<< HEAD
-
-=======
 func _on_Player_emite_tiro():
 	var tiro = get_node("Disparo")
 	tiro.connect("hit_disparo", self, "_on_Disparo_hit_disparo")
@@ -152,4 +118,3 @@ func game_win():
 	#$MobTimer.stop()
 	$HUD.show_game_win()
 	get_tree().call_group("Grupo_Inimigos", "queue_free")
->>>>>>> 998f2ef2d5bbc3c5a4e80d7855be725a0d88b446

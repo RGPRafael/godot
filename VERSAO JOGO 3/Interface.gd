@@ -7,13 +7,8 @@ func show_message(text):
 	$MessageLabel.show()
 	$MessageTimer.start()
 	
-func life(text):
-	var s = 'life: ' + str(text)
-	$life.text = s  
-	
 func show_game_over():
 	show_message("Game Over")
-	life(CenaPrincipal.player_life)
 	# Wait until the MessageTimer has counted down.
 	
 	yield($MessageTimer, "timeout")
