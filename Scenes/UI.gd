@@ -34,7 +34,7 @@ func stop_bar():
 	hp_bar.set_tint_progress("434c44")
 	hp_bar_tween.stop(hp_bar)
 	hp_bar_tween.reset(hp_bar)
-	print("BARRA:", hp_bar.value)
+
 
 func update_health_bar(base_health):
 	#hp_bar_tween.interpole_property(node, parameter, start_value, end_value,  duration, transistion_type, easing_type)
@@ -47,7 +47,6 @@ func update_health_bar(base_health):
 	elif base_health < 25 and base_health > 0 :  
 		hp_bar.set_tint_progress("ff8300")
 	else :
-		print('base_h:',base_health, 'hpv:', hp_bar.value)
 		hp_bar.set_tint_progress("434c44")
 		emit_signal("bar_is_low")
 		

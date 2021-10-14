@@ -1,8 +1,7 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://CenaPrincipal.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/Player.tscn" type="PackedScene" id=2]
-[ext_resource path="res://Scenes/inimigos.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Scenes/Interface.tscn" type="PackedScene" id=4]
 [ext_resource path="res://Assets/songs/gameover.wav" type="AudioStream" id=5]
 [ext_resource path="res://Assets/songs/The-Prodigy-Invaders-Must-Die.mp3" type="AudioStream" id=6]
@@ -17,13 +16,12 @@ font_data = ExtResource( 8 )
 
 [node name="Main" type="Node"]
 script = ExtResource( 1 )
-Mob = ExtResource( 3 )
 
 [node name="Player" parent="." instance=ExtResource( 2 )]
 position = Vector2( 1132.01, 456 )
 
 [node name="MobTimer" type="Timer" parent="."]
-wait_time = 0.5
+wait_time = 1.5
 
 [node name="ScoreTimer" type="Timer" parent="."]
 
