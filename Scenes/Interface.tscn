@@ -1,7 +1,14 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://Assets/fonts/Xolonium-Regular.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://Interface.gd" type="Script" id=2]
+[ext_resource path="res://Assets/tiro/towerDefense_tile297.png" type="Texture" id=3]
+[ext_resource path="res://Assets/UI/red_button06.png" type="Texture" id=4]
+[ext_resource path="res://Assets/UI/green_button12.png" type="Texture" id=5]
+[ext_resource path="res://Assets/tiro/shotRed.png" type="Texture" id=6]
+[ext_resource path="res://Assets/UI/red_button07.png" type="Texture" id=7]
+[ext_resource path="res://Assets/UI/HPbar.jpg" type="Texture" id=8]
+[ext_resource path="res://Assets/UI/green_button11.png" type="Texture" id=9]
 
 [sub_resource type="DynamicFont" id=1]
 size = 64
@@ -9,6 +16,10 @@ font_data = ExtResource( 1 )
 
 [sub_resource type="DynamicFont" id=2]
 size = 64
+font_data = ExtResource( 1 )
+
+[sub_resource type="DynamicFont" id=3]
+size = 30
 font_data = ExtResource( 1 )
 
 [node name="HUD" type="CanvasLayer"]
@@ -67,6 +78,117 @@ __meta__ = {
 [node name="Control" type="Control" parent="."]
 margin_right = 40.0
 margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="BarraDebaixo" type="ColorRect" parent="."]
+self_modulate = Color( 0.027451, 0.027451, 0.027451, 0.470588 )
+margin_top = 629.0
+margin_right = 1278.0
+margin_bottom = 720.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HBoxContainer" type="HBoxContainer" parent="BarraDebaixo"]
+margin_top = 1.0
+margin_right = 1278.0
+margin_bottom = 90.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Control" type="Control" parent="BarraDebaixo/HBoxContainer"]
+margin_bottom = 89.0
+
+[node name="LIFE" type="Label" parent="BarraDebaixo/HBoxContainer"]
+margin_left = 4.0
+margin_top = 26.0
+margin_right = 94.0
+margin_bottom = 63.0
+custom_fonts/font = SubResource( 3 )
+text = "LIFE: "
+align = 1
+valign = 1
+
+[node name="Quantidade" type="Label" parent="BarraDebaixo/HBoxContainer"]
+margin_left = 98.0
+margin_top = 19.0
+margin_right = 198.0
+margin_bottom = 69.0
+rect_min_size = Vector2( 100, 50 )
+custom_fonts/font = SubResource( 3 )
+text = "-"
+align = 1
+valign = 1
+
+[node name="BarradeVida" type="TextureProgress" parent="BarraDebaixo/HBoxContainer"]
+margin_left = 202.0
+margin_top = 34.0
+margin_right = 702.0
+margin_bottom = 54.0
+rect_min_size = Vector2( 500, 20 )
+size_flags_horizontal = 4
+size_flags_vertical = 4
+value = 100.0
+texture_under = ExtResource( 8 )
+texture_progress = ExtResource( 8 )
+tint_under = Color( 0.262745, 0.298039, 0.266667, 1 )
+tint_progress = Color( 0.984314, 0.0588235, 0.254902, 1 )
+nine_patch_stretch = true
+
+[node name="Tween" type="Tween" parent="BarraDebaixo/HBoxContainer/BarradeVida"]
+
+[node name="Disparo1" type="TextureButton" parent="." groups=[
+"Botoes_tiro",
+]]
+margin_left = 782.751
+margin_top = 635.0
+margin_right = 863.751
+margin_bottom = 714.0
+texture_normal = ExtResource( 4 )
+texture_pressed = ExtResource( 7 )
+expand = true
+__meta__ = {
+"_edit_group_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="TextureRect2" type="TextureRect" parent="Disparo1"]
+margin_left = 22.0
+margin_top = 11.5
+margin_right = 58.0
+margin_bottom = 56.5
+texture = ExtResource( 6 )
+expand = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Disparo" type="TextureButton" parent="." groups=[
+"Botoes_tiro",
+]]
+margin_left = 1002.46
+margin_top = 634.586
+margin_right = 1082.46
+margin_bottom = 712.586
+texture_normal = ExtResource( 9 )
+texture_pressed = ExtResource( 5 )
+expand = true
+__meta__ = {
+"_edit_group_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="TextureRect" type="TextureRect" parent="Disparo"]
+margin_left = -16.5
+margin_top = -13.0
+margin_right = 97.5
+margin_bottom = 84.0
+texture = ExtResource( 3 )
+expand = true
+flip_v = true
 __meta__ = {
 "_edit_use_anchors_": false
 }

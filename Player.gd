@@ -2,16 +2,30 @@ extends Area2D
 export var speed = 400  # How fast the player will move (pixels/sec).
 var life  
 var screen_size  # Size of the game window.
-export var bala_velocidade = 1000
-var bala =  preload("res://Scenes/Disparo.tscn")
+var bala
+var bala_tipo_tiro 
 
 var pode_atirar =  false
 export var fire_rate = 0.5
 
 signal hit
 
+
+#https://www.reddit.com/r/godot/comments/e7nwbp/what_does_preload_and_load_does/
+func _tiro(tipo_de_tiro):
+	if tipo_de_tiro == 'Disparo1':
+		bala = preload('res://Scenes/Tiros/Disparo1.tscn')
+
+	elif tipo_de_tiro == 'Disparo':
+		bala = preload('res://Scenes/Tiros/Disparo.tscn')
+	
+	#print(CenaPrincipal.tipo_de_tiro_escolhido) #ta tando null
+	bala_tipo_tiro = tipo_de_tiro
+	print('em player..:', bala_tipo_tiro)
+
 func _ready():
 	CenaPrincipal.jogador_existe  = true
+	CenaPrincipal.tipo_de_tiro_escolhido = bala_tipo_tiro
 	screen_size = get_viewport_rect().size
 	hide()
 
@@ -23,21 +37,16 @@ func _process(delta):
 
 	if Input.is_action_pressed("shoot") and pode_atirar:
 		var bala_objeto = bala.instance()
-		#bala_objeto.position = position
-		bala_objeto.position = $SaidaDeTiro.get_global_position()
-		#bala_objeto.rotation = rotation
-		bala_objeto.rotation_degrees = rotation_degrees
-		#bala_objeto.apply_impulse(Vector2(), Vector2(bala_velocidade, 0).rotated(rotation)) 
+		bala_objeto.tipo_tiro = bala_tipo_tiro
 
+		bala_objeto.position = $SaidaDeTiro.get_global_position()
+		bala_objeto.rotation_degrees = rotation_degrees
 		get_parent().add_child(bala_objeto)
-		#get_tree().get_root().add_child(bala_objeto)
-		
+
 		pode_atirar = false
 
 		yield(get_tree().create_timer(fire_rate),'timeout')
 		pode_atirar = true
-		#bala_objeto.free()
-		#var what = $SaidaDeTiro.connect("hit_disparo", self, "_on_Disparo_hit_disparo")
 
 		
 	if Input.is_action_pressed("move_right") or Input.is_action_pressed("ui_right"):

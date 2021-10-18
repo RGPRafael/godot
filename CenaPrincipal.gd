@@ -8,6 +8,7 @@ extends Node
 #export (PackedScene) var Mob
 #export (PackedScene) var Mob1
 
+#signal colision(a,b)
 
 
 var score
@@ -22,6 +23,35 @@ var inimigos_vivos = 0
 var dead_inimigos = 0
 var damage = 20
 var geracao = 0
+
+var dados_inimigos = [['inimigos'] , ['inimigo1'] , ['inimigo2'], ['inimigo3'], ['inimigo4']]
+
+var inimigos_data = {
+	"inimigos": {
+		"damage": 10,
+		"resist": 50,
+		"speed" : 200},
+		
+	"inimigo1": {
+		"damage": 25,
+		"resist": 100,
+		"speed" : 250},
+		
+	"inimigo2": {
+		"damage": 30,
+		"resist": 90,
+		"speed" : 150},
+		
+	"inimigo3": {
+		"damage": 60,
+		"resist": 80,
+		"speed" : 220},
+		
+	"inimigo4": {
+		"damage": 20,
+		"resist": 90,
+		"speed" : 50},
+}
 
 ###########################################################################
 #
@@ -41,7 +71,19 @@ var posicao_jogador = Vector2()
 var life_jogador
 var base_health  = 100
 var jogador_existe = false
+var tipo_de_tiro_escolhido
 
+#var choose_weapon = false # avisa se esta no modo construcao
+#var tipo_de_tiro 
+var disparo_data = {
+	"Disparo": {
+		"damage":5 ,
+		"speed": 1200},
+	
+	"Disparo1": {
+		"damage": 20,
+		"speed": 600},
+}
 
 ###########################################################################
 #
@@ -52,9 +94,7 @@ var jogador_existe = false
 
 func _ready():
 	randomize()
-
-
-
+	pass
 
 ###########################################################################
 #
@@ -64,21 +104,18 @@ func _ready():
 
 func player_damage():
 	if 	can_damage:
-		print("can_damage")
 		base_health = base_health - damage
-		$UI.update_health_bar(base_health)
+		$HUD.update_health_bar(base_health)
 
 
-func _on_Player_emite_tiro():
-	var tiro = get_node("Disparo")
+func _on_Player_emite_tiro(tiro):
 	tiro.connect("hit_disparo", self, "_on_Disparo_hit_disparo")
 	
-func _on_Disparo_hit_disparo():
+func _on_Disparo_hit_disparo(area):
+	print('entrou em hit disparo')
 	dead_inimigos += 1
-	var s =  'Killed : ' + str(dead_inimigos)
-	$HUD.show_message(s)
-	if dead_inimigos == num_inimigos:
-		game_win()
+	print('dead: ', dead_inimigos, area)
+	#$HUD.update_score(dead_inimigos)
 
 
 ###########################################################################
@@ -97,30 +134,21 @@ func _on_Disparo_hit_disparo():
 
 
 func _on_MobTimer_timeout():
-	
-	# Create a Mob instance and add it to the scene.
-	
-	#print("We are on gen: " + str(geracao))
-	#for i in range(num_inimigos):
-	#	var mob = Mob.instance()
-	#	$Arvore_inimigos.add_child(mob)
-	#	mob.position = $InimigoPosition_start.position
-	
-	var dados_inimigos = [['Inimigos'] , ['Inimigo1'] , ['Inimigo3']]
-	#for j in num_inimigos:
+
 	for i in dados_inimigos :
-		var mob = load('res://Scenes/' + i[0] + ".tscn").instance()
-		#$Arvore_inimigos.add_child(mob)
+		var mob = load('res://Scenes/Inimigos/' + i[0] + ".tscn").instance()
 		add_child(mob)
 		mob.position = $InimigoPosition_start.position
 		inimigos_vivos += 1
-		yield(get_tree().create_timer(0.5), "timeout")#padding
+		
+		yield(get_tree().create_timer(0.8), "timeout")#padding
 	
-	if inimigos_vivos == num_inimigos:
+	if inimigos_vivos == 10:
 		$MobTimer.stop()
 
 
-
+func _test():
+	print("HERE")
 
 ###########################################################################
 #
@@ -137,23 +165,24 @@ func _on_MobTimer_timeout():
 #
 ###########################################################################
 
-func new_game():
+func new_game(tipo_detiro):
 	score = 0
 	geracao = 0
 	dead_inimigos = 0
 	base_health = 100
 	inimigos_vivos = 0
 	life_jogador = 3
+
+	$HUD.show_message("GET READY:")
+	
+	$Player._tiro(tipo_detiro)
 	$Player.start($StartPosition.position,life_jogador)
+	
 	$StartTimer.start()
 	
 	$HUD.update_score(score)
-	$HUD.show_message("Get Ready")
-	
-	$UI.prepare_bar(base_health)
-	$UI.qt_vida(life_jogador)
-		
-	
+	$HUD.prepare_bar(base_health)
+	$HUD.qt_vida(life_jogador)
 	
 func Verifica_barradevida() :
 
@@ -178,10 +207,8 @@ func game_over():
 	$ScoreTimer.stop()
 	$MobTimer.stop()
 	$HUD.show_game_over()
-	$UI.stop_bar()
+	$HUD.stop_bar()
 	get_tree().call_group("Grupo_Inimigos", "queue_free")
-
-
 
 
 func _on_ScoreTimer_timeout():
@@ -192,7 +219,6 @@ func _on_StartTimer_timeout():
 	$ScoreTimer.start()
 
 
-	
 func game_win():
 	$ScoreTimer.stop()
 	#$MobTimer.stop()
