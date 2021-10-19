@@ -26,7 +26,7 @@ var inimigos_vivos = 0
 var dead_inimigos = 0
 var damage = 20
 var geracao = 0
-#var array_inimigos = [] #vazio por q...
+var array_inimigos = [] #vazio por q...
 
 
 var dados_inimigos = [['inimigos'] , ['inimigo1'] , ['inimigo2'], ['inimigo3'], ['inimigo4']]
@@ -120,16 +120,13 @@ func _on_Player_emite_tiro(tiro):
 	tiro.connect("hit_disparo", self, "_on_Disparo_hit_disparo")
 	
 func _on_Disparo_hit_disparo(area,  s):
-	print('entrou em hit disparo' ,' ', s.name ,' ', area.name)
-	#$HUD.update_score(dead_inimigos) #nao sei pq faz dar ruim
+
 	if area.get_class() == "INIMIGO" :
-		print(' ', area.resist , ' ', area.damage, ' ', area.speed)
 		area.resist = area.resist - s.base_damage
-		print('entrou no elif   ' , s.name, ' ' , s.base_damage , ' ',  area.resist) 
 		s.queue_free()
 
 func Verifica_barradevida() :
-	print('entra em verfica')
+	#print('entra em verfica')
 	can_damage = false
 	life_jogador = life_jogador - 1
 
@@ -180,13 +177,9 @@ func spawninimigos():
 			
 	yield(get_tree().create_timer(5), "timeout")#padding
 	
-	
-	#var array = INIMIGO.array_inimigos #tb da errado ... usar grupos ...provavel,ente
-	#print(array)
-#	print('size_array:'array_inimigos.size())
-#	print(array_inimigos)
-#	for j in array_inimigos:
-#		print(j.tipo_de_inimigo , j.speed ,j. damage , j.resist ,  j.life)
+	print(array_inimigos)
+	for j in array_inimigos:
+		print(j.tipo_de_inimigo , j.speed ,j. damage , j.resist ,  j.life)
 	
 
 
@@ -211,7 +204,8 @@ func _test(area, s):
 		print('                  ',  s.name)
 		print('                  ', area.name)
 		print('                  ', s.resist , ' ', s.damage, ' ', s.speed)
-		#INIMIGO.array_inimigos.append(s)
+		array_inimigos.append(s)
+		print('Player : array_inimgos_size:', array_inimigos.size())
 		
 	#Vontade de fazer verificar o tiro aqui kkkk
 	pass
@@ -266,8 +260,6 @@ func _on_ScoreTimer_timeout():
 	score += 1
 
 func _on_StartTimer_timeout():
-	#$MobTimer.start()
-	#$ScoreTimer.start()
 	spawninimigos()
 
 

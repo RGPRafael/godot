@@ -11,7 +11,6 @@ var speed
 var damage
 var resist
 var life 
-var array_inimigos = [] 
 #var em_cena = false
 
 func get_class(): #override
@@ -44,7 +43,6 @@ func detecta_colisao(area):
 		print('                  ', area.name)
 		print('                  ', resist , ' ', damage, ' ', speed)
 		#CenaPrincipal.array_inimigos.append(self)
-		array_inimigos.append(self)
 	pass
 
 
@@ -53,8 +51,6 @@ func check_live():
 		hide()  # Player disappears after being hit.
 		$CollisionShape2D.set_deferred("disabled", true)
 		life = false
-		#CenaPrincipal.array_inimigos.append(self)
-		array_inimigos.append(self)
 
 
 func move(delta):
@@ -69,6 +65,5 @@ func _process(delta):
 # fazer os inimigo se autodestruirem ao sair da tela
 func _on_VisibilityNotifier2D_screen_exited():
 	yield(get_tree().create_timer(0.2), "timeout")
-	#CenaPrincipal.array_inimigos.append(self)
-	array_inimigos.append(self)
-	pass # Replace with function body.
+	CenaPrincipal.array_inimigos.append(self)
+	print('Inimigos : array_inimgos_size:', CenaPrincipal.array_inimigos.size())
