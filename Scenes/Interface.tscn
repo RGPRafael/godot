@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://Assets/fonts/Xolonium-Regular.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://Interface.gd" type="Script" id=2]
@@ -14,12 +14,16 @@
 size = 64
 font_data = ExtResource( 1 )
 
+[sub_resource type="DynamicFont" id=3]
+size = 30
+font_data = ExtResource( 1 )
+
 [sub_resource type="DynamicFont" id=2]
 size = 64
 font_data = ExtResource( 1 )
 
-[sub_resource type="DynamicFont" id=3]
-size = 30
+[sub_resource type="DynamicFont" id=4]
+size = 26
 font_data = ExtResource( 1 )
 
 [node name="HUD" type="CanvasLayer"]
@@ -42,13 +46,82 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="BarraAlto" type="ColorRect" parent="."]
+self_modulate = Color( 0.027451, 0.027451, 0.027451, 0.470588 )
+margin_right = 1278.0
+margin_bottom = 89.0
+rect_min_size = Vector2( 1000, 50 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="DEAD" type="Label" parent="BarraAlto"]
+margin_left = 1052.01
+margin_top = 28.378
+margin_right = 1165.01
+margin_bottom = 65.378
+custom_fonts/font = SubResource( 3 )
+text = "DEAD: "
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="enemys_died" type="Label" parent="BarraAlto"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = 524.027
+margin_top = -38.5403
+margin_right = 628.027
+margin_bottom = 39.4597
+custom_fonts/font = SubResource( 1 )
+text = "0"
+align = 1
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Enemys" type="Label" parent="BarraAlto"]
+margin_left = 713.617
+margin_top = 29.5672
+margin_right = 894.617
+margin_bottom = 66.5672
+custom_fonts/font = SubResource( 3 )
+text = "ENEMYS: "
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ADVICE" type="Label" parent="BarraAlto"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = 239.807
+margin_top = -38.5403
+margin_right = 343.807
+margin_bottom = 39.4597
+custom_fonts/font = SubResource( 1 )
+text = "0"
+align = 1
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="ScoreLabel" type="Label" parent="."]
 anchor_left = 0.5
 anchor_right = 0.5
-margin_left = -33.8591
-margin_top = 49.1369
-margin_right = 6.14087
-margin_bottom = 127.137
+margin_left = -17.2102
+margin_top = 8.70385
+margin_right = 22.7898
+margin_bottom = 86.7039
 custom_fonts/font = SubResource( 1 )
 text = "-"
 align = 1
@@ -140,13 +213,33 @@ nine_patch_stretch = true
 
 [node name="Tween" type="Tween" parent="BarraDebaixo/HBoxContainer/BarradeVida"]
 
+[node name="DAMAGE" type="Label" parent="BarraDebaixo/HBoxContainer"]
+margin_left = 706.0
+margin_top = 28.0
+margin_right = 854.0
+margin_bottom = 61.0
+custom_fonts/font = SubResource( 4 )
+text = "DAMAGE: "
+align = 1
+valign = 1
+
+[node name="hit" type="Label" parent="BarraDebaixo/HBoxContainer"]
+margin_left = 858.0
+margin_top = 28.0
+margin_right = 869.0
+margin_bottom = 61.0
+custom_fonts/font = SubResource( 4 )
+text = "-"
+align = 1
+valign = 1
+
 [node name="Disparo1" type="TextureButton" parent="." groups=[
 "Botoes_tiro",
 ]]
-margin_left = 782.751
-margin_top = 635.0
-margin_right = 863.751
-margin_bottom = 714.0
+margin_left = 945.672
+margin_top = 636.189
+margin_right = 1026.67
+margin_bottom = 715.189
 texture_normal = ExtResource( 4 )
 texture_pressed = ExtResource( 7 )
 expand = true
@@ -169,10 +262,10 @@ __meta__ = {
 [node name="Disparo" type="TextureButton" parent="." groups=[
 "Botoes_tiro",
 ]]
-margin_left = 1002.46
-margin_top = 634.586
-margin_right = 1082.46
-margin_bottom = 712.586
+margin_left = 1117.81
+margin_top = 636.964
+margin_right = 1197.81
+margin_bottom = 714.964
 texture_normal = ExtResource( 9 )
 texture_pressed = ExtResource( 5 )
 expand = true

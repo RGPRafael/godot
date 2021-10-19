@@ -8,7 +8,7 @@ var bala_tipo_tiro
 var pode_atirar =  false
 export var fire_rate = 0.5
 
-signal hit
+signal hit(area)
 
 
 #https://www.reddit.com/r/godot/comments/e7nwbp/what_does_preload_and_load_does/
@@ -21,7 +21,7 @@ func _tiro(tipo_de_tiro):
 	
 	#print(CenaPrincipal.tipo_de_tiro_escolhido) #ta tando null
 	bala_tipo_tiro = tipo_de_tiro
-	print('em player..:', bala_tipo_tiro)
+	#print('em player..:', bala_tipo_tiro)
 
 func _ready():
 	CenaPrincipal.jogador_existe  = true
@@ -92,10 +92,10 @@ func start(pos, VIDAS):
 
 #func _on_Player_body_entered(_body):
 
-func _on_Player_area_entered(_area):
+func _on_Player_area_entered(area):
 	if life == 0:
 		hide()  # Player disappears after being hit.
 		$CollisionShape2D.set_deferred("disabled", true)
 
-	emit_signal("hit")
+	emit_signal("hit", area)
 	

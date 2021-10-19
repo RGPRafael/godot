@@ -14,6 +14,7 @@ var tipo_de_tiro
 
 func _ready():
 	#$MessageLabel.text = 'OI'
+	connect("bar_is_low",get_parent(),"Verifica_barradevida")
 	choose_weapon = false
 	for i in get_tree().get_nodes_in_group('Botoes_tiro'):
 		var t = i.get_name()
@@ -21,7 +22,7 @@ func _ready():
 		
 
 func iniciar_botao(tipo):
-	print('ENTROU')
+	print('comecou o jogo')
 	tipo_de_tiro = tipo
 	print(tipo_de_tiro)
 	choose_weapon = true
@@ -49,7 +50,7 @@ func stop_bar():
 	hp_bar_tween.reset(hp_bar)
 
 
-func update_health_bar(base_health):
+func update_health_bar(base_health , d):
 	#hp_bar_tween.interpole_property(node, parameter, start_value, end_value,  duration, transistion_type, easing_type)
 	hp_bar_tween.interpolate_property(hp_bar,'value', hp_bar.value, base_health, 0.1, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
 	hp_bar_tween.start()
@@ -62,11 +63,17 @@ func update_health_bar(base_health):
 	else :
 		hp_bar.set_tint_progress("434c44")
 		emit_signal("bar_is_low")
-		
+	
+	$BarraDebaixo/HBoxContainer/hit.text = str(d)
+	
 
 ##############################################################################################
 
 ##############################################################################################
+
+func qt_inimigos(text):
+	#$ADVICE.text = text
+	$BarraAlto/ADVICE.text = text
 
 func show_message(text):
 	$MessageLabel.text = text

@@ -10,11 +10,17 @@ config_version=4
 
 _global_script_classes=[ {
 "base": "Area2D",
+"class": "Disparo",
+"language": "GDScript",
+"path": "res://Scenes/Tiros/Disparo.gd"
+}, {
+"base": "Area2D",
 "class": "INIMIGO",
 "language": "GDScript",
 "path": "res://Scenes/Inimigos/inimigos.gd"
 } ]
 _global_script_class_icons={
+"Disparo": "",
 "INIMIGO": ""
 }
 
