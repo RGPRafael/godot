@@ -26,7 +26,8 @@ var inimigos_vivos = 0
 var dead_inimigos = 0
 var damage = 20
 var geracao = 0
-var array_inimigos = []
+#var array_inimigos = [] #vazio por q...
+
 
 var dados_inimigos = [['inimigos'] , ['inimigo1'] , ['inimigo2'], ['inimigo3'], ['inimigo4']]
 
@@ -109,7 +110,6 @@ func _ready():
 ###########################################################################
 
 func player_damage(area):
-	print('entrou em player_damage       ', 'n: ', area.name , 'd: ', area.damage)
 	if 	can_damage:
 		
 		base_health = base_health - area.damage
@@ -118,7 +118,6 @@ func player_damage(area):
 
 func _on_Player_emite_tiro(tiro):
 	tiro.connect("hit_disparo", self, "_on_Disparo_hit_disparo")
-	#tiro.connect("hit_disparo", self, "test")
 	
 func _on_Disparo_hit_disparo(area,  s):
 	print('entrou em hit disparo' ,' ', s.name ,' ', area.name)
@@ -163,7 +162,7 @@ func Verifica_barradevida() :
 ###########################################################################
 func spawninimigos():
 	
-	for j in range(3):
+	for j in range(2):
 		for i in dados_inimigos :
 			var s = 'res://Scenes/Inimigos/' + i[0] + ".tscn"
 			var mob = load(s).instance()
@@ -178,6 +177,18 @@ func spawninimigos():
 			yield(get_tree().create_timer(1), "timeout")#padding
 			$HUD.qt_inimigos(str(inimigos_vivos))
 			#print(mob.resist , mob.damage, mob.speed)
+			
+	yield(get_tree().create_timer(5), "timeout")#padding
+	
+	
+	#var array = INIMIGO.array_inimigos #tb da errado ... usar grupos ...provavel,ente
+	#print(array)
+#	print('size_array:'array_inimigos.size())
+#	print(array_inimigos)
+#	for j in array_inimigos:
+#		print(j.tipo_de_inimigo , j.speed ,j. damage , j.resist ,  j.life)
+	
+
 
 
 func _on_MobTimer_timeout():
@@ -191,8 +202,6 @@ func test1(area):
 	pass
 
 func _test(area, s):
-
-	#var p = s.get_type()  # so existe em godot 2 kkkk
 	
 	print('_test' )
 
@@ -202,18 +211,11 @@ func _test(area, s):
 		print('                  ',  s.name)
 		print('                  ', area.name)
 		print('                  ', s.resist , ' ', s.damage, ' ', s.speed)
-		CenaPrincipal.array_inimigos.append(s)
+		#INIMIGO.array_inimigos.append(s)
 		
-	#elif area.name == $Player.bala_tipo_tiro :
-#	elif area.has_method("is_Disparo") :
-#		print('                  ', s.resist , ' ', s.damage, ' ', s.speed)
-#		s.resist = s.resist - area.base_damage
-#		#s.fica_roxo() #meio q funciona o inimigo 2 ou 3 da pau 
-#		print('entrou no elif   ' , area.name, ' ' , area.base_damage , ' ',  s.resist) 
-#		area.queue_free()
+	#Vontade de fazer verificar o tiro aqui kkkk
 	pass
-	
-	#print("HERE")
+
 
 ###########################################################################
 #
