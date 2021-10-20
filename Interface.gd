@@ -13,7 +13,8 @@ var choose_weapon # avisa se esta no modo construcao
 var tipo_de_tiro 
 
 func _ready():
-	#$MessageLabel.text = 'OI'
+
+	#get_node("PlayPause").connect("pressed",get_parent(),'test_pause')
 	connect("bar_is_low",get_parent(),"Verifica_barradevida")
 	choose_weapon = false
 	for i in get_tree().get_nodes_in_group('Botoes_tiro'):
@@ -22,11 +23,23 @@ func _ready():
 		
 
 func iniciar_botao(tipo):
-	#print('comecou o jogo')
 	tipo_de_tiro = tipo
-	#print(tipo_de_tiro)
 	choose_weapon = true
 	pass
+
+func _process(_delta):
+	pass
+
+#setar botao como process para que ele nao pause a arvore toda
+func play_pause():
+	#print('entrou em play pause')
+	#GameData.jogo_comecou = true
+	if get_tree().is_paused():
+		get_tree().paused = false
+	else :
+		get_tree().paused = true
+	pass # Replace with function body.
+
 
 
 func get_bar_value():

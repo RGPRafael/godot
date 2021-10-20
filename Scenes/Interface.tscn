@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=17 format=2]
 
 [ext_resource path="res://Assets/fonts/Xolonium-Regular.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://Interface.gd" type="Script" id=2]
@@ -9,16 +9,19 @@
 [ext_resource path="res://Assets/UI/red_button07.png" type="Texture" id=7]
 [ext_resource path="res://Assets/UI/HPbar.jpg" type="Texture" id=8]
 [ext_resource path="res://Assets/UI/green_button11.png" type="Texture" id=9]
+[ext_resource path="res://Assets/UI/pause.png" type="Texture" id=10]
+[ext_resource path="res://Assets/UI/right.png" type="Texture" id=11]
+[ext_resource path="res://Scenes/PlayPause.gd" type="Script" id=12]
 
 [sub_resource type="DynamicFont" id=1]
 size = 64
 font_data = ExtResource( 1 )
 
-[sub_resource type="DynamicFont" id=3]
+[sub_resource type="DynamicFont" id=2]
 size = 30
 font_data = ExtResource( 1 )
 
-[sub_resource type="DynamicFont" id=2]
+[sub_resource type="DynamicFont" id=3]
 size = 64
 font_data = ExtResource( 1 )
 
@@ -56,11 +59,11 @@ __meta__ = {
 }
 
 [node name="DEAD" type="Label" parent="BarraAlto"]
-margin_left = 1052.01
-margin_top = 28.378
-margin_right = 1165.01
-margin_bottom = 65.378
-custom_fonts/font = SubResource( 3 )
+margin_left = 371.242
+margin_top = 29.7128
+margin_right = 484.242
+margin_bottom = 66.7128
+custom_fonts/font = SubResource( 2 )
 text = "DEAD: "
 align = 1
 valign = 1
@@ -73,10 +76,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = 524.027
-margin_top = -38.5403
-margin_right = 628.027
-margin_bottom = 39.4597
+margin_left = -156.741
+margin_top = -37.2055
+margin_right = -52.741
+margin_bottom = 40.7945
 custom_fonts/font = SubResource( 1 )
 text = "0"
 align = 1
@@ -86,11 +89,11 @@ __meta__ = {
 }
 
 [node name="Enemys" type="Label" parent="BarraAlto"]
-margin_left = 713.617
-margin_top = 29.5672
-margin_right = 894.617
-margin_bottom = 66.5672
-custom_fonts/font = SubResource( 3 )
+margin_left = 32.849
+margin_top = 30.902
+margin_right = 213.849
+margin_bottom = 67.902
+custom_fonts/font = SubResource( 2 )
 text = "ENEMYS: "
 align = 1
 valign = 1
@@ -103,10 +106,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = 239.807
-margin_top = -38.5403
-margin_right = 343.807
-margin_bottom = 39.4597
+margin_left = -440.961
+margin_top = -37.2055
+margin_right = -336.961
+margin_bottom = 40.7945
 custom_fonts/font = SubResource( 1 )
 text = "0"
 align = 1
@@ -142,7 +145,7 @@ margin_left = -141.979
 margin_top = 115.877
 margin_right = 119.021
 margin_bottom = 199.877
-custom_fonts/font = SubResource( 2 )
+custom_fonts/font = SubResource( 3 )
 text = "START"
 __meta__ = {
 "_edit_use_anchors_": false
@@ -180,7 +183,7 @@ margin_left = 4.0
 margin_top = 26.0
 margin_right = 94.0
 margin_bottom = 63.0
-custom_fonts/font = SubResource( 3 )
+custom_fonts/font = SubResource( 2 )
 text = "LIFE: "
 align = 1
 valign = 1
@@ -191,7 +194,7 @@ margin_top = 19.0
 margin_right = 198.0
 margin_bottom = 69.0
 rect_min_size = Vector2( 100, 50 )
-custom_fonts/font = SubResource( 3 )
+custom_fonts/font = SubResource( 2 )
 text = "-"
 align = 1
 valign = 1
@@ -262,10 +265,10 @@ __meta__ = {
 [node name="Disparo" type="TextureButton" parent="." groups=[
 "Botoes_tiro",
 ]]
-margin_left = 1117.81
-margin_top = 636.964
-margin_right = 1197.81
-margin_bottom = 714.964
+margin_left = 1062.37
+margin_top = 636.189
+margin_right = 1142.37
+margin_bottom = 714.189
 texture_normal = ExtResource( 9 )
 texture_pressed = ExtResource( 5 )
 expand = true
@@ -286,5 +289,20 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="PlayPause" type="TextureButton" parent="."]
+pause_mode = 2
+margin_left = 968.44
+margin_top = 15.0794
+margin_right = 1033.44
+margin_bottom = 79.0794
+texture_normal = ExtResource( 10 )
+texture_pressed = ExtResource( 11 )
+expand = true
+script = ExtResource( 12 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [connection signal="timeout" from="MessageTimer" to="." method="_on_MessageTimer_timeout"]
 [connection signal="pressed" from="Start" to="." method="_on_Start_pressed"]
+[connection signal="pressed" from="PlayPause" to="." method="play_pause"]

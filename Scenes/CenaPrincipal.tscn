@@ -14,7 +14,7 @@ script = ExtResource( 1 )
 position = Vector2( 1132.01, 456 )
 
 [node name="MobTimer" type="Timer" parent="."]
-wait_time = 1.5
+wait_time = 0.2
 
 [node name="ScoreTimer" type="Timer" parent="."]
 

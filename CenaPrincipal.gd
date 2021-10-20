@@ -157,10 +157,26 @@ func Verifica_barradevida() :
 # Funções do Inimigo
 #
 ###########################################################################
-func spawninimigos():
+#func criando_inimigos():
+#	print('criando_inimigos')
+#	var k = 0
+#	for j in range(2):
+#		for i in dados_inimigos :
+#			var s = 'res://Scenes/Inimigos/' + i[0] + ".tscn"
+#			var mob = load(s).instance()
+#			mob.tipo_de_inimigo = i[0]
+#			mob.speed  = inimigos_data[i[0]]["speed"]
+#			mob.damage = inimigos_data[i[0]]["damage"]
+#			mob.resist = inimigos_data[i[0]]["resist"]
+#			mob.id = k
+#			mob.position = $InimigoPosition_start.position
+#			array_inimigos.append(mob) # 
+#			k += 1	
+	
+func criando_inimigos():
 	print('criando_inimigos')
 	var k = 0
-	for j in range(2):
+	for _j in range(2):
 		for i in dados_inimigos :
 			var s = 'res://Scenes/Inimigos/' + i[0] + ".tscn"
 			var mob = load(s).instance()
@@ -169,30 +185,23 @@ func spawninimigos():
 			mob.damage = inimigos_data[i[0]]["damage"]
 			mob.resist = inimigos_data[i[0]]["resist"]
 			mob.id = k
-			#mob.connect("area_entered", self, '_test', [mob]) 
-			get_node("Arvore_inimigos").add_child(mob)
-			mob.position = $InimigoPosition_start.position
-			inimigos_vivos += 1
-			yield(get_tree().create_timer(1), "timeout")#padding
-			$HUD.qt_inimigos(str(inimigos_vivos))
-			array_inimigos.append(mob) # nao da tempo de atualizar...
+			array_inimigos.append(mob) # 
 			k += 1
-			
-	yield(get_tree().create_timer(5), "timeout")#padding
-	game_over()
 
+
+func add_inimigos_cena():
+	for mob in array_inimigos:
+		get_node("Arvore_inimigos").add_child(mob)
+		mob.position = $InimigoPosition_start.position
+		inimigos_vivos += 1
+		yield(get_tree().create_timer(0.2), "timeout")#padding
+		$HUD.qt_inimigos(str(inimigos_vivos))
 
 func _on_MobTimer_timeout():
+#	#get_node("Arvore_inimigos").add_child(mob)
+#	inimigos_vivos += 1
+#	$HUD.qt_inimigos(str(inimigos_vivos))
 	pass
-
-#func _test(area, s):
-#
-#	if area.name == 'Player':
-#		s.hide()  # Player disappears after being hit.
-#		s.desliga_colisao()
-#		#s.hit = true
-#
-#	pass
 
 
 ###########################################################################
@@ -217,18 +226,19 @@ func new_game(tipo_detiro):
 	base_health = 100
 	inimigos_vivos = 0
 	life_jogador = 3
-
+	criando_inimigos()
 	$HUD.show_message("GET READY:")
 	
 	$Player._tiro(tipo_detiro)
 	$Player.start($StartPosition.position,life_jogador)
 	
-	
+	#criando_inimigos()
 	$StartTimer.start()
 	
 	$HUD.update_score(score)
 	$HUD.prepare_bar(base_health)
 	$HUD.qt_vida(life_jogador)
+	add_inimigos_cena()
 	
 func debug_inimigos(array):
 	print('tipo_inimigo ,  speed,  damage, resist, life,   hit ')
@@ -243,12 +253,11 @@ func debug_inimigos(array):
 	for k in n:
 		print(k.tipo_de_inimigo,'        ',k.speed,'     ',k. damage,'      ',k.resist ,'     ', k.life,'   ' ,k.hit, ' inimigo: ',k.id )
 		k.queue_free()
-	#$Arvore_inimigos.queue_free()
+	$Arvore_inimigos.queue_free()
 	
 func game_over():
 	yield(get_tree().create_timer(2), "timeout")
 	print('game_over : ', array_inimigos.size())
-	#debug_inimigos(array_inimigos_before)
 	debug_inimigos(array_inimigos)
 	
 	$Player.pode_atirar = false
@@ -256,20 +265,21 @@ func game_over():
 	$MobTimer.stop()
 	$HUD.show_game_over()
 	$HUD.stop_bar()
-	#get_tree().call_group("Grupo_Inimigos", "queue_free")
 	array_inimigos.clear()
+	$Arvore_inimigos.queue_free()
 
 func _on_ScoreTimer_timeout():
 	score += 1
 
 func _on_StartTimer_timeout():
-	spawninimigos()
+	#$MobTimer.start()
 	pass
 
 func game_win():
 	$ScoreTimer.stop()
 	$HUD.show_game_win()
-	#get_tree().call_group("Grupo_Inimigos", "queue_free")
+	$Arvore_inimigos.queue_free()
+
 	
 	
 ###########################################################################

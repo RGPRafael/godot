@@ -20,7 +20,7 @@ func _ready():
 	node_visibility.connect('screen_exited', self, '_on_VisibilityNotifier2D_screen_exited')
 
 
-func detecta_colisao(area): # tem que receber um arg
+func detecta_colisao(_area): # tem que receber um arg
 	print("HRERE")
 	pass
 
