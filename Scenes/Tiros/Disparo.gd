@@ -29,8 +29,8 @@ func _ready():
 	#connect("body_entered", Global.Player, "my_func", [body])
 	set_speed()
 	set_base_damage()
-	CenaPrincipal._on_Player_emite_tiro(self)
-	.connect("area_entered", self, "_on_Disparo_area_entered", [self])
+	#CenaPrincipal._on_Player_emite_tiro(self)
+	#.connect("area_entered", self, "_on_Disparo_area_entered", [self])
 	get_node("VisibilityNotifier2D").connect("screen_exited", self, "_on_Disparo_VisibilityNotifier2D_screen_exited")
 
 func _process(delta):
@@ -38,12 +38,12 @@ func _process(delta):
 	var mov = Vector2(1,0)
 	position += mov.rotated(rotation) * speed * delta
 	
-func _on_Disparo_area_entered(area, t ):
-
-	$CollisionShape2D.set_deferred("disabled", true)
-	print(area.name, ' tiro detectacolisao ', t)
-	emit_signal("hit_disparo", area , t)
-	#queue_free() # remove o tiro
+#func _on_Disparo_area_entered(area, t ):
+#
+#	$CollisionShape2D.set_deferred("disabled", true)
+#	#print(area.name, ' tiro detectacolisao ', t)
+#	emit_signal("hit_disparo", area , t)
+#	#queue_free() # remove o tiro
 	
 func _on_Disparo_VisibilityNotifier2D_screen_exited():
 	queue_free()

@@ -19,9 +19,8 @@ func _tiro(tipo_de_tiro):
 	elif tipo_de_tiro == 'Disparo':
 		bala = preload('res://Scenes/Tiros/Disparo.tscn')
 	
-	#print(CenaPrincipal.tipo_de_tiro_escolhido) #ta tando null
 	bala_tipo_tiro = tipo_de_tiro
-	#print('em player..:', bala_tipo_tiro)
+
 
 func _ready():
 	CenaPrincipal.jogador_existe  = true
@@ -81,7 +80,6 @@ func _process(delta):
 	position.y = clamp(position.y, 0, screen_size.y)
 	
 
-#func _on_Player_body_entered(_body):
 
 func start(pos, VIDAS):
 	position = pos
@@ -90,7 +88,6 @@ func start(pos, VIDAS):
 	$CollisionShape2D.disabled = false
 	pode_atirar =  true
 
-#func _on_Player_body_entered(_body):
 
 func _on_Player_area_entered(area):
 	if life == 0:

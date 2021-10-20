@@ -22,9 +22,9 @@ func _ready():
 		
 
 func iniciar_botao(tipo):
-	print('comecou o jogo')
+	#print('comecou o jogo')
 	tipo_de_tiro = tipo
-	print(tipo_de_tiro)
+	#print(tipo_de_tiro)
 	choose_weapon = true
 	pass
 

@@ -11,6 +11,7 @@ var speed
 var damage
 var resist
 var life 
+var hit   # acertou ou nao o jogador
 #var em_cena = false
 
 func get_class(): #override
@@ -20,32 +21,33 @@ func get_class_name(): #override
 	return 'INIMIGO'
 
 func desliga_colisao():
+	hide()  # Player disappears after being hit.
 	$CollisionShape2D.set_deferred("disabled", true)
 
-func _set_data(d):
-	print(d)
+func change_color():
+	$Sprite.modulate = Color('ff2400')
 
 func _ready():
 	life = true
-	#connect("area_entered",get_parent(),'test1')
-	#.connect("area_entered",self, 'detecta_colisao') #isso funciona
+	hit = null
+	
 	v = global_position.direction_to(CenaPrincipal.posicao_jogador)
 	var node_visibility = get_node('VisibilityNotifier2D')
 	node_visibility.connect('screen_exited', self, '_on_VisibilityNotifier2D_screen_exited')
+	.connect("area_entered",self,'_hit')
 
-
-func detecta_colisao(area):
-	print('detecta_colisao')
+func _hit(area):
 	if area.name == 'Player':
-		hide()  # Player disappears after being hit.
-		$CollisionShape2D.set_deferred("disabled", true)
-		print('                  ',  name)
-		print('                  ', area.name)
-		print('                  ', resist , ' ', damage, ' ', speed)
-		#CenaPrincipal.array_inimigos.append(self)
-	pass
-
-
+		desliga_colisao()
+		hit = true
+		#print('entrou na func turn_of_hit - player ')
+	
+	elif area.has_method('is_Disparo'):
+		resist = resist - area.base_damage
+		change_color()
+		area.queue_free()
+		#print('entrou na func turn_of_hit - disparo ', area.name)
+		
 func check_live():
 	if resist <= 0 :
 		hide()  # Player disappears after being hit.
@@ -61,9 +63,7 @@ func _process(delta):
 		move(delta)
 		check_live()
 	
-
-# fazer os inimigo se autodestruirem ao sair da tela
 func _on_VisibilityNotifier2D_screen_exited():
-	yield(get_tree().create_timer(0.2), "timeout")
-	CenaPrincipal.array_inimigos.append(self)
-	print('Inimigos : array_inimgos_size:', CenaPrincipal.array_inimigos.size())
+	#yield(get_tree().create_timer(0.1), "timeout")
+	if hit == null: hit =  false
+	pass

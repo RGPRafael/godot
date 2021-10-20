@@ -16,3 +16,5 @@ texture = ExtResource( 1 )
 shape = SubResource( 1 )
 
 [node name="VisibilityNotifier2D" type="VisibilityNotifier2D" parent="."]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
