@@ -5,15 +5,6 @@ extends Node
 #https://docs.godotengine.org/pt_BR/stable/classes/class_packedscene.html
 #https://docs.godotengine.org/pt_BR/stable/getting_started/step_by_step/your_first_game.html#enemy-scene
 
-export (PackedScene) var inimigos
-export (PackedScene) var inimigo1
-export (PackedScene) var inimigo2
-export (PackedScene) var inimigo3
-export (PackedScene) var inimigo4
-
-#signal colision(a,b)
-
-
 var score
 var Fases = 5
 
@@ -168,7 +159,11 @@ func criando_inimigos():
 			k += 1
 	#print('k inimgos criados:' , k)
 
-
+################################################################################
+# Ao implementar o pause a funcao add_inimigos_cena estava dando problema
+# os inimigos ainda eram instanciados e colocados em cena porem nao se moviam
+# 
+###############################################################################
 func add_inimigos_cena():
 	for mob in array_inimigos:
 		get_node("Arvore_inimigos").add_child(mob)
@@ -199,11 +194,7 @@ func _on_MobTimer_timeout():
 		game_over()
 	pass
 
-#
-#
-#func printar():
-#	$HUD.show_dead(dead_inimigos)
-#	#print(s)
+
 ###########################################################################
 #
 # Funções do Inimigo
@@ -253,10 +244,7 @@ func game_over():
 	$MobTimer.stop()
 	$HUD.show_game_over()
 	$HUD.stop_bar()
-	array_inimigos.clear()
-	var n =  get_node("Arvore_inimigos").get_children()
-	for k in n:
-		k.queue_free()
+	clear_memory()
 
 func _on_ScoreTimer_timeout():
 	score += 1
@@ -277,6 +265,8 @@ func game_win():
 	$MobTimer.stop()
 	#debug_inimigos(array_inimigos)
 	$HUD.show_game_win()
+
+func clear_memory():
 	array_inimigos.clear()
 	
 	var n =  get_node("Arvore_inimigos").get_children()

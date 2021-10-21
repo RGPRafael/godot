@@ -8,12 +8,10 @@ onready var hp_bar_tween = get_node("BarraDebaixo/HBoxContainer/BarradeVida/Twee
 
 signal bar_is_low
 
-
+var IaPlayer
 var choose_weapon # avisa se esta no modo construcao
 var tipo_de_tiro 
 
-func show_dead(dead_inimigos):
-	$BarraAlto/enemys_died.text = str(dead_inimigos)
 
 func _ready():
 
@@ -128,20 +126,30 @@ func update_score(score):
 	#$MessageLabel.show() 
 		
 
+func _Player_is_AI():
+	IaPlayer == true
+	pass
+
 
 func _on_Start_pressed():
 	#if CenaPrincipal.choose_weapon == false: # avisa se esta no modo construcao
-		
-	if choose_weapon == false:
-		
-		#print('C')
-		$MessageLabel.text = 'Choose your weapon first...'
 	
-	else:
-		$Start.hide()
-		emit_signal("start_game", tipo_de_tiro)
-
+	$MessageLabel.text = 'Choose a Player'
+	
+#	if IaPlayer:
+#		print('there')
+#	else:
+#		print('here')
+		
+	escolha_arma()
 
 func _on_MessageTimer_timeout():
 	$MessageLabel.hide()
 
+func escolha_arma():
+	if choose_weapon == false:
+		$MessageLabel.text = 'Choose a weapon'
+	
+	else:
+		$Start.hide()
+		emit_signal("start_game", tipo_de_tiro)

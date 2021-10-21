@@ -12,10 +12,8 @@ var damage
 var resist
 var life 
 var hit   # acertou ou nao o jogador
-#var em_cena = false
 
-
-#signal atualizar_score
+var floating_text = preload('res://Scenes/Pop up.tscn')
 
 func get_class(): #override
 	return 'INIMIGO'
@@ -27,8 +25,13 @@ func desliga_colisao():
 	hide()  # Player disappears after being hit.
 	$CollisionShape2D.set_deferred("disabled", true)
 
-func change_color():
-	$Sprite.modulate = Color('ff2400')
+func show_text(dano):
+	var text = floating_text.instance()
+	text.dano = dano
+	add_child(text)
+	
+	
+
 
 func _ready():
 	life = true
@@ -47,7 +50,7 @@ func _hit(area):
 	
 	elif area.has_method('is_Disparo'):
 		resist = resist - area.base_damage
-		change_color()
+		show_text(area.base_damage)
 		area.queue_free()
 		#print('entrou na func turn_of_hit - disparo ', area.name)
 		
