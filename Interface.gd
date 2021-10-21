@@ -12,6 +12,9 @@ signal bar_is_low
 var choose_weapon # avisa se esta no modo construcao
 var tipo_de_tiro 
 
+func show_dead(dead_inimigos):
+	$BarraAlto/enemys_died.text = str(dead_inimigos)
+
 func _ready():
 
 	#get_node("PlayPause").connect("pressed",get_parent(),'test_pause')

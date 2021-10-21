@@ -15,17 +15,18 @@ export (PackedScene) var inimigo4
 
 
 var score
+var Fases = 5
 
 ###########################################################################
 #
 # Variaveis relacionados ao Inimigo
 #
 ###########################################################################
-var num_inimigos = 10
-var inimigos_vivos = 0
+var num_inimigos = 10    # total de inimigos naquela fase 
+var inimigos_vivos = 0   # inimigos q vao sendo criados
 var dead_inimigos = 0
 var geracao = 0
-var array_inimigos = [] #vazio por q...
+var array_inimigos = [] 
 var inimigo_atual 
 
 var dados_inimigos = [['inimigos'] , ['inimigo1'] , ['inimigo2'], ['inimigo3'], ['inimigo4']]
@@ -198,7 +199,11 @@ func _on_MobTimer_timeout():
 		game_over()
 	pass
 
-
+#
+#
+#func printar():
+#	$HUD.show_dead(dead_inimigos)
+#	#print(s)
 ###########################################################################
 #
 # Funções do Inimigo

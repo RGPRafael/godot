@@ -14,6 +14,9 @@ var life
 var hit   # acertou ou nao o jogador
 #var em_cena = false
 
+
+#signal atualizar_score
+
 func get_class(): #override
 	return 'INIMIGO'
 	
@@ -30,7 +33,6 @@ func change_color():
 func _ready():
 	life = true
 	hit = null
-	
 	v = global_position.direction_to(CenaPrincipal.posicao_jogador)
 	var node_visibility = get_node('VisibilityNotifier2D')
 	node_visibility.connect('screen_exited', self, '_on_VisibilityNotifier2D_screen_exited')
@@ -39,6 +41,7 @@ func _ready():
 func _hit(area):
 	if area.name == 'Player':
 		desliga_colisao()
+		CenaPrincipal.dead_inimigos += 1
 		hit = true
 		#print('entrou na func turn_of_hit - player ')
 	
@@ -50,8 +53,10 @@ func _hit(area):
 		
 func check_live():
 	if resist <= 0 :
+		#CenaPrincipal.printar()
 		hide()  # Player disappears after being hit.
 		$CollisionShape2D.set_deferred("disabled", true)
+		#emit_signal('atualizar_score')
 		life = false
 
 
