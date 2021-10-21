@@ -21,16 +21,16 @@ var score
 # Variaveis relacionados ao Inimigo
 #
 ###########################################################################
-var num_inimigos = 50
+var num_inimigos = 10
 var inimigos_vivos = 0
 var dead_inimigos = 0
 var geracao = 0
 var array_inimigos = [] #vazio por q...
-
+var inimigo_atual 
 
 var dados_inimigos = [['inimigos'] , ['inimigo1'] , ['inimigo2'], ['inimigo3'], ['inimigo4']]
 
-var Mob_teste = preload('res://Scenes/Inimigos/inimigoteste.tscn')
+#var Mob_teste = preload('res://Scenes/Inimigos/inimigoteste.tscn')
 
 var inimigos_data = {
 	"inimigos": {
@@ -116,15 +116,6 @@ func player_damage(area):
 		$HUD.update_health_bar(base_health , area.damage)
 	
 
-#func _on_Player_emite_tiro(tiro):
-#	tiro.connect("hit_disparo", self, "_on_Disparo_hit_disparo")
-#
-#func _on_Disparo_hit_disparo(area,  s):
-#
-##	if area.get_class() == "INIMIGO" :
-##		area.resist = area.resist - s.base_damage
-##		s.queue_free()
-#	pass
 
 func Verifica_barradevida() :
 	can_damage = false
@@ -157,24 +148,11 @@ func Verifica_barradevida() :
 # Funções do Inimigo
 #
 ###########################################################################
-#func criando_inimigos():
-#	print('criando_inimigos')
-#	var k = 0
-#	for j in range(2):
-#		for i in dados_inimigos :
-#			var s = 'res://Scenes/Inimigos/' + i[0] + ".tscn"
-#			var mob = load(s).instance()
-#			mob.tipo_de_inimigo = i[0]
-#			mob.speed  = inimigos_data[i[0]]["speed"]
-#			mob.damage = inimigos_data[i[0]]["damage"]
-#			mob.resist = inimigos_data[i[0]]["resist"]
-#			mob.id = k
-#			mob.position = $InimigoPosition_start.position
-#			array_inimigos.append(mob) # 
-#			k += 1	
-	
+
+
+
 func criando_inimigos():
-	print('criando_inimigos')
+	#print('criando_inimigos')
 	var k = 0
 	for _j in range(2):
 		for i in dados_inimigos :
@@ -187,6 +165,7 @@ func criando_inimigos():
 			mob.id = k
 			array_inimigos.append(mob) # 
 			k += 1
+	#print('k inimgos criados:' , k)
 
 
 func add_inimigos_cena():
@@ -194,13 +173,29 @@ func add_inimigos_cena():
 		get_node("Arvore_inimigos").add_child(mob)
 		mob.position = $InimigoPosition_start.position
 		inimigos_vivos += 1
-		yield(get_tree().create_timer(0.2), "timeout")#padding
+		yield(get_tree().create_timer(0.8), "timeout")#padding
 		$HUD.qt_inimigos(str(inimigos_vivos))
 
 func _on_MobTimer_timeout():
-#	#get_node("Arvore_inimigos").add_child(mob)
-#	inimigos_vivos += 1
-#	$HUD.qt_inimigos(str(inimigos_vivos))
+	#print('entroue em mob timer..')
+	#print('array_size_inimgo: ',array_inimigos.size())
+	if inimigo_atual < num_inimigos:
+		var mob = array_inimigos[inimigo_atual]
+		mob.position = $InimigoPosition_start.position
+		get_node("Arvore_inimigos").add_child(mob)
+		inimigos_vivos += 1
+		yield(get_tree().create_timer(0.2), "timeout")#padding
+		$HUD.qt_inimigos(str(inimigos_vivos))
+		inimigo_atual += 1
+		$StartTimer.start()
+	
+	elif  inimigo_atual == num_inimigos and $Player.life > 0:
+		$StartTimer.stop()
+		game_win()
+	
+	else:
+		$StartTimer.stop()
+		game_over()
 	pass
 
 
@@ -220,27 +215,86 @@ func _on_MobTimer_timeout():
 ###########################################################################
 
 func new_game(tipo_detiro):
+	print('entrou em new game')
 	score = 0
 	geracao = 0
 	dead_inimigos = 0
 	base_health = 100
 	inimigos_vivos = 0
 	life_jogador = 3
+	inimigo_atual = 0
 	criando_inimigos()
 	$HUD.show_message("GET READY:")
 	
 	$Player._tiro(tipo_detiro)
 	$Player.start($StartPosition.position,life_jogador)
 	
-	#criando_inimigos()
 	$StartTimer.start()
 	
 	$HUD.update_score(score)
 	$HUD.prepare_bar(base_health)
 	$HUD.qt_vida(life_jogador)
-	add_inimigos_cena()
+	#add_inimigos_cena()
 	
+	
+func game_over():
+	#print('entrou em game over')
+	yield(get_tree().create_timer(2), "timeout")
+	#print('game_over : ', array_inimigos.size())
+	#debug_inimigos(array_inimigos)
+	
+	$Player.pode_atirar = false
+	$ScoreTimer.stop()
+	$MobTimer.stop()
+	$HUD.show_game_over()
+	$HUD.stop_bar()
+	array_inimigos.clear()
+	var n =  get_node("Arvore_inimigos").get_children()
+	for k in n:
+		k.queue_free()
+
+func _on_ScoreTimer_timeout():
+	score += 1
+	$HUD.update_score(score)
+
+func _on_StartTimer_timeout():
+	#print('entroue em start timer..')
+	$MobTimer.start()
+	$ScoreTimer.start()
+	#add_inimigos_cena()
+	pass
+
+
+func game_win():
+	#print('entrou em game win')
+	$Player.pode_atirar = false
+	$ScoreTimer.stop()
+	$MobTimer.stop()
+	#debug_inimigos(array_inimigos)
+	$HUD.show_game_win()
+	array_inimigos.clear()
+	
+	var n =  get_node("Arvore_inimigos").get_children()
+	for k in n:
+		k.queue_free()
+
+	
+	
+###########################################################################
+#
+# Funções de controle do jogo
+#
+###########################################################################
+
+
+###########################################################################
+#
+#
+# Funçoes de ajuda para debug
+#
+###########################################################################
 func debug_inimigos(array):
+	print('entrou em deboug_inimigos')
 	print('tipo_inimigo ,  speed,  damage, resist, life,   hit ')
 	var i = 0
 	for j in array:
@@ -253,37 +307,19 @@ func debug_inimigos(array):
 	for k in n:
 		print(k.tipo_de_inimigo,'        ',k.speed,'     ',k. damage,'      ',k.resist ,'     ', k.life,'   ' ,k.hit, ' inimigo: ',k.id )
 		k.queue_free()
-	$Arvore_inimigos.queue_free()
-	
-func game_over():
-	yield(get_tree().create_timer(2), "timeout")
-	print('game_over : ', array_inimigos.size())
-	debug_inimigos(array_inimigos)
-	
-	$Player.pode_atirar = false
-	$ScoreTimer.stop()
-	$MobTimer.stop()
-	$HUD.show_game_over()
-	$HUD.stop_bar()
-	array_inimigos.clear()
-	$Arvore_inimigos.queue_free()
+		
+		
 
-func _on_ScoreTimer_timeout():
-	score += 1
 
-func _on_StartTimer_timeout():
-	#$MobTimer.start()
-	pass
 
-func game_win():
-	$ScoreTimer.stop()
-	$HUD.show_game_win()
-	$Arvore_inimigos.queue_free()
 
-	
-	
+
+
+
+
 ###########################################################################
 #
-# Funções de controle do jogo
+#
+# Funçoes de ajuda para debug
 #
 ###########################################################################

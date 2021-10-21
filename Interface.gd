@@ -94,6 +94,7 @@ func show_message(text):
 	$MessageTimer.start()
 	
 func show_game_over():
+	choose_weapon = false
 	show_message("Game Over")
 	# Wait until the MessageTimer has counted down.
 	
@@ -107,6 +108,7 @@ func show_game_over():
 	
 	
 func show_game_win():
+	choose_weapon = false
 	show_message("You Win")
 	# Wait until the MessageTimer has counted down.
 	
