@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/you_win.ogg-0e5644b39708d43de80b5d690a083190.oggstr"
+
+[deps]
+
+source_file="res://Assets/songs/you_win.ogg"
+dest_files=[ "res://.import/you_win.ogg-0e5644b39708d43de80b5d690a083190.oggstr" ]
+
+[params]
+
+loop=false
+loop_offset=0

@@ -7,6 +7,7 @@ onready var hp_bar       = get_node("BarraDebaixo/HBoxContainer/BarradeVida")
 onready var hp_bar_tween = get_node("BarraDebaixo/HBoxContainer/BarradeVida/Tween")
 
 signal bar_is_low
+signal desliga_tudo
 
 var IaPlayer
 var choose_weapon # avisa se esta no modo construcao
@@ -18,6 +19,8 @@ func _ready():
 	#get_node("PlayPause").connect("pressed",get_parent(),'test_pause')
 	connect("bar_is_low",get_parent(),"Verifica_barradevida")
 	choose_weapon = false
+	connect("desliga_tudo", get_parent(), 'desliga_som')
+	
 	for i in get_tree().get_nodes_in_group('Botoes_tiro'):
 		var t = i.get_name()
 		i.connect('pressed',self,'iniciar_botao', [t])
@@ -30,6 +33,12 @@ func iniciar_botao(tipo):
 
 func _process(_delta):
 	pass
+
+func _on_Som_pressed():
+	emit_signal("desliga_tudo")
+	pass # Replace with function body.
+
+
 
 #setar botao como process para que ele nao pause a arvore toda
 func play_pause():
@@ -56,6 +65,10 @@ func prepare_bar(base_health):
 func qt_vida( life ):
 	var s =  str(life)
 	$BarraDebaixo/HBoxContainer/Quantidade.text = s
+	
+func show_dead_inimigos(d):
+	var s =  str(d)
+	$BarraAlto/enemys_died.text = s
 
 	
 func stop_bar():
@@ -128,19 +141,14 @@ func update_score(score):
 
 func _Player_is_AI():
 	IaPlayer == true
-	pass
+	return true
 
 
 func _on_Start_pressed():
 	#if CenaPrincipal.choose_weapon == false: # avisa se esta no modo construcao
 	
 	$MessageLabel.text = 'Choose a Player'
-	
-#	if IaPlayer:
-#		print('there')
-#	else:
-#		print('here')
-		
+	#if _Player_is_AI() == false:
 	escolha_arma()
 
 func _on_MessageTimer_timeout():
@@ -153,3 +161,17 @@ func escolha_arma():
 	else:
 		$Start.hide()
 		emit_signal("start_game", tipo_de_tiro)
+
+
+
+func _on_speed_pressed():
+	if Engine.get_time_scale() == 2.0:
+		Engine.set_time_scale(1.0)
+	else:
+		Engine.set_time_scale(2.0)
+	pass # Replace with function body.
+
+
+func _on_QUIT_pressed():
+	print('quit')
+	get_tree().change_scene("res://RAiZ.tscn")

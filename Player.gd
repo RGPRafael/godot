@@ -1,5 +1,5 @@
 extends Area2D
-export var speed = 400  # How fast the player will move (pixels/sec).
+export var speed = 700  # How fast the player will move (pixels/sec).
 var life  
 var screen_size  # Size of the game window.
 var bala
@@ -41,10 +41,12 @@ func _process(delta):
 		bala_objeto.position = $SaidaDeTiro.get_global_position()
 		bala_objeto.rotation_degrees = rotation_degrees
 		get_parent().add_child(bala_objeto)
-
+		#$AudioStreamPlayer2D.play()
+		bala_objeto.sound()
 		pode_atirar = false
 
 		yield(get_tree().create_timer(fire_rate),'timeout')
+		
 		pode_atirar = true
 
 		
@@ -60,6 +62,7 @@ func _process(delta):
 	if velocity.length() > 0:
 		velocity = velocity.normalized() * speed
 		$AnimatedSprite.play()
+		#$AudioStreamPlayer2D.play()
 	
 	if velocity.x != 0:
 		$AnimatedSprite.animation = "CAMINHAR"

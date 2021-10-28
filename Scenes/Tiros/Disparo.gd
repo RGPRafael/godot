@@ -33,10 +33,15 @@ func _ready():
 	#.connect("area_entered", self, "_on_Disparo_area_entered", [self])
 	get_node("VisibilityNotifier2D").connect("screen_exited", self, "_on_Disparo_VisibilityNotifier2D_screen_exited")
 
+
+func sound():
+	$AudioStreamPlayer2D.play()
+	
 func _process(delta):
 	
 	var mov = Vector2(1,0)
 	position += mov.rotated(rotation) * speed * delta
+	#$AudioStreamPlayer2D.play()
 	
 #func _on_Disparo_area_entered(area, t ):
 #

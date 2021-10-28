@@ -44,5 +44,11 @@ animation = "CAMINHAR"
 [node name="SaidaDeTiro" type="Node2D" parent="."]
 position = Vector2( 90, 0 )
 
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+
+[node name="Light2D" type="Light2D" parent="."]
+texture_scale = 10.0
+shadow_enabled = true
+
 [connection signal="area_entered" from="." to="." method="_on_Player_area_entered"]
 [connection signal="body_entered" from="." to="." method="_on_Player_body_entered"]

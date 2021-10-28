@@ -29,3 +29,9 @@ animation = "walk"
 [node name="VisibilityNotifier2D" type="VisibilityNotifier2D" parent="."]
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+
+[node name="Light2D" type="Light2D" parent="."]
+position = Vector2( 34.8502, 56.2061 )
+scale = Vector2( 1.0164, 4.78823 )
+texture_scale = 1.46
+shadow_enabled = true

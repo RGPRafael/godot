@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/game_over.ogg-58c7039aae8006fc4c87937d6afe3f50.oggstr"
+
+[deps]
+
+source_file="res://Assets/songs/game_over.ogg"
+dest_files=[ "res://.import/game_over.ogg-58c7039aae8006fc4c87937d6afe3f50.oggstr" ]
+
+[params]
+
+loop=false
+loop_offset=0

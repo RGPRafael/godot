@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=2]
+[gd_scene load_steps=23 format=2]
 
 [ext_resource path="res://Assets/fonts/Xolonium-Regular.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://Interface.gd" type="Script" id=2]
@@ -16,6 +16,8 @@
 [ext_resource path="res://Assets/UI/exitRight.png" type="Texture" id=14]
 [ext_resource path="res://Assets/UI/audioOff.png" type="Texture" id=15]
 [ext_resource path="res://Assets/UI/audioOn.png" type="Texture" id=16]
+[ext_resource path="res://Assets/UI/fastForward.png" type="Texture" id=17]
+[ext_resource path="res://Assets/UI/stop.png" type="Texture" id=18]
 
 [sub_resource type="DynamicFont" id=1]
 size = 64
@@ -133,13 +135,24 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="TextureButton" type="TextureButton" parent="BarraAlto"]
+[node name="Som" type="TextureButton" parent="BarraAlto"]
 margin_left = 1174.25
 margin_top = -5.03968
 margin_right = 1274.25
 margin_bottom = 94.9603
-texture_normal = ExtResource( 15 )
-texture_pressed = ExtResource( 16 )
+texture_normal = ExtResource( 16 )
+texture_pressed = ExtResource( 15 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="speed" type="TextureButton" parent="BarraAlto"]
+margin_left = 888.0
+margin_top = -4.0
+margin_right = 988.0
+margin_bottom = 96.0
+texture_normal = ExtResource( 17 )
+texture_pressed = ExtResource( 18 )
 
 [node name="TimeLabel" type="TextureRect" parent="."]
 margin_left = 357.859
@@ -337,6 +350,9 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[connection signal="pressed" from="BarraAlto/QUIT" to="." method="_on_QUIT_pressed"]
+[connection signal="pressed" from="BarraAlto/Som" to="." method="_on_Som_pressed"]
+[connection signal="pressed" from="BarraAlto/speed" to="." method="_on_speed_pressed"]
 [connection signal="timeout" from="MessageTimer" to="." method="_on_MessageTimer_timeout"]
 [connection signal="pressed" from="Start" to="." method="_on_Start_pressed"]
 [connection signal="pressed" from="PlayPause" to="." method="play_pause"]

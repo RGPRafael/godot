@@ -15,6 +15,9 @@ var hit   # acertou ou nao o jogador
 
 var floating_text = preload('res://Scenes/Pop up.tscn')
 
+signal killed
+var dead_inimigos 
+
 func get_class(): #override
 	return 'INIMIGO'
 	
@@ -38,13 +41,14 @@ func _ready():
 	hit = null
 	v = global_position.direction_to(CenaPrincipal.posicao_jogador)
 	var node_visibility = get_node('VisibilityNotifier2D')
+	#print(get_parent().get_parent(), get_parent().get_parent().name)
+	.connect('killed',get_parent().get_parent(),'show_death',[],4) #isso é mt safadeza
 	node_visibility.connect('screen_exited', self, '_on_VisibilityNotifier2D_screen_exited')
 	.connect("area_entered",self,'_hit')
 
 func _hit(area):
 	if area.name == 'Player':
 		desliga_colisao()
-		CenaPrincipal.dead_inimigos += 1
 		hit = true
 		#print('entrou na func turn_of_hit - player ')
 	
@@ -54,13 +58,13 @@ func _hit(area):
 		area.queue_free()
 		#print('entrou na func turn_of_hit - disparo ', area.name)
 		
-func check_live():
+func check_life():
 	if resist <= 0 :
-		#CenaPrincipal.printar()
 		hide()  # Player disappears after being hit.
 		$CollisionShape2D.set_deferred("disabled", true)
 		#emit_signal('atualizar_score')
 		life = false
+		emit_signal("killed")
 
 
 func move(delta):
@@ -69,7 +73,7 @@ func move(delta):
 func _process(delta):
 	if CenaPrincipal.jogador_existe != false :
 		move(delta)
-		check_live()
+		check_life()
 	
 func _on_VisibilityNotifier2D_screen_exited():
 	#yield(get_tree().create_timer(0.1), "timeout")
