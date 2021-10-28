@@ -15,6 +15,8 @@ var tipo_de_tiro
 
 
 func _ready():
+	get_node("BarraAlto/PlayPause").connect('mouse_entered', get_parent(), 'desliga_tiro')
+	get_node("BarraAlto/PlayPause").connect('mouse_exited', get_parent(), 'liga_tiro')
 
 	#get_node("PlayPause").connect("pressed",get_parent(),'test_pause')
 	connect("bar_is_low",get_parent(),"Verifica_barradevida")
@@ -44,10 +46,13 @@ func _on_Som_pressed():
 func play_pause():
 	#print('entrou em play pause')
 	#GameData.jogo_comecou = true
+	#if mouse
 	if get_tree().is_paused():
 		get_tree().paused = false
 	else :
 		get_tree().paused = true
+		
+	
 	pass # Replace with function body.
 
 
@@ -175,3 +180,4 @@ func _on_speed_pressed():
 func _on_QUIT_pressed():
 	print('quit')
 	get_tree().change_scene("res://RAiZ.tscn")
+

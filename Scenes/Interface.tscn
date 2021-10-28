@@ -154,6 +154,20 @@ margin_bottom = 96.0
 texture_normal = ExtResource( 17 )
 texture_pressed = ExtResource( 18 )
 
+[node name="PlayPause" type="TextureButton" parent="BarraAlto"]
+pause_mode = 2
+margin_left = 1096.95
+margin_top = 16.3393
+margin_right = 1161.95
+margin_bottom = 80.3393
+texture_normal = ExtResource( 10 )
+texture_pressed = ExtResource( 11 )
+expand = true
+script = ExtResource( 12 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="TimeLabel" type="TextureRect" parent="."]
 margin_left = 357.859
 margin_top = 17.2996
@@ -336,23 +350,9 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="PlayPause" type="TextureButton" parent="."]
-pause_mode = 2
-margin_left = 1096.95
-margin_top = 16.3393
-margin_right = 1161.95
-margin_bottom = 80.3393
-texture_normal = ExtResource( 10 )
-texture_pressed = ExtResource( 11 )
-expand = true
-script = ExtResource( 12 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
 [connection signal="pressed" from="BarraAlto/QUIT" to="." method="_on_QUIT_pressed"]
 [connection signal="pressed" from="BarraAlto/Som" to="." method="_on_Som_pressed"]
 [connection signal="pressed" from="BarraAlto/speed" to="." method="_on_speed_pressed"]
+[connection signal="pressed" from="BarraAlto/PlayPause" to="." method="play_pause"]
 [connection signal="timeout" from="MessageTimer" to="." method="_on_MessageTimer_timeout"]
 [connection signal="pressed" from="Start" to="." method="_on_Start_pressed"]
-[connection signal="pressed" from="PlayPause" to="." method="play_pause"]

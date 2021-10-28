@@ -223,6 +223,16 @@ func show_death():
 # Funções de controle do jogo
 #
 ###########################################################################
+
+func desliga_tiro():
+	print('desliga+tiro')
+	$Player.pode_atirar = false
+	
+func liga_tiro():
+	$Player.pode_atirar = true
+	print('liga+tiro')
+	
+
 func set_variaveis_globais():
 	score = 0
 	geracao = 0
