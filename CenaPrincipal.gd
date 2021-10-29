@@ -225,12 +225,11 @@ func show_death():
 ###########################################################################
 
 func desliga_tiro():
-	print('desliga+tiro')
 	$Player.pode_atirar = false
 	
 func liga_tiro():
 	$Player.pode_atirar = true
-	print('liga+tiro')
+
 	
 
 func set_variaveis_globais():

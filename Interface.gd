@@ -9,15 +9,17 @@ onready var hp_bar_tween = get_node("BarraDebaixo/HBoxContainer/BarradeVida/Twee
 signal bar_is_low
 signal desliga_tudo
 
-var IaPlayer
 var choose_weapon # avisa se esta no modo construcao
 var tipo_de_tiro 
 
 
 func _ready():
 	get_node("BarraAlto/PlayPause").connect('mouse_entered', get_parent(), 'desliga_tiro')
-	get_node("BarraAlto/PlayPause").connect('mouse_exited', get_parent(), 'liga_tiro')
-
+	get_node("BarraAlto/PlayPause").connect('mouse_exited' , get_parent(), 'liga_tiro'   )
+	
+	get_node("BarraAlto/speed").connect('mouse_entered', get_parent(), 'desliga_tiro')
+	get_node("BarraAlto/speed").connect('mouse_exited' , get_parent() , 'liga_tiro'  )
+	
 	#get_node("PlayPause").connect("pressed",get_parent(),'test_pause')
 	connect("bar_is_low",get_parent(),"Verifica_barradevida")
 	choose_weapon = false
@@ -145,7 +147,6 @@ func update_score(score):
 		
 
 func _Player_is_AI():
-	IaPlayer == true
 	return true
 
 
@@ -172,6 +173,7 @@ func escolha_arma():
 func _on_speed_pressed():
 	if Engine.get_time_scale() == 2.0:
 		Engine.set_time_scale(1.0)
+		#Engine.timescale = 2
 	else:
 		Engine.set_time_scale(2.0)
 	pass # Replace with function body.

@@ -12,7 +12,7 @@
 script = ExtResource( 1 )
 
 [node name="Player" parent="." instance=ExtResource( 2 )]
-position = Vector2( 1132.01, 456 )
+position = Vector2( 897.665, 540.415 )
 
 [node name="MobTimer" type="Timer" parent="."]
 wait_time = 2.0
@@ -24,7 +24,7 @@ wait_time = 2.0
 one_shot = true
 
 [node name="StartPosition" type="Position2D" parent="."]
-position = Vector2( 1145.5, 460.495 )
+position = Vector2( 907.375, 537.35 )
 
 [node name="InimigoPosition_start" type="Position2D" parent="."]
 position = Vector2( 155.668, 76.6846 )

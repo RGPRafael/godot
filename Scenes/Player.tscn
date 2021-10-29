@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://Assets/playershooter/playerShip1_blue.png" type="Texture" id=1]
 [ext_resource path="res://Player.gd" type="Script" id=2]
@@ -23,11 +23,9 @@ animations = [ {
 "speed": 5.0
 } ]
 
-[sub_resource type="CircleShape2D" id=3]
-radius = 24.9515
-
 [node name="Player" type="Area2D"]
-position = Vector2( 606.603, 429.87 )
+position = Vector2( 835.114, 545.303 )
+rotation = -1.57079
 script = ExtResource( 2 )
 __meta__ = {
 "_edit_group_": true
@@ -53,16 +51,60 @@ position = Vector2( 90, 0 )
 texture_scale = 10.0
 shadow_enabled = true
 
-[node name="CollisionShape2D2" type="CollisionShape2D" parent="."]
-scale = Vector2( 10, 10 )
-shape = SubResource( 3 )
+[node name="Area_IA" type="Area2D" parent="."]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Area_IA"]
+position = Vector2( 128.656, 12.9565 )
+scale = Vector2( 19.1346, 35.0181 )
+polygon = PoolVector2Array( -4.17016, -1.58537, 12.5855, -11.6234, 12.5855, -0.176546, 12.402, 10.3164, -4.11418, 1.45732 )
 disabled = true
 
 [node name="RayCast2D" type="RayCast2D" parent="."]
+visible = false
 rotation = -1.51572
-cast_to = Vector2( 30, 500 )
+enabled = true
+cast_to = Vector2( 30, 555 )
 collide_with_areas = true
 collide_with_bodies = false
 
+[node name="RayCast2D2" type="RayCast2D" parent="."]
+visible = false
+rotation = -1.83259
+enabled = true
+cast_to = Vector2( 5, 300 )
+collide_with_areas = true
+collide_with_bodies = false
+
+[node name="RayCast2D3" type="RayCast2D" parent="."]
+visible = false
+rotation = -1.0472
+enabled = true
+cast_to = Vector2( 30, 555 )
+collide_with_areas = true
+collide_with_bodies = false
+
+[node name="Left" type="VisibilityEnabler2D" parent="."]
+position = Vector2( -10.5728, -382.139 )
+rect = Rect2( -10, 50, 50, 150 )
+pause_animations = false
+freeze_bodies = false
+pause_particles = false
+pause_animated_sprites = false
+
+[node name="Rigth" type="VisibilityEnabler2D" parent="."]
+position = Vector2( -15.6, 130.587 )
+rect = Rect2( -10, -10, 50, 200 )
+pause_animations = false
+freeze_bodies = false
+pause_particles = false
+pause_animated_sprites = false
+
+[node name="Rigth2" type="VisibilityNotifier2D" parent="."]
+visible = false
+position = Vector2( -17.6247, -534.44 )
+rect = Rect2( -10, -600, 50, 1100 )
+
 [connection signal="area_entered" from="." to="." method="_on_Player_area_entered"]
-[connection signal="body_entered" from="." to="." method="_on_Player_body_entered"]
+[connection signal="area_entered" from="Area_IA" to="." method="is_colliding_IA"]
+[connection signal="screen_exited" from="Left" to="." method="_on_Left_screen_exited"]
+[connection signal="screen_exited" from="Rigth" to="." method="_on_Rigth_screen_exited"]
