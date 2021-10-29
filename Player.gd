@@ -121,10 +121,9 @@ func Player_IA(delta):
 	var velocity = Vector2()  # The player's movement vector.
 	$Area_IA/CollisionPolygon2D.disabled = false
 	
-	#velocity.x += 1
 	velocity.x += direction_IA
-	#print(velocity.x)
-	
+
+	look_at($look_position.position)
 	if velocity.length() > 0:
 		velocity = velocity.normalized() * speed 
 		$AnimatedSprite.play()

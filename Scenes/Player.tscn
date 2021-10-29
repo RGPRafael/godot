@@ -24,7 +24,7 @@ animations = [ {
 } ]
 
 [node name="Player" type="Area2D"]
-position = Vector2( 835.114, 545.303 )
+position = Vector2( 470.742, 589.416 )
 rotation = -1.57079
 script = ExtResource( 2 )
 __meta__ = {
@@ -54,55 +54,31 @@ shadow_enabled = true
 [node name="Area_IA" type="Area2D" parent="."]
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Area_IA"]
-position = Vector2( 128.656, 12.9565 )
-scale = Vector2( 19.1346, 35.0181 )
+position = Vector2( 196.506, 10.7292 )
+scale = Vector2( 23.3877, 35.0181 )
 polygon = PoolVector2Array( -4.17016, -1.58537, 12.5855, -11.6234, 12.5855, -0.176546, 12.402, 10.3164, -4.11418, 1.45732 )
 disabled = true
 
-[node name="RayCast2D" type="RayCast2D" parent="."]
-visible = false
-rotation = -1.51572
-enabled = true
-cast_to = Vector2( 30, 555 )
-collide_with_areas = true
-collide_with_bodies = false
-
-[node name="RayCast2D2" type="RayCast2D" parent="."]
-visible = false
-rotation = -1.83259
-enabled = true
-cast_to = Vector2( 5, 300 )
-collide_with_areas = true
-collide_with_bodies = false
-
-[node name="RayCast2D3" type="RayCast2D" parent="."]
-visible = false
-rotation = -1.0472
-enabled = true
-cast_to = Vector2( 30, 555 )
-collide_with_areas = true
-collide_with_bodies = false
-
 [node name="Left" type="VisibilityEnabler2D" parent="."]
-position = Vector2( -10.5728, -382.139 )
-rect = Rect2( -10, 50, 50, 150 )
+position = Vector2( -4.70746, -257.726 )
+scale = Vector2( 0.593585, 1 )
+rect = Rect2( -10, 50, 50, 10 )
 pause_animations = false
 freeze_bodies = false
 pause_particles = false
 pause_animated_sprites = false
 
 [node name="Rigth" type="VisibilityEnabler2D" parent="."]
-position = Vector2( -15.6, 130.587 )
-rect = Rect2( -10, -10, 50, 200 )
+position = Vector2( -6.83551, 209.433 )
+scale = Vector2( 0.606178, 1 )
+rect = Rect2( -10, -10, 50, 10 )
 pause_animations = false
 freeze_bodies = false
 pause_particles = false
 pause_animated_sprites = false
 
-[node name="Rigth2" type="VisibilityNotifier2D" parent="."]
-visible = false
-position = Vector2( -17.6247, -534.44 )
-rect = Rect2( -10, -600, 50, 1100 )
+[node name="look_position" type="Node2D" parent="."]
+position = Vector2( 557.702, 4.47264 )
 
 [connection signal="area_entered" from="." to="." method="_on_Player_area_entered"]
 [connection signal="area_entered" from="Area_IA" to="." method="is_colliding_IA"]
