@@ -34,7 +34,7 @@ func _ready():
 	CenaPrincipal.jogador_existe  = true
 	CenaPrincipal.tipo_de_tiro_escolhido = bala_tipo_tiro
 	screen_size = get_viewport_rect().size
-	print('screen:', screen_size)
+	#print('screen:', screen_size)
 	hide()
 
 func _process(delta):
@@ -103,24 +103,22 @@ func move_and_shoot(delta):
 #	Player IA
 #
 ###############################################################################
-func move_and_slide_IA(side):
-	pass
-	
+
 func _on_Left_screen_exited():
+	yield(get_tree().create_timer(3), "timeout")
 	direction_IA = direction_IA * -1
 	#print('enterleft' )
-	pass # Replace with function body.
 
 func _on_Rigth_screen_exited():
-	#print('enter rigth')
+	yield(get_tree().create_timer(3), "timeout")
 	direction_IA = direction_IA * -1 
-
+	#print('enter rigth')
 	
 func Player_IA(delta):
 	CenaPrincipal.posicao_jogador = global_position
 	var velocity = Vector2()  # The player's movement vector.
 	$Area_IA/CollisionPolygon2D.disabled = false
-	
+	#$Area_IA/CollisionShape2D.disabled = false
 	velocity.x += direction_IA
 
 	look_at($look_position.position)
@@ -162,7 +160,7 @@ func is_colliding_IA(area):
 		bala_objeto.sound()
 		pode_atirar = false
 
-		yield(get_tree().create_timer(fire_rate),'timeout')
+		yield(get_tree().create_timer(0.3),'timeout')
 		
 		pode_atirar = true
 
