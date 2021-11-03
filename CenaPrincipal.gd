@@ -74,6 +74,7 @@ var life_jogador
 var base_health  = 100
 var jogador_existe = false
 var tipo_de_tiro_escolhido
+var Player_IA
 
 #var choose_weapon = false # avisa se esta no modo construcao
 #var tipo_de_tiro 
@@ -106,11 +107,12 @@ func _ready():
 ###########################################################################
 
 func player_damage(area):
-	area.hit = true # nao atualiza o hit do inimigo
 	if 	can_damage:
-		
+		area.hit = true # nao atualiza o hit do inimigo
 		base_health = base_health - area.damage
 		$HUD.update_health_bar(base_health , area.damage)
+		
+
 	
 
 
@@ -252,7 +254,7 @@ func new_game(tipo_detiro):
 	$Musicas/Ready.play()
 	
 	$Player._tiro(tipo_detiro)
-	$Player.start($StartPosition.position,life_jogador)
+	$Player.start(life_jogador)
 	
 	$StartTimer.start()
 	
@@ -265,7 +267,7 @@ func new_game(tipo_detiro):
 func game_over():
 	#print('entrou em game over')
 	#print('game_over : ', array_inimigos.size())
-	#debug_inimigos(array_inimigos)
+	debug_inimigos(array_inimigos)
 	
 	$Player.pode_atirar = false
 	$Musicas/Game_over_back.play()
@@ -296,7 +298,7 @@ func game_win():
 	$Player.pode_atirar = false
 	$ScoreTimer.stop()
 	$MobTimer.stop()
-	#debug_inimigos(array_inimigos)
+	debug_inimigos(array_inimigos)
 	$HUD.show_game_win()
 	$Musicas/win.play()
 	clear_memory()

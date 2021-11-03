@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=2]
+[gd_scene load_steps=24 format=2]
 
 [ext_resource path="res://Assets/fonts/Xolonium-Regular.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://Interface.gd" type="Script" id=2]
@@ -33,6 +33,10 @@ font_data = ExtResource( 1 )
 
 [sub_resource type="DynamicFont" id=4]
 size = 26
+font_data = ExtResource( 1 )
+
+[sub_resource type="DynamicFont" id=5]
+size = 30
 font_data = ExtResource( 1 )
 
 [node name="HUD" type="CanvasLayer"]
@@ -300,9 +304,9 @@ valign = 1
 [node name="Disparo1" type="TextureButton" parent="." groups=[
 "Botoes_tiro",
 ]]
-margin_left = 945.672
+margin_left = 909.753
 margin_top = 636.189
-margin_right = 1026.67
+margin_right = 990.751
 margin_bottom = 715.189
 texture_normal = ExtResource( 4 )
 texture_pressed = ExtResource( 7 )
@@ -326,9 +330,9 @@ __meta__ = {
 [node name="Disparo" type="TextureButton" parent="." groups=[
 "Botoes_tiro",
 ]]
-margin_left = 1062.37
+margin_left = 1026.45
 margin_top = 636.189
-margin_right = 1142.37
+margin_right = 1106.45
 margin_bottom = 714.189
 texture_normal = ExtResource( 9 )
 texture_pressed = ExtResource( 5 )
@@ -350,9 +354,44 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="IA" type="Label" parent="."]
+margin_left = 1131.17
+margin_top = 657.123
+margin_right = 1182.17
+margin_bottom = 694.123
+custom_fonts/font = SubResource( 5 )
+text = "IA: "
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="IA_NO" type="CheckBox" parent="IA"]
+margin_left = 51.6093
+margin_top = -7.89789
+margin_right = 112.609
+margin_bottom = 16.1021
+text = "NO "
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="IA_YES" type="CheckBox" parent="IA"]
+margin_left = 51.6093
+margin_top = 21.3192
+margin_right = 112.609
+margin_bottom = 45.3192
+text = "YES"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [connection signal="pressed" from="BarraAlto/QUIT" to="." method="_on_QUIT_pressed"]
 [connection signal="pressed" from="BarraAlto/Som" to="." method="_on_Som_pressed"]
 [connection signal="pressed" from="BarraAlto/speed" to="." method="_on_speed_pressed"]
 [connection signal="pressed" from="BarraAlto/PlayPause" to="." method="play_pause"]
 [connection signal="timeout" from="MessageTimer" to="." method="_on_MessageTimer_timeout"]
 [connection signal="pressed" from="Start" to="." method="_on_Start_pressed"]
+[connection signal="pressed" from="IA/IA_NO" to="." method="_Player_is_NOT_AI"]
+[connection signal="pressed" from="IA/IA_YES" to="." method="_Player_is_AI"]

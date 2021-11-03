@@ -11,6 +11,7 @@ signal desliga_tudo
 
 var choose_weapon # avisa se esta no modo construcao
 var tipo_de_tiro 
+var Player_IA
 
 
 func _ready():
@@ -20,14 +21,25 @@ func _ready():
 	get_node("BarraAlto/speed").connect('mouse_entered', get_parent(), 'desliga_tiro')
 	get_node("BarraAlto/speed").connect('mouse_exited' , get_parent() , 'liga_tiro'  )
 	
+	get_node("BarraAlto/QUIT").connect('mouse_entered', get_parent(), 'desliga_tiro')
+	get_node("BarraAlto/QUIT").connect('mouse_exited' , get_parent() , 'liga_tiro'  )
+	
+	get_node("Start").connect('mouse_entered', get_parent(), 'desliga_tiro')
+	get_node("Start").connect('mouse_exited' , get_parent(), 'liga_tiro'   )
+	
 	#get_node("PlayPause").connect("pressed",get_parent(),'test_pause')
+	
 	connect("bar_is_low",get_parent(),"Verifica_barradevida")
 	choose_weapon = false
+	
+	#Player_IA     = false
 	connect("desliga_tudo", get_parent(), 'desliga_som')
 	
 	for i in get_tree().get_nodes_in_group('Botoes_tiro'):
 		var t = i.get_name()
 		i.connect('pressed',self,'iniciar_botao', [t])
+		i.connect('mouse_entered', get_parent(), 'desliga_tiro')
+		i.connect('mouse_exited' , get_parent() , 'liga_tiro'  )
 		
 
 func iniciar_botao(tipo):
@@ -38,11 +50,19 @@ func iniciar_botao(tipo):
 func _process(_delta):
 	pass
 
+
+##############################################################################################
+## BARRA DE CIMA
+##############################################################################################
+
+
 func _on_Som_pressed():
 	emit_signal("desliga_tudo")
 	pass # Replace with function body.
 
-
+func show_dead_inimigos(d):
+	var s =  str(d)
+	$BarraAlto/enemys_died.text = s
 
 #setar botao como process para que ele nao pause a arvore toda
 func play_pause():
@@ -57,26 +77,39 @@ func play_pause():
 	
 	pass # Replace with function body.
 
+func _on_speed_pressed():
+	if Engine.get_time_scale() == 2.0:
+		Engine.set_time_scale(1.0)
+		#Engine.timescale = 2
+	else:
+		Engine.set_time_scale(2.0)
+	pass # Replace with function body.
 
 
-func get_bar_value():
-	return hp_bar.value
+func _on_QUIT_pressed():
+	print('quit')
+	get_tree().change_scene("res://RAiZ.tscn")
 	
-func prepare_bar(base_health):
+	
+##############################################################################################
+## BARRA DE CIMA
+##############################################################################################
 
-	hp_bar_tween.interpolate_property(hp_bar,'value', hp_bar.value, base_health, 0.1, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
-	hp_bar_tween.start()
-	hp_bar.set_tint_progress("fb0f41")
-	
-	
+
+
+
+##############################################################################################
+## BARRA DE BAIXO
+##############################################################################################
+
 func qt_vida( life ):
 	var s =  str(life)
 	$BarraDebaixo/HBoxContainer/Quantidade.text = s
 	
-func show_dead_inimigos(d):
-	var s =  str(d)
-	$BarraAlto/enemys_died.text = s
 
+func update_score(score):
+	$ScoreLabel.text = str(score)
+	#$MessageLabel.show() 
 	
 func stop_bar():
 	hp_bar.set_tint_progress("434c44")
@@ -100,14 +133,40 @@ func update_health_bar(base_health , d):
 	
 	$BarraDebaixo/HBoxContainer/hit.text = str(d)
 	
+	
+func get_bar_value():
+	return hp_bar.value
+	
+func prepare_bar(base_health):
 
-##############################################################################################
-
-##############################################################################################
-
+	hp_bar_tween.interpolate_property(hp_bar,'value', hp_bar.value, base_health, 0.1, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
+	hp_bar_tween.start()
+	hp_bar.set_tint_progress("fb0f41")
+	
+	
 func qt_inimigos(text):
 	#$ADVICE.text = text
 	$BarraAlto/ADVICE.text = text
+	
+	
+func _Player_is_NOT_AI():
+	Player_IA = false
+	return Player_IA
+
+
+func _Player_is_AI():
+	Player_IA = true
+	return Player_IA
+
+##############################################################################################
+## BARRA DE BAIXO
+##############################################################################################
+
+
+##############################################################################################
+
+##############################################################################################
+
 
 func show_message(text):
 	$MessageLabel.text = text
@@ -141,21 +200,13 @@ func show_game_win():
 	yield(get_tree().create_timer(1), "timeout")
 	$Start.show()
 	
-func update_score(score):
-	$ScoreLabel.text = str(score)
-	#$MessageLabel.show() 
-		
-
-func _Player_is_AI():
-	return true
-
 
 func _on_Start_pressed():
 	#if CenaPrincipal.choose_weapon == false: # avisa se esta no modo construcao
-	
 	$MessageLabel.text = 'Choose a Player'
-	#if _Player_is_AI() == false:
-	escolha_arma()
+	if Player_IA != null:
+		CenaPrincipal.Player_IA = Player_IA
+		escolha_arma()
 
 func _on_MessageTimer_timeout():
 	$MessageLabel.hide()
@@ -169,17 +220,4 @@ func escolha_arma():
 		emit_signal("start_game", tipo_de_tiro)
 
 
-
-func _on_speed_pressed():
-	if Engine.get_time_scale() == 2.0:
-		Engine.set_time_scale(1.0)
-		#Engine.timescale = 2
-	else:
-		Engine.set_time_scale(2.0)
-	pass # Replace with function body.
-
-
-func _on_QUIT_pressed():
-	print('quit')
-	get_tree().change_scene("res://RAiZ.tscn")
 

@@ -11,7 +11,7 @@ export var fire_rate = 0.5
 signal hit(area)
 
 ###################################################
-var IA_player     = true
+var IA_player     = CenaPrincipal.Player_IA
 var direction_IA  = 1
 var IA_player_mov
 
@@ -42,6 +42,13 @@ func _process(delta):
 		Player_IA(delta)
 	else:
 		move_and_shoot(delta)
+		
+		
+###############################################################################
+#
+#	Player Normal
+#
+###############################################################################
 	
 func move_and_shoot(delta):
 	CenaPrincipal.posicao_jogador = global_position
@@ -97,7 +104,14 @@ func move_and_shoot(delta):
 	position.y = clamp(position.y, 0, screen_size.y)
 	
 	
-	
+###############################################################################
+#
+#	Player Normal
+#
+###############################################################################
+
+
+
 ###############################################################################
 #
 #	Player IA
@@ -169,8 +183,8 @@ func is_colliding_IA(area):
 #		Player IA
 #
 ###############################################################################
-func start(pos, VIDAS):
-	position = pos
+func start(VIDAS):
+	#position = pos
 	life = VIDAS
 	show()
 	$CollisionShape2D.disabled = false
