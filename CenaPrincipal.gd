@@ -15,7 +15,7 @@ var rng
 # Variaveis relacionados ao Inimigo
 #
 ###########################################################################
-var waves = 3
+var ondas = 3
 var inimigos_vivos = 0   # inimigos q vao sendo criados
 var dead_inimigos
 var geracao = 0
@@ -25,8 +25,8 @@ var inimigo_atual
 var dados_inimigos = [['inimigos'] , ['inimigo1'] , ['inimigo2'], ['inimigo3'], ['inimigo4']]
 
 
-var num_inimigos = (waves) * dados_inimigos.size()   # total de inimigos naquela fase 
-#var Mob_teste = preload('res://Scenes/Inimigos/inimigoteste.tscn')
+var num_inimigos = (ondas) * dados_inimigos.size()   # total de inimigos naquela fase 
+
 
 var inimigos_data = {
 	"inimigos": {
@@ -76,8 +76,7 @@ var jogador_existe = false
 var tipo_de_tiro_escolhido
 var Player_IA
 
-#var choose_weapon = false # avisa se esta no modo construcao
-#var tipo_de_tiro 
+
 var disparo_data = {
 	"Disparo": {
 		"damage":15 ,
@@ -93,6 +92,21 @@ var disparo_data = {
 # Variaveis relacionados ao Player
 #
 ###########################################################################
+
+###########################################################################
+#
+#
+############################################################################
+
+
+var Wave = []
+
+
+
+###########################################################################
+#
+#
+############################################################################
 
 
 func _ready():
@@ -149,11 +163,9 @@ func Verifica_barradevida() :
 
 
 func criando_inimigos():
-	#print('criando_inimigos')
 	var k = 0
-	#print('num_inimigos: ', num_inimigos)
-	for _j in range(waves):
-		#print('j :', j)
+	for _j in range(ondas):
+
 		for i in dados_inimigos :
 			var s = 'res://Scenes/Inimigos/' + i[0] + ".tscn"
 			var mob = load(s).instance()
@@ -164,7 +176,7 @@ func criando_inimigos():
 			mob.id = k
 			array_inimigos.append(mob) # 
 			k += 1
-	#print('k inimgos criados:' , k)
+
 
 ################################################################################
 # Ao implementar o pause a funcao add_inimigos_cena estava dando problema
@@ -172,6 +184,7 @@ func criando_inimigos():
 # depois do pause voltar os inimigos criados se moviem de novo... 
 # comportamento aceitavel ? XD 
 ###############################################################################
+
 func add_inimigos_cena():
 	for mob in array_inimigos:
 		get_node("Arvore_inimigos").add_child(mob)
@@ -179,6 +192,16 @@ func add_inimigos_cena():
 		inimigos_vivos += 1
 		yield(get_tree().create_timer(0.8), "timeout")#padding
 		$HUD.qt_inimigos(str(inimigos_vivos))
+		
+		
+		
+		
+################################################################################
+# Ao implementar o pause a funcao add_inimigos_cena estava dando problema
+# os inimigos ainda eram instanciados e colocados em cena porem nao se moviam
+# depois do pause voltar os inimigos criados se moviem de novo... 
+# comportamento aceitavel ? XD 
+###############################################################################
 
 func _on_MobTimer_timeout():
 	#print('entroue em mob timer..')
@@ -265,9 +288,8 @@ func new_game(tipo_detiro):
 	
 	
 func game_over():
-	#print('entrou em game over')
-	#print('game_over : ', array_inimigos.size())
-	debug_inimigos(array_inimigos)
+	guarda_inimigos()
+	#debug_inimigos(array_inimigos)
 	
 	$Player.pode_atirar = false
 	$Musicas/Game_over_back.play()
@@ -279,6 +301,31 @@ func game_over():
 	$Musicas/Game_over.play()
 	$HUD.stop_bar()
 	clear_memory()
+	
+	print(Wave)
+
+func game_win():
+	guarda_inimigos()
+	$Player.pode_atirar = false
+	$ScoreTimer.stop()
+	$MobTimer.stop()
+	
+	#debug_inimigos(array_inimigos)
+	
+	$HUD.show_game_win()
+	$Musicas/win.play()
+	clear_memory()
+	
+	print(Wave)
+
+func clear_memory():
+	array_inimigos.clear()
+	
+	var n =  get_node("Arvore_inimigos").get_children()
+	for k in n:
+		k.queue_free()
+
+
 
 func _on_ScoreTimer_timeout():
 	score += 1
@@ -292,23 +339,6 @@ func _on_StartTimer_timeout():
 	#add_inimigos_cena()
 	pass
 
-
-func game_win():
-	#print('entrou em game win')
-	$Player.pode_atirar = false
-	$ScoreTimer.stop()
-	$MobTimer.stop()
-	debug_inimigos(array_inimigos)
-	$HUD.show_game_win()
-	$Musicas/win.play()
-	clear_memory()
-
-func clear_memory():
-	array_inimigos.clear()
-	
-	var n =  get_node("Arvore_inimigos").get_children()
-	for k in n:
-		k.queue_free()
 
 	
 	
@@ -326,6 +356,7 @@ func clear_memory():
 #
 ###########################################################################
 func debug_inimigos(array):
+	#guarda_inimigos()
 	print('entrou em deboug_inimigos')
 	print('tipo_inimigo ,  speed,  damage, resist, life,   hit ')
 	var i = 0
@@ -355,3 +386,50 @@ func debug_inimigos(array):
 # Funçoes de ajuda para debug
 #
 ###########################################################################
+
+
+
+
+##############################################################################
+#
+#
+#
+#
+#
+#
+#############################################################################
+
+
+func guarda_inimigos():
+	print('entrou guarda_inimigos')
+	#var inf = ['tipo' ,  'speed',  'damage', 'resist', 'life', 'hit', 'id']
+	var asteroides =  get_node("Arvore_inimigos").get_children()
+	for dado in asteroides:
+		var array =	[dado.tipo_de_inimigo,
+					['speed' , dado.speed ],
+					['damage', dado.damage],
+					['resist', dado.resist],
+					['life'  , dado.life  ],
+					['hit'   , dado.hit   ],
+					['id'    , dado.id    ]]
+		Wave.append(array)
+		
+		
+
+
+
+
+
+
+
+
+
+
+##############################################################################
+#
+#
+#
+#
+#
+#
+#############################################################################
