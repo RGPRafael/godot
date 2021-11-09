@@ -27,7 +27,6 @@ animations = [ {
 extents = Vector2( 225.514, 475.097 )
 
 [node name="Player" type="Area2D"]
-position = Vector2( 470.742, 589.416 )
 rotation = -1.57079
 script = ExtResource( 2 )
 __meta__ = {
@@ -35,12 +34,11 @@ __meta__ = {
 }
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2( 3.3374, 1.88513 )
 rotation = 1.5708
+scale = Vector2( 1.1, 0.9 )
 shape = SubResource( 1 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
-position = Vector2( 11.2744, 1.88513 )
 rotation = 1.5708
 frames = SubResource( 2 )
 animation = "CAMINHAR"

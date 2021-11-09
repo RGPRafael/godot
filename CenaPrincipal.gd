@@ -22,7 +22,7 @@ var geracao = 0
 var array_inimigos = [] 
 var inimigo_atual 
 
-var dados_inimigos = [['inimigos'] , ['inimigo1'] , ['inimigo2'], ['inimigo3'], ['inimigo4']]
+var dados_inimigos = [['inimigos'] , ['inimigos'] , ['inimigos'], ['inimigos'], ['inimigos']]
 
 
 var num_inimigos = (ondas) * dados_inimigos.size()   # total de inimigos naquela fase 

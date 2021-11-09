@@ -13,6 +13,7 @@ var choose_weapon # avisa se esta no modo construcao
 var tipo_de_tiro 
 var Player_IA
 
+var current_wave = 0 # Contador de onda
 
 func _ready():
 	get_node("BarraAlto/PlayPause").connect('mouse_entered', get_parent(), 'desliga_tiro')
@@ -45,7 +46,7 @@ func _ready():
 func iniciar_botao(tipo):
 	tipo_de_tiro = tipo
 	choose_weapon = true
-	pass
+
 
 func _process(_delta):
 	pass
@@ -58,7 +59,7 @@ func _process(_delta):
 
 func _on_Som_pressed():
 	emit_signal("desliga_tudo")
-	pass # Replace with function body.
+
 
 func show_dead_inimigos(d):
 	var s =  str(d)
@@ -75,7 +76,6 @@ func play_pause():
 		get_tree().paused = true
 		
 	
-	pass # Replace with function body.
 
 func _on_speed_pressed():
 	if Engine.get_time_scale() == 2.0:
@@ -83,7 +83,6 @@ func _on_speed_pressed():
 		#Engine.timescale = 2
 	else:
 		Engine.set_time_scale(2.0)
-	pass # Replace with function body.
 
 
 func _on_QUIT_pressed():
@@ -216,8 +215,17 @@ func escolha_arma():
 		$MessageLabel.text = 'Choose a weapon'
 	
 	else:
-		$Start.hide()
-		emit_signal("start_game", tipo_de_tiro)
-
+		if current_wave == 0:
+			$Start.hide()
+			emit_signal("start_game", tipo_de_tiro)
+			print("wave 0")
+		else:
+			#var wave = AI.start_experiment()
+			#start_next_wave_AI(wave)
+			print("AI")
+			
+func start_next_wave_AI(wave): # roda quando da play e qd o player mata toda a onda
+	yield(get_tree().create_timer(0.5), "timeout")#padding
+#	spawn_enemies(wave)
 
 

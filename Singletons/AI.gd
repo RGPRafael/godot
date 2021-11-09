@@ -4,67 +4,65 @@ extends Node
 
 ## chromosome [enemy_type, delay_time]
 
-var population = [['EnemyRed', 1], ['EnemyGreen', 0.9], ['EnemyGray', 0.2], ['Enemy_tanq', 1], ['EnemyBlue', 0.1], ['EnemyGray', 0.2]]
+# [['inimigos'] , ['inimigo1'] , ['inimigo2'], ['inimigo3'], ['inimigo4']]
+
+var Enemy_Type = ['inimigos', 'inimigo1', 'inimigo2', 'inimigo3', 'inimigo4']
+
+var Max_time = 5
+
+var population = [['inimigos', 1], ['inimigos', 0.9], ['inimigos', 0.2], ['inimigos', 1], ['inimigos', 0.1], ['inimigos', 0.2]]
 
 ## receives the results that this generation achieved
-var population_res = []
+## in this example, receives a vector [REACHED_GOAL_BIN, TIME_ALIVE]
+var population_res = [[false, 0], [false, 0], [false, 0], [false, 0], [false, 0], [false, 0]]
+
+# organize results of population
+var id = -1
 
 # inputs of the equation
-var equation_inputs = 6
+var n = 6
 
 var num_weights = 2  # Number of the weights we are looking to optimize.
-
-var pop = []
 
 # Is right?
 var pop_size = [6,2]
 
+func _ready():
+	population_res.resize (pop_size[0])
+	
+func id ():
+	id += 1
+	if id >= pop_size[0]:
+		id = -1
+	return id
+
 # IMPORTANT TO DEFINE THIS FUNCTION FOR EACH GAME
 func measure_fitness ():
 	pass
-	
+
 #    In this game, we measure the fitness with the time that the enemys survived 
 # or if they reached the destination
-func measure_fitness_TD (equation_inputs, pop):
-	var rng = RandomNumberGenerator.new()
+func measure_fitness_TD (chromossome):
+	var fit = 0
 	
-	return rng.randi()
+	if chromossome[0] == true:
+		fit = 100
+	else:
+		fit = -100
+		
+	fit += chromossome[1] * 100
+	return fit
 
-### ?
-func clone(node: Node) -> void :
-	var copy = node.duplicate()
-	# see https://docs.godotengine.org/en/3.1/classes/class_object.html#id2
-	var properties: Array = node.get_property_list()
-
-	var script_properties: Array = []
-
-	for prop in properties:
-		# see https://docs.godotengine.org/en/3.1/classes/class_@globalscope.html#enum-globalscope-propertyusageflags
-			# basically here we are getting any of the user-defined script variables that exist, since those apparently don't
-			# get copied via `duplicate()`
-		if prop.usage & PROPERTY_USAGE_SCRIPT_VARIABLE == PROPERTY_USAGE_SCRIPT_VARIABLE:
-			script_properties.append(prop)
-
-	for prop in script_properties:
-		copy.set(prop.name, node[prop.name])
-
-	pop.append(copy)
-
-	
-func show_pop_situation():
-	print('shoud analise the results...')
-	print(pop.size())
-	for i in pop :
-		print( 'inimigo : ',i.name, 'hp: ', i.hp )
 
 # Calculating the fitness value of each solution in the current population.
 # The fitness function calculates the sum of products between each input 
 # and its corresponding weight.
-func cal_pop_fitness(equation_inputs, pop):
+func cal_pop_fitness(pop):
 	var fitness = []
 	
-	for i in pop.size ():
-		fitness.append(measure_fitness_TD(equation_inputs, pop))
+	for i in pop:
+		fitness.append(measure_fitness_TD(i))
+		
 	return fitness
 
 # Selecting the best individuals in the current generation as parents for produ-
@@ -83,6 +81,7 @@ func select_mating_pool(pop, fitness, num_parents):
 
 	return parents
 
+## Cross over process, will take half of the genes of each parent.
 func crossover (parents, offspring_size):
 	var offspring = []
 
@@ -111,28 +110,69 @@ func crossover (parents, offspring_size):
 
 	return offspring
 
+func mutation_int (idx):
+	pass
+	
+func mutation_float (idx):
+	var gene
+	if idx == 2:
+		gene = Max_time
+		
+	var rng = RandomNumberGenerator.new ()
+	
+	return rng.randf_range (-gene, gene)
+	
+func mutation_string (idx):
+	var gene
+	if (idx == 1):
+		gene = Enemy_Type
+		
+	var rng = RandomNumberGenerator.new()
+	
+	var random_index = rng.rangi_range (1, gene.size())
+	
+	print (gene[random_index])
+	
+	return gene [random_index]
+
+# In certain situations in nature mutations can occur and will give more
+#diversity to the population 
 func mutation(offspring_crossover):
 
-	var rng = RandomNumberGenerator.new()
+	var rng = RandomNumberGenerator.new ()
+	
+	print (offspring_crossover[0].size())
+		
 	# Mutation changes a single gene in each offspring randomly.
-	for idx in range(offspring_crossover.size()):
+	for idx in range(offspring_crossover.size ()):
 
 		# The random value to be added to the gene.
 
-		var random_value = rng.randi_range (-1, 1)
+		var random_index = rng.randi_range (0, offspring_crossover[idx].size() - 1)
+		
+		if offspring_crossover[idx] is String:
+			offspring_crossover[idx] = mutation_string (idx)
 
-		offspring_crossover[idx][1] += random_value
+		elif offspring_crossover[idx] is int:		
+			offspring_crossover[idx] += mutation_int (idx)
+		
+		elif offspring_crossover[idx] is float:
+			offspring_crossover[idx] += mutation_float (idx)
 
 	return offspring_crossover
 
 func start_experiment ():
 	var num_parents_mating = 4
 	
+	print (population_res)
+	
 	# Measuring the fitness of each chromosome in the population.
-	var fitness = cal_pop_fitness(equation_inputs, population)
+	var fitness = cal_pop_fitness(population_res)
 	
 	# Selecting the best parents in the population for mating.
 	var parents = select_mating_pool(population, fitness, num_parents_mating)
+	
+	print (parents)
 	
 	# Generating next generation using crossover.
 	var offspring_size = [pop_size[0] - parents.size(), num_weights]
@@ -150,6 +190,8 @@ func start_experiment ():
 
 	for i in range (offspring_mutation.size ()):
 		new_population.append (offspring_mutation[i])
+		
+	population = new_population
 
 	return new_population
 
