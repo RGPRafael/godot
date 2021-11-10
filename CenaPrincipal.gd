@@ -55,7 +55,7 @@ var inimigos_data = {
 		"speed" : 550},
 }
 
-var input_user_text
+var input_user_text # quantidade de ondas que o usuario digitou q quer  enfrentar
 
 ###########################################################################
 #

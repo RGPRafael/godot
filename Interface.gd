@@ -16,7 +16,6 @@ var Player_IA
 var current_wave = 0 # Contador de onda
 
 var input_usuario_ondas 
-var _on_Input_text_entered_flag = false
 
 func _ready():
 	get_node("BarraAlto/PlayPause").connect('mouse_entered', get_parent(), 'desliga_tiro')
@@ -241,7 +240,7 @@ func start_next_wave_AI(wave): # roda quando da play e qd o player mata toda a o
 
 
 func _on_Input_text_entered(new_text):
-	_on_Input_text_entered_flag = true
+
 	input_usuario_ondas = new_text
 	print('entrou em input text')
 	#$Start.show()
