@@ -15,6 +15,9 @@ var Player_IA
 
 var current_wave = 0 # Contador de onda
 
+var input_usuario_ondas 
+var _on_Input_text_entered_flag = false
+
 func _ready():
 	get_node("BarraAlto/PlayPause").connect('mouse_entered', get_parent(), 'desliga_tiro')
 	get_node("BarraAlto/PlayPause").connect('mouse_exited' , get_parent(), 'liga_tiro'   )
@@ -203,7 +206,9 @@ func show_game_win():
 func _on_Start_pressed():
 	#if CenaPrincipal.choose_weapon == false: # avisa se esta no modo construcao
 	$MessageLabel.text = 'Choose a Player'
-	if Player_IA != null:
+	if Player_IA != null :
+		#$Start.show()
+		#$Waves.hide()
 		CenaPrincipal.Player_IA = Player_IA
 		escolha_arma()
 
@@ -213,8 +218,14 @@ func _on_MessageTimer_timeout():
 func escolha_arma():
 	if choose_weapon == false:
 		$MessageLabel.text = 'Choose a weapon'
+
+	elif input_usuario_ondas == null : 
+		$MessageLabel.text = 'Set Waves:'
+		$Waves.show()
 	
 	else:
+
+	
 		if current_wave == 0:
 			$Start.hide()
 			emit_signal("start_game", tipo_de_tiro)
@@ -229,3 +240,13 @@ func start_next_wave_AI(wave): # roda quando da play e qd o player mata toda a o
 #	spawn_enemies(wave)
 
 
+func _on_Input_text_entered(new_text):
+	_on_Input_text_entered_flag = true
+	input_usuario_ondas = new_text
+	print('entrou em input text')
+	#$Start.show()
+	$Waves.hide()
+
+func qt_de_ondas_user():
+	return input_usuario_ondas
+	

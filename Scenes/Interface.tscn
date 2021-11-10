@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=2]
+[gd_scene load_steps=25 format=2]
 
 [ext_resource path="res://Assets/fonts/Xolonium-Regular.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://Interface.gd" type="Script" id=2]
@@ -37,6 +37,13 @@ font_data = ExtResource( 1 )
 
 [sub_resource type="DynamicFont" id=5]
 size = 30
+font_data = ExtResource( 1 )
+
+[sub_resource type="DynamicFont" id=6]
+size = 24
+outline_size = 1
+extra_spacing_char = 2
+extra_spacing_space = 1
 font_data = ExtResource( 1 )
 
 [node name="HUD" type="CanvasLayer"]
@@ -387,6 +394,28 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="Waves" type="CenterContainer" parent="."]
+visible = false
+margin_left = 441.0
+margin_top = 467.0
+margin_right = 814.0
+margin_bottom = 567.0
+rect_min_size = Vector2( 150, 100 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Input" type="LineEdit" parent="Waves"]
+margin_left = 61.0
+margin_top = 25.0
+margin_right = 311.0
+margin_bottom = 75.0
+rect_min_size = Vector2( 250, 50 )
+custom_fonts/font = SubResource( 6 )
+align = 1
+expand_to_text_length = true
+caret_blink = true
+
 [connection signal="pressed" from="BarraAlto/QUIT" to="." method="_on_QUIT_pressed"]
 [connection signal="pressed" from="BarraAlto/Som" to="." method="_on_Som_pressed"]
 [connection signal="pressed" from="BarraAlto/speed" to="." method="_on_speed_pressed"]
@@ -395,3 +424,4 @@ __meta__ = {
 [connection signal="pressed" from="Start" to="." method="_on_Start_pressed"]
 [connection signal="pressed" from="IA/IA_NO" to="." method="_Player_is_NOT_AI"]
 [connection signal="pressed" from="IA/IA_YES" to="." method="_Player_is_AI"]
+[connection signal="text_entered" from="Waves/Input" to="." method="_on_Input_text_entered"]

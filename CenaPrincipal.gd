@@ -55,6 +55,8 @@ var inimigos_data = {
 		"speed" : 550},
 }
 
+var input_user_text
+
 ###########################################################################
 #
 # Variaveis relacionados ao Inimigo
@@ -285,6 +287,8 @@ func new_game(tipo_detiro):
 	$HUD.prepare_bar(base_health)
 	$HUD.qt_vida(life_jogador)
 	#add_inimigos_cena()
+	input_user_text = $HUD.qt_de_ondas_user()
+	print(input_user_text)
 	
 	
 func game_over():
@@ -359,10 +363,10 @@ func debug_inimigos(array):
 	#guarda_inimigos()
 	print('entrou em deboug_inimigos')
 	print('tipo_inimigo ,  speed,  damage, resist, life,   hit ')
-	var i = 0
+
 	for j in array:
 		print(j.tipo_de_inimigo,'        ',j.speed,'     ',j. damage,'      ',j.resist ,'     ', j.life,'   ' ,j.hit, ' inimigo: ',j.id )
-		i +=1
+
 	var n =  get_node("Arvore_inimigos").get_children()
 	print()
 	print('tipo_inimigo ,  speed,  damage, resist, life,   hit ')
