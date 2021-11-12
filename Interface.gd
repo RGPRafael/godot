@@ -218,9 +218,9 @@ func escolha_arma():
 	if choose_weapon == false:
 		$MessageLabel.text = 'Choose a weapon'
 
-	elif input_usuario_ondas == null : 
-		$MessageLabel.text = 'Set Waves:'
-		$Waves.show()
+#	elif input_usuario_ondas == null : 
+#		$MessageLabel.text = 'Set Waves:'
+#		$Waves.show()
 	
 	else:
 
@@ -246,6 +246,6 @@ func _on_Input_text_entered(new_text):
 	#$Start.show()
 	$Waves.hide()
 
-func qt_de_ondas_user():
-	return input_usuario_ondas
+#func qt_de_ondas_user():
+#	return input_usuario_ondas
 	

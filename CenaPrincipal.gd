@@ -287,8 +287,8 @@ func new_game(tipo_detiro):
 	$HUD.prepare_bar(base_health)
 	$HUD.qt_vida(life_jogador)
 	#add_inimigos_cena()
-	input_user_text = $HUD.qt_de_ondas_user()
-	print(input_user_text)
+#	input_user_text = $HUD.qt_de_ondas_user()
+#	print(input_user_text)
 	
 	
 func game_over():
