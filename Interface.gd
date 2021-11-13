@@ -13,7 +13,7 @@ var choose_weapon # avisa se esta no modo construcao
 var tipo_de_tiro 
 var Player_IA
 
-var current_wave = 0 # Contador de onda
+#var current_wave = 0 # Contador de onda
 
 var input_usuario_ondas 
 
@@ -223,20 +223,14 @@ func escolha_arma():
 #		$Waves.show()
 	
 	else:
-
-	
-		if current_wave == 0:
-			$Start.hide()
-			emit_signal("start_game", tipo_de_tiro)
-			print("wave 0")
-		else:
-			#var wave = AI.start_experiment()
-			#start_next_wave_AI(wave)
-			print("AI")
+		emit_signal("start_game", tipo_de_tiro)
+		$Start.hide()
+		#var wave = AI.start_experiment()
+		#start_next_wave_AI(wave)
 			
-func start_next_wave_AI(wave): # roda quando da play e qd o player mata toda a onda
-	yield(get_tree().create_timer(0.5), "timeout")#padding
-#	spawn_enemies(wave)
+#func start_next_wave_AI(wave): # roda quando da play e qd o player mata toda a onda
+#	yield(get_tree().create_timer(0.5), "timeout")#padding
+##	spawn_enemies(wave)
 
 
 func _on_Input_text_entered(new_text):

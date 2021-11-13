@@ -10,7 +10,9 @@ var Enemy_Type = ['inimigos', 'inimigo1', 'inimigo2', 'inimigo3', 'inimigo4']
 
 var Max_time = 5
 
-var population = [['inimigos', 1], ['inimigos', 0.9], ['inimigos', 0.2], ['inimigos', 1], ['inimigos', 0.1], ['inimigos', 0.2]]
+var population = [['inimigos', 1], ['inimigo1', 0.9], ['inimigo2', 0.2], ['inimigo3', 1], ['inimigo4', 0.1] , ['inimigos', 0.1]]
+				  #['inimigos', 1], ['inimigos', 0.9], ['inimigos', 0.2], ['inimigos', 1], ['inimigos', 0.1],
+				  #['inimigos', 1], ['inimigos', 0.9], ['inimigos', 0.2], ['inimigos', 1], ['inimigos', 0.1]]
 
 ## receives the results that this generation achieved
 ## in this example, receives a vector [REACHED_GOAL_BIN, TIME_ALIVE]
@@ -20,12 +22,12 @@ var population_res = [[false, 0], [false, 0], [false, 0], [false, 0], [false, 0]
 var id = -1
 
 # inputs of the equation
-var n = 6
+var n = population.size()
 
 var num_weights = 2  # Number of the weights we are looking to optimize.
 
 # Is right?
-var pop_size = [6,2]
+var pop_size = [population.size(),2]
 
 func _ready():
 	population_res.resize (pop_size[0])
@@ -141,7 +143,7 @@ func mutation(offspring_crossover):
 
 	var rng = RandomNumberGenerator.new ()
 	
-	print (offspring_crossover[0].size())
+	print ('ofspring...', offspring_crossover[0].size())
 		
 	# Mutation changes a single gene in each offspring randomly.
 	for idx in range(offspring_crossover.size ()):
@@ -162,9 +164,9 @@ func mutation(offspring_crossover):
 	return offspring_crossover
 
 func start_experiment ():
-	var num_parents_mating = 4
+	var num_parents_mating = int(population.size() *2/3)
 	
-	print (population_res)
+	print ('pop_res....', population_res)
 	
 	# Measuring the fitness of each chromosome in the population.
 	var fitness = cal_pop_fitness(population_res)
@@ -172,7 +174,7 @@ func start_experiment ():
 	# Selecting the best parents in the population for mating.
 	var parents = select_mating_pool(population, fitness, num_parents_mating)
 	
-	print (parents)
+	print ('parents....', parents)
 	
 	# Generating next generation using crossover.
 	var offspring_size = [pop_size[0] - parents.size(), num_weights]
