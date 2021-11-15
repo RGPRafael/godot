@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=2]
+[gd_scene load_steps=28 format=2]
 
 [ext_resource path="res://Assets/fonts/Xolonium-Regular.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://Interface.gd" type="Script" id=2]
@@ -25,6 +25,18 @@ font_data = ExtResource( 1 )
 
 [sub_resource type="DynamicFont" id=2]
 size = 30
+font_data = ExtResource( 1 )
+
+[sub_resource type="DynamicFont" id=7]
+size = 29
+font_data = ExtResource( 1 )
+
+[sub_resource type="DynamicFont" id=9]
+size = 23
+font_data = ExtResource( 1 )
+
+[sub_resource type="DynamicFont" id=8]
+size = 35
 font_data = ExtResource( 1 )
 
 [sub_resource type="DynamicFont" id=3]
@@ -87,9 +99,9 @@ __meta__ = {
 }
 
 [node name="DEAD" type="Label" parent="BarraAlto"]
-margin_left = 529.173
+margin_left = 443.979
 margin_top = 28.4529
-margin_right = 642.173
+margin_right = 556.979
 margin_bottom = 65.4529
 custom_fonts/font = SubResource( 2 )
 text = "DEAD: "
@@ -104,11 +116,11 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = 8.30865
-margin_top = -39.7253
-margin_right = 112.309
-margin_bottom = 38.2747
-custom_fonts/font = SubResource( 1 )
+margin_left = -105.0
+margin_top = -16.5
+margin_right = 33.0
+margin_bottom = 23.5
+custom_fonts/font = SubResource( 7 )
 text = "-"
 align = 1
 autowrap = true
@@ -117,10 +129,10 @@ __meta__ = {
 }
 
 [node name="Enemys" type="Label" parent="BarraAlto"]
-margin_left = 32.849
-margin_top = 30.902
-margin_right = 213.849
-margin_bottom = 67.902
+margin_left = 16.849
+margin_top = 29.902
+margin_right = 197.849
+margin_bottom = 66.902
 custom_fonts/font = SubResource( 2 )
 text = "ENEMIES: "
 align = 1
@@ -134,14 +146,40 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -440.961
-margin_top = -38.4654
-margin_right = -336.961
-margin_bottom = 39.5346
-custom_fonts/font = SubResource( 1 )
+margin_left = -460.0
+margin_top = -10.5
+margin_right = -362.0
+margin_bottom = 20.5
+custom_fonts/font = SubResource( 9 )
 text = "-"
 align = 1
 autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Gen" type="Label" parent="BarraAlto"]
+margin_left = 692.699
+margin_top = 29.5717
+margin_right = 772.699
+margin_bottom = 66.5717
+rect_min_size = Vector2( 75, 1 )
+custom_fonts/font = SubResource( 2 )
+text = "GEN:"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Gen_result" type="Label" parent="BarraAlto"]
+margin_left = 790.123
+margin_top = 28.0
+margin_right = 865.123
+margin_bottom = 65.0
+rect_min_size = Vector2( 75, 1 )
+custom_fonts/font = SubResource( 2 )
+text = "-"
+align = 1
+valign = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -180,9 +218,9 @@ __meta__ = {
 }
 
 [node name="TimeLabel" type="TextureRect" parent="."]
-margin_left = 357.859
+margin_left = 288.563
 margin_top = 17.2996
-margin_right = 409.859
+margin_right = 340.563
 margin_bottom = 75.2996
 texture = ExtResource( 13 )
 expand = true
@@ -193,11 +231,11 @@ __meta__ = {
 [node name="ScoreLabel" type="Label" parent="."]
 anchor_left = 0.5
 anchor_right = 0.5
-margin_left = -198.639
-margin_top = 4.92408
-margin_right = -158.639
-margin_bottom = 82.9241
-custom_fonts/font = SubResource( 1 )
+margin_left = -272.0
+margin_top = 23.0
+margin_right = -232.0
+margin_bottom = 71.0
+custom_fonts/font = SubResource( 8 )
 text = "-"
 align = 1
 __meta__ = {

@@ -10,13 +10,14 @@ var Enemy_Type = ['inimigos', 'inimigo1', 'inimigo2', 'inimigo3', 'inimigo4']
 
 var Max_time = 5
 
-var population = [['inimigos', 1], ['inimigo1', 0.9], ['inimigo2', 0.2], ['inimigo3', 1], ['inimigo4', 0.1] , ['inimigos', 0.1]]
-				  #['inimigos', 1], ['inimigos', 0.9], ['inimigos', 0.2], ['inimigos', 1], ['inimigos', 0.1],
+var population = [['inimigos', 1], ['inimigo1', 0.9], ['inimigo2', 0.2], ['inimigo3', 1], ['inimigo4', 0.1] , ['inimigos', 0.1],
+				  ['inimigos', 1], ['inimigo1', 0.9], ['inimigo2', 0.2], ['inimigo3', 1], ['inimigo4', 0.1] , ['inimigos', 0.1]]
 				  #['inimigos', 1], ['inimigos', 0.9], ['inimigos', 0.2], ['inimigos', 1], ['inimigos', 0.1]]
 
 ## receives the results that this generation achieved
 ## in this example, receives a vector [REACHED_GOAL_BIN, TIME_ALIVE]
-var population_res = [[false, 0], [false, 0], [false, 0], [false, 0], [false, 0], [false, 0]]
+var population_res = [[false, 0], [false, 0], [false, 0], [false, 0], [false, 0], [false, 0],
+					  [false, 0], [false, 0], [false, 0], [false, 0], [false, 0], [false, 0]]
 
 # organize results of population
 var id = -1
@@ -166,7 +167,7 @@ func mutation(offspring_crossover):
 func start_experiment ():
 	var num_parents_mating = int(population.size() *2/3)
 	
-	print ('pop_res....', population_res)
+	#print ('pop_res....', population_res)
 	
 	# Measuring the fitness of each chromosome in the population.
 	var fitness = cal_pop_fitness(population_res)
@@ -174,7 +175,7 @@ func start_experiment ():
 	# Selecting the best parents in the population for mating.
 	var parents = select_mating_pool(population, fitness, num_parents_mating)
 	
-	print ('parents....', parents)
+	#print ('parents....', parents)
 	
 	# Generating next generation using crossover.
 	var offspring_size = [pop_size[0] - parents.size(), num_weights]

@@ -91,7 +91,7 @@ func _process(delta):
 	
 func _on_VisibilityNotifier2D_screen_exited():
 	#yield(get_tree().create_timer(0.1), "timeout")
-	print('id', id )
+	#print('id', id )
 	if hit == null: hit =  false
 	var time_now = OS.get_unix_time()
 	time_elapsed = time_now - time_start

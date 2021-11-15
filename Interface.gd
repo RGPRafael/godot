@@ -91,6 +91,10 @@ func _on_QUIT_pressed():
 	print('quit')
 	get_tree().change_scene("res://RAiZ.tscn")
 	
+
+
+func show_geracao(s):
+	$BarraAlto/Gen_result.text = str(s)
 	
 ##############################################################################################
 ## BARRA DE CIMA

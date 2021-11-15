@@ -31,8 +31,8 @@ var geracao = 0
 var array_inimigos = [] 
 var inimigo_atual # qt de inimigos instanciados
 
-var dados_inimigos = [['inimigos'] , ['inimigos'] , ['inimigos'], ['inimigos'], ['inimigos'] , ['inimigos']]
-					  #['inimigos'] , ['inimigos'] , ['inimigos'], ['inimigos'], ['inimigos'],
+var dados_inimigos = [['inimigos'] , ['inimigos'] , ['inimigos'], ['inimigos'], ['inimigos'] , ['inimigos'],
+					  ['inimigos'] , ['inimigos'] , ['inimigos'], ['inimigos'], ['inimigos'] , ['inimigos']]
 					  #['inimigos'] , ['inimigos'] , ['inimigos'], ['inimigos'], ['inimigos']]
 
 
@@ -191,11 +191,11 @@ func criando_inimigos():
 			array_inimigos.append(mob) # 
 			#k += 1
 	else:
-		print('antes do for...')
+		print('entrou no else..antes do for...')
 		var new_population =  AI.start_experiment()
 		print('new_population', new_population)
 		for i in new_population :
-			print('i', i[0])
+			#print('i', i[0])
 			var s = 'res://Scenes/Inimigos/' + i[0] + ".tscn"
 			var mob = load(s).instance()
 			mob.tipo_de_inimigo = i[0]
@@ -205,8 +205,7 @@ func criando_inimigos():
 			mob.id = AI.id()
 			array_inimigos.append(mob) # 
 		#array_inimigos = AI.start_experiment()
-		print('else>')
-		print('array_inimi', array_inimigos)
+		#print('array_inimi', array_inimigos)
 	
 	geracao +=1
 
@@ -317,6 +316,8 @@ func new_game(tipo_detiro):
 	$HUD.update_score(score)
 	$HUD.prepare_bar(base_health)
 	$HUD.qt_vida(life_jogador)
+	
+	$HUD.show_geracao(geracao)
 	#add_inimigos_cena()
 	
 #	input_user_text = $HUD.qt_de_ondas_user()
@@ -337,7 +338,7 @@ func clear_memory_and_copy_data():
 
 func game_over():
 	#guarda_inimigos()
-	debug_inimigos(array_inimigos)
+	#debug_inimigos(array_inimigos)
 	
 	$Player.pode_atirar = false
 	$Musicas/Game_over_back.play()
@@ -358,7 +359,7 @@ func game_win():
 	$ScoreTimer.stop()
 	$MobTimer.stop()
 	
-	debug_inimigos(array_inimigos)
+	#debug_inimigos(array_inimigos)
 	
 	$HUD.show_game_win()
 	$Musicas/win.play()
@@ -402,10 +403,16 @@ func debug_inimigos(array):
 	#for j in array:print(j.tipo_de_inimigo,'        ',j.speed,'     ',j.damage,'      ',j.resist ,'     ', j.life,'   ' ,j.hit, ' inimigo: ',j.id )
 
 	var n =  get_node("Arvore_inimigos").get_children()
-	print('tipo_inimigo ,  speed,  damage, resist, life,   hit ',' id ', 'k.time:')
 
 	for k in n:
-		print(k.tipo_de_inimigo,'        ',k.speed,'     ',k.damage,'      ',k.resist ,'     ', k.life,'   ' ,k.hit, '   ' , k.id , '   ' ,k.time_elapsed )
+		print('tipo_inimigo: ' , k.tipo_de_inimigo, ' ',
+			  'speed:  ',  k.speed,           ' ',
+			  'damage: ',  k.damage,          ' ',
+			  'resist: ',  k.resist,          ' ',
+			  'life    ',  k.life,            ' ',
+			  'hit     ',  k.hit,             ' ', 
+			  'id      ',  k.id ,             ' ',
+			  'time:   ',  k.time_elapsed )
 		k.queue_free()
 		
 		
