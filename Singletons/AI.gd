@@ -146,7 +146,7 @@ func mutation_string (idx):
 	return gene[random_index]
 
 # In certain situations in nature mutations can occur and will give more
-#diversity to the population 
+# diversity to the population 
 func mutation(offspring_crossover):
 	# Mutation changes a single gene in each offspring randomly.
 	for idx in range(offspring_crossover.size ()):
