@@ -30,6 +30,11 @@ var num_weights = 2  # Number of the weights we are looking to optimize.
 # Is right?
 var pop_size = [population.size(),2]
 
+# to get random values
+var rng = RandomNumberGenerator.new ()
+
+var mutation_prob = 10 #90%
+
 func _ready():
 	population_res.resize (pop_size[0])
 	
@@ -113,54 +118,51 @@ func crossover (parents, offspring_size):
 
 	return offspring
 
+# use the 3 functions below (mutation_int, mutation_float, mutation_string) to
+# generate random values for the genes of the individual. You need to adapt for
+# your specific program
 func mutation_int (idx):
-	pass
+	return 0
 	
 func mutation_float (idx):
+	# the list of genes available
 	var gene
-	if idx == 2:
+	
+	# the index of the chromossome that contains a gene of type float.
+	if idx == 1:
 		gene = Max_time
-		
-	var rng = RandomNumberGenerator.new ()
 	
 	return rng.randf_range (-gene, gene)
 	
 func mutation_string (idx):
 	var gene
-	if (idx == 1):
+	if (idx == 0):
 		gene = Enemy_Type
 		
-	var rng = RandomNumberGenerator.new()
-	
-	var random_index = rng.rangi_range (1, gene.size())
+	var random_index = rng.randi_range (0, gene.size() - 1)
 	
 	print (gene[random_index])
 	
-	return gene [random_index]
+	return gene[random_index]
 
 # In certain situations in nature mutations can occur and will give more
 #diversity to the population 
 func mutation(offspring_crossover):
-
-	var rng = RandomNumberGenerator.new ()
-	
-	print ('ofspring...', offspring_crossover[0].size())
-		
 	# Mutation changes a single gene in each offspring randomly.
 	for idx in range(offspring_crossover.size ()):
-
+		
 		# The random value to be added to the gene.
 
 		var random_index = rng.randi_range (0, offspring_crossover[idx].size() - 1)
 		
-		if offspring_crossover[idx] is String:
-			offspring_crossover[idx] = mutation_string (idx)
+		if offspring_crossover[idx][random_index] is String:
+			offspring_crossover[idx][random_index] = mutation_string (random_index)
 
-		elif offspring_crossover[idx] is int:		
-			offspring_crossover[idx] += mutation_int (idx)
+		elif offspring_crossover[idx][random_index] is int:		
+			offspring_crossover[idx][random_index] += mutation_int (random_index)
 		
-		elif offspring_crossover[idx] is float:
-			offspring_crossover[idx] += mutation_float (idx)
+		elif offspring_crossover[idx][random_index] is float:
+			offspring_crossover[idx][random_index] += mutation_float (random_index)
 
 	return offspring_crossover
 
