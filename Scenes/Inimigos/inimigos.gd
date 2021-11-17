@@ -15,6 +15,8 @@ var hit   # acertou ou nao o jogador
 var in_scene
 
 var floating_text = preload('res://Scenes/Pop up.tscn')
+var particle = preload("res://Scenes/Inimigos/Particles2D.tscn")
+#var particle_Bool = false
 
 #measure how much time the enemy survived
 var time_start
@@ -47,24 +49,39 @@ func _ready():
 	in_scene = true
 	v = global_position.direction_to(CenaPrincipal.posicao_jogador)
 	var node_visibility = get_node('VisibilityNotifier2D')
-	#print(get_parent().get_parent(), get_parent().get_parent().name)
 	.connect('killed',get_parent().get_parent(),'show_death',[],4) #isso é mt safadeza
 	node_visibility.connect('screen_exited', self, '_on_VisibilityNotifier2D_screen_exited')
 	node_visibility.connect('screen_exited', self, '_on_VisibilityNotifier2D_screen_exited')
 	.connect("area_entered",self,'_hit')
+	
+	var node_flash = get_node('FlashTimer')
+	node_flash.connect('timeout',self, 'FlashTimer_timeout')
+	node_flash.set_wait_time(0.9)
+	
 	time_start = OS.get_unix_time()
 
 func _hit(area):
+	#particle_Bool = true
 	if area.name == 'Player':
 		desliga_colisao()
 		hit = true
-		#print('entrou na func turn_of_hit - player ')
+
 	
-	elif area.has_method('is_Disparo'):
+	elif area.has_method('is_Disparo') :
 		resist = resist - area.base_damage
 		show_text(area.base_damage)
+		
+		flash() # animação adicionada
+		
+		#var p = particle.instance()
+		
+		#p.set_position(area.take_position())
+		#p.set_emitting(true)
+		#add_child(p)
+#		#particle_Bool = false
+		
 		area.queue_free()
-		#print('entrou na func turn_of_hit - disparo ', area.name)
+
 		
 func check_life():
 	if resist <= 0 :
@@ -91,8 +108,16 @@ func _process(delta):
 	
 func _on_VisibilityNotifier2D_screen_exited():
 	#yield(get_tree().create_timer(0.1), "timeout")
-	#print('id', id )
 	if hit == null: hit =  false
 	var time_now = OS.get_unix_time()
 	time_elapsed = time_now - time_start
 	pass
+	
+	
+func flash():
+	$Sprite.material.set_shader_param("flash_modifier",1)
+	$FlashTimer.start()
+
+
+func FlashTimer_timeout():
+	$Sprite.material.set_shader_param("flash_modifier",0)

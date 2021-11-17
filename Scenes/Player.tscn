@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://Assets/playershooter/playerShip1_blue.png" type="Texture" id=1]
 [ext_resource path="res://Player.gd" type="Script" id=2]
@@ -23,10 +23,8 @@ animations = [ {
 "speed": 5.0
 } ]
 
-[sub_resource type="RectangleShape2D" id=3]
-extents = Vector2( 225.514, 475.097 )
-
 [node name="Player" type="Area2D"]
+position = Vector2( 586.211, 600.466 )
 rotation = -1.57079
 script = ExtResource( 2 )
 __meta__ = {
@@ -58,12 +56,6 @@ shadow_enabled = true
 position = Vector2( 177.386, 10.7292 )
 scale = Vector2( 21.5385, 35.0181 )
 polygon = PoolVector2Array( -2.75051, -1.95449, 4.94301, -6.27949, 19.0892, -13.7592, 19.0893, 14.9384, -2.83323, 1.14931 )
-disabled = true
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area_IA"]
-visible = false
-position = Vector2( 332.75, 13.2536 )
-shape = SubResource( 3 )
 disabled = true
 
 [node name="Left" type="VisibilityEnabler2D" parent="."]

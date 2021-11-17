@@ -27,12 +27,12 @@ var ondas = 3
 var inimigos_vivos = 0   # inimigos q vao sendo criados
 var dead_inimigos
 var geracao = 0
+var geracao_atual
 #var current_wave = 0 # Contador de onda
 var array_inimigos = [] 
 var inimigo_atual # qt de inimigos instanciados
 
-var dados_inimigos = [['inimigos'] , ['inimigos'] , ['inimigos'], ['inimigos'], ['inimigos'] , ['inimigos'],
-					  ['inimigos'] , ['inimigos'] , ['inimigos'], ['inimigos'], ['inimigos'] , ['inimigos']]
+var dados_inimigos = [['inimigos'] , ['inimigos'] , ['inimigos'], ['inimigos'], ['inimigos'] , ['inimigos']]
 					  #['inimigos'] , ['inimigos'] , ['inimigos'], ['inimigos'], ['inimigos']]
 
 
@@ -177,8 +177,6 @@ func Verifica_barradevida() :
 
 
 func criando_inimigos():
-	#var k = 0
-	#for _j in range(ondas):
 	if geracao == 0:
 		for i in dados_inimigos :
 			var s = 'res://Scenes/Inimigos/' + i[0] + ".tscn"
@@ -191,11 +189,9 @@ func criando_inimigos():
 			array_inimigos.append(mob) # 
 			#k += 1
 	else:
-		print('entrou no else..antes do for...')
 		var new_population =  AI.start_experiment()
-		print('new_population', new_population)
+		print(geracao, ' new_population', new_population)
 		for i in new_population :
-			#print('i', i[0])
 			var s = 'res://Scenes/Inimigos/' + i[0] + ".tscn"
 			var mob = load(s).instance()
 			mob.tipo_de_inimigo = i[0]
@@ -205,9 +201,14 @@ func criando_inimigos():
 			mob.id = AI.id()
 			array_inimigos.append(mob) # 
 		#array_inimigos = AI.start_experiment()
-		#print('array_inimi', array_inimigos)
 	
 	geracao +=1
+	print(geracao)
+####################################
+	ControleData.geracao = geracao 
+####################################
+
+
 
 
 ################################################################################
@@ -237,7 +238,7 @@ func add_inimigos_cena():
 
 func _on_MobTimer_timeout():
 	#print('entroue em mob timer..')
-	#print('array_size_inimgo: ',array_inimigos.size())
+
 	if inimigo_atual < num_inimigos and $Player.life > 0:
 		#print('inimigo_atual: ', inimigo_atual)
 		var mob = array_inimigos[inimigo_atual]
@@ -302,7 +303,7 @@ func desliga_som():
 	print('desliga-som')
 
 func new_game(tipo_detiro):
-	#print('entrou em new game')
+
 	set_variaveis_globais()
 	criando_inimigos()
 	$HUD.show_message("READY?")
@@ -399,9 +400,6 @@ func _on_StartTimer_timeout():
 func debug_inimigos(array):
 	#guarda_inimigos()
 	print('entrou em deboug_inimigos')
-	#print('tipo_inimigo ,  speed,  damage, resist, life,   hit ')
-	#for j in array:print(j.tipo_de_inimigo,'        ',j.speed,'     ',j.damage,'      ',j.resist ,'     ', j.life,'   ' ,j.hit, ' inimigo: ',j.id )
-
 	var n =  get_node("Arvore_inimigos").get_children()
 
 	for k in n:

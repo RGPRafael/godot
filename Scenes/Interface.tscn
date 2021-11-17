@@ -28,34 +28,34 @@ size = 30
 font_data = ExtResource( 1 )
 
 [sub_resource type="DynamicFont" id=3]
-size = 29
+size = 28
 font_data = ExtResource( 1 )
 
 [sub_resource type="DynamicFont" id=4]
-size = 23
-font_data = ExtResource( 1 )
-
-[sub_resource type="DynamicFont" id=5]
-size = 35
-font_data = ExtResource( 1 )
-
-[sub_resource type="DynamicFont" id=6]
-size = 64
-font_data = ExtResource( 1 )
-
-[sub_resource type="DynamicFont" id=7]
 size = 26
 font_data = ExtResource( 1 )
 
-[sub_resource type="DynamicFont" id=8]
+[sub_resource type="DynamicFont" id=5]
 size = 30
 font_data = ExtResource( 1 )
 
-[sub_resource type="DynamicFont" id=9]
+[sub_resource type="DynamicFont" id=6]
 size = 24
 outline_size = 1
 extra_spacing_char = 2
 extra_spacing_space = 1
+font_data = ExtResource( 1 )
+
+[sub_resource type="DynamicFont" id=7]
+size = 29
+font_data = ExtResource( 1 )
+
+[sub_resource type="DynamicFont" id=8]
+size = 35
+font_data = ExtResource( 1 )
+
+[sub_resource type="DynamicFont" id=9]
+size = 23
 font_data = ExtResource( 1 )
 
 [node name="HUD" type="CanvasLayer"]
@@ -117,10 +117,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -105.0
-margin_top = -16.5
-margin_right = 33.0
-margin_bottom = 23.5
+margin_left = -82.0
+margin_top = -14.5
+margin_right = 43.0
+margin_bottom = 20.5
 custom_fonts/font = SubResource( 3 )
 text = "-"
 align = 1
@@ -262,6 +262,36 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="Save" type="Button" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -623.286
+margin_top = -261.941
+margin_right = -469.286
+margin_bottom = -205.941
+custom_fonts/font = SubResource( 6 )
+text = "SAVE"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Load" type="Button" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = 470.784
+margin_top = -260.751
+margin_right = 624.784
+margin_bottom = -204.751
+custom_fonts/font = SubResource( 6 )
+text = "LOAD"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="Control" type="Control" parent="."]
 margin_right = 40.0
 margin_bottom = 40.0
@@ -329,19 +359,19 @@ nine_patch_stretch = true
 
 [node name="DAMAGE" type="Label" parent="BarraDebaixo/HBoxContainer"]
 margin_left = 706.0
-margin_top = 28.0
-margin_right = 854.0
-margin_bottom = 61.0
+margin_top = 27.0
+margin_right = 866.0
+margin_bottom = 62.0
 custom_fonts/font = SubResource( 7 )
 text = "DAMAGE: "
 align = 1
 valign = 1
 
 [node name="hit" type="Label" parent="BarraDebaixo/HBoxContainer"]
-margin_left = 858.0
-margin_top = 28.0
-margin_right = 869.0
-margin_bottom = 61.0
+margin_left = 870.0
+margin_top = 27.0
+margin_right = 883.0
+margin_bottom = 62.0
 custom_fonts/font = SubResource( 7 )
 text = "-"
 align = 1
@@ -461,6 +491,8 @@ caret_blink = true
 [connection signal="pressed" from="BarraAlto/PlayPause" to="." method="play_pause"]
 [connection signal="timeout" from="MessageTimer" to="." method="_on_MessageTimer_timeout"]
 [connection signal="pressed" from="Start" to="." method="_on_Start_pressed"]
+[connection signal="pressed" from="Save" to="." method="_on_Save_pressed"]
+[connection signal="pressed" from="Load" to="." method="_on_Load_pressed"]
 [connection signal="pressed" from="IA/IA_NO" to="." method="_Player_is_NOT_AI"]
 [connection signal="pressed" from="IA/IA_YES" to="." method="_Player_is_AI"]
 [connection signal="text_entered" from="Waves/Input" to="." method="_on_Input_text_entered"]

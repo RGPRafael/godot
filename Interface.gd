@@ -13,6 +13,9 @@ var choose_weapon # avisa se esta no modo construcao
 var tipo_de_tiro 
 var Player_IA
 
+
+var save_path = "user://save.dat"
+
 #var current_wave = 0 # Contador de onda
 
 var input_usuario_ondas 
@@ -29,6 +32,12 @@ func _ready():
 	
 	get_node("Start").connect('mouse_entered', get_parent(), 'desliga_tiro')
 	get_node("Start").connect('mouse_exited' , get_parent(), 'liga_tiro'   )
+	
+	get_node("Save").connect('mouse_entered', get_parent(), 'desliga_tiro')
+	get_node("Save").connect('mouse_exited' , get_parent(), 'liga_tiro'   )
+	
+	get_node("Load").connect('mouse_entered', get_parent(), 'desliga_tiro')
+	get_node("Load").connect('mouse_exited' , get_parent(), 'liga_tiro'   )
 	
 	#get_node("PlayPause").connect("pressed",get_parent(),'test_pause')
 	
@@ -57,6 +66,30 @@ func _process(_delta):
 ##############################################################################################
 ## BARRA DE CIMA
 ##############################################################################################
+func _on_Save_pressed():
+	var data = {
+		'populacao' : AI.population,
+		'geracao'   : ControleData.geracao,
+	}
+	var file = File.new()
+	var error = file.open(save_path,File.WRITE)
+	if error == OK:
+		file.store_var(data)
+		file.close()
+		
+	
+	pass # Replace with function body.
+
+
+func _on_Load_pressed():  ## falra pegar de volta as informações e usar no jogo kk
+	var file = File.new()
+	if file.file_exists(save_path):
+		var error = file.open(save_path, File.READ)
+		if error == OK:
+			var output = file.get_var()
+			file.close()
+			print('load: ', output, '\n')
+	pass # Replace with function body.
 
 
 func _on_Som_pressed():
@@ -207,7 +240,7 @@ func show_game_win():
 	
 
 func _on_Start_pressed():
-	#if CenaPrincipal.choose_weapon == false: # avisa se esta no modo construcao
+
 	$MessageLabel.text = 'Choose a Player'
 	if Player_IA != null :
 		#$Start.show()

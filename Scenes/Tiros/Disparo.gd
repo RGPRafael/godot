@@ -10,7 +10,13 @@ var tipo_disparo
 signal hit_disparo(area)
 
 var tipo_tiro
+var particle = preload("res://Scenes/Inimigos/Particles2D.tscn")
 
+func take_position():
+	var position_tiro = $Position2D_particle.get_position()
+	return position_tiro
+	
+	 
 func is_Disparo():
 	print('DISPAROKKKKKKK')
 
@@ -30,7 +36,7 @@ func _ready():
 	set_speed()
 	set_base_damage()
 	#CenaPrincipal._on_Player_emite_tiro(self)
-	#.connect("area_entered", self, "_on_Disparo_area_entered", [self])
+	.connect("area_entered", self, "_on_Disparo_area_entered")
 	get_node("VisibilityNotifier2D").connect("screen_exited", self, "_on_Disparo_VisibilityNotifier2D_screen_exited")
 
 
@@ -42,13 +48,15 @@ func _process(delta):
 	var mov = Vector2(1,0)
 	position += mov.rotated(rotation) * speed * delta
 	#$AudioStreamPlayer2D.play()
-	
-#func _on_Disparo_area_entered(area, t ):
 #
-#	$CollisionShape2D.set_deferred("disabled", true)
-#	#print(area.name, ' tiro detectacolisao ', t)
-#	emit_signal("hit_disparo", area , t)
-#	#queue_free() # remove o tiro
+func _on_Disparo_area_entered(_area):
+
+#	var p = particle.instance()
+#	p.set_position($Position2D_particle.get_position() )
+#	p.set_emitting(true)
+#	add_child(p)
+	#queue_free()
+	pass
 	
 func _on_Disparo_VisibilityNotifier2D_screen_exited():
 	queue_free()
