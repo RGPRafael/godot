@@ -245,7 +245,11 @@ func _on_Start_pressed():
 	if Player_IA != null :
 		#$Start.show()
 		#$Waves.hide()
+		#print('Player_IA: ', Player_IA)
+		
 		CenaPrincipal.Player_IA = Player_IA
+		
+		#print('Player_IA: ', Player_IA)
 		escolha_arma()
 
 func _on_MessageTimer_timeout():

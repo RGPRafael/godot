@@ -35,10 +35,13 @@ func _ready():
 	CenaPrincipal.tipo_de_tiro_escolhido = bala_tipo_tiro
 	screen_size = get_viewport_rect().size
 	#print('screen:', screen_size)
+	print('IA_player', IA_player)
 	hide()
 
 func _process(delta):
+	IA_player     = CenaPrincipal.Player_IA
 	if IA_player and life != null and life > 0  :
+		#print('player_process...', IA_player)
 		Player_IA(delta)
 	else:
 		move_and_shoot(delta)
