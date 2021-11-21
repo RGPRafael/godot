@@ -62,6 +62,7 @@ var jogador_existe = false
 var tipo_de_tiro_escolhido
 var Player_IA
 var Player
+var tipo_IA
 var disparo_data
 
 ###########################################################################
@@ -217,11 +218,9 @@ func _on_MobTimer_timeout():
 		mob.position.x = x
 		mob.position.y = $InimigoPosition_start.position.y
 		
-		#print('mob.padding : ' , mob.padding)
-		#yield(get_tree().create_timer(mob.padding), "timeout")#padding
+
 		get_node("Arvore_inimigos").add_child(mob)
 		inimigos_vivos += 1
-		print(array_inimigos[inimigo_atual])
 		
 		$HUD.qt_inimigos(str(inimigos_vivos))
 		inimigo_atual += 1
@@ -282,6 +281,9 @@ func new_game(tipo_detiro):
 
 
 	Player_IA = ControleData.Player_IA
+	tipo_IA  = ControleData.tipo_IA
+
+
 	set_variaveis_globais()
 	criando_inimigos()
 	$HUD.show_message("READY?")
@@ -311,14 +313,16 @@ func new_game(tipo_detiro):
 	$HUD.show_geracao(geracao)
 	#add_inimigos_cena()
 	
-#	input_user_text = $HUD.qt_de_ondas_user()
-#	print(input_user_text)
+
 
 func Carrega_player():
 	#print('carregar player variavel IA:' , Player_IA)
 	var Scene_player
-	if Player_IA:
+	if Player_IA and tipo_IA == 1:
 		Scene_player = preload("res://Scenes/Player_IA.tscn")
+		
+	elif Player_IA and tipo_IA == 0:
+		Scene_player = preload("res://Scenes/Player_IA_parado.tscn")
 		
 	elif Player_IA == false :
 		Scene_player = preload('res://Scenes/Player.tscn')

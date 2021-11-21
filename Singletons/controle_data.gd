@@ -50,7 +50,7 @@ var inimigos_data = {
 
 
 var Player_IA
-
+var tipo_IA
 var disparo_data = {
 	"Disparo": {
 		"damage":15 ,

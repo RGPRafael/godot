@@ -20,7 +20,7 @@ wait_time = 2.0
 one_shot = true
 
 [node name="StartPosition" type="Position2D" parent="."]
-position = Vector2( 907.375, 537.35 )
+position = Vector2( 630.188, 544.841 )
 
 [node name="InimigoPosition_start" type="Position2D" parent="."]
 position = Vector2( 155.668, 76.6846 )

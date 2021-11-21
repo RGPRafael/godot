@@ -120,7 +120,7 @@ func is_colliding_IA(area):
 		bala_objeto.sound()
 		pode_atirar = false
 
-		yield(get_tree().create_timer(0.3),'timeout')
+		yield(get_tree().create_timer(fire_rate),'timeout')
 		
 		pode_atirar = true
 		IA_player_is_shooting = false

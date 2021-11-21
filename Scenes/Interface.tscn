@@ -430,6 +430,29 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="A" type="CheckBox" parent="."]
+visible = false
+margin_left = 561.862
+margin_top = 515.161
+margin_right = 702.862
+margin_bottom = 539.161
+text = "Move and Shoot"
+clip_text = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="B" type="CheckBox" parent="."]
+visible = false
+margin_left = 560.798
+margin_top = 485.203
+margin_right = 709.798
+margin_bottom = 509.203
+text = "Stay still and shoot"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="IA" type="Label" parent="."]
 margin_left = 1131.17
 margin_top = 657.123
@@ -493,6 +516,8 @@ caret_blink = true
 [connection signal="pressed" from="Start" to="." method="_on_Start_pressed"]
 [connection signal="pressed" from="Save" to="." method="_on_Save_pressed"]
 [connection signal="pressed" from="Load" to="." method="_on_Load_pressed"]
+[connection signal="pressed" from="A" to="." method="tipo_IA_move_atira"]
+[connection signal="pressed" from="B" to="." method="tipo_IA_parado"]
 [connection signal="pressed" from="IA/IA_NO" to="." method="_Player_is_NOT_AI"]
 [connection signal="pressed" from="IA/IA_YES" to="." method="_Player_is_AI"]
 [connection signal="text_entered" from="Waves/Input" to="." method="_on_Input_text_entered"]

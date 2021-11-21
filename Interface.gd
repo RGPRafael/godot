@@ -12,6 +12,7 @@ signal desliga_tudo
 var choose_weapon # avisa se esta no modo construcao
 var tipo_de_tiro 
 var Player_IA
+var tipo_IA
 
 
 var save_path = "user://save.dat"
@@ -188,13 +189,33 @@ func qt_inimigos(text):
 	
 	
 func _Player_is_NOT_AI():
+	#print('entreou em nao ia ')
 	Player_IA = false
-	return Player_IA
+	ControleData.Player_IA = Player_IA
+	_on_Start_pressed()
 
 
 func _Player_is_AI():
+	#print('entreou em ia vdd')
 	Player_IA = true
-	return Player_IA
+	ControleData.Player_IA = Player_IA
+	_on_Start_pressed()
+
+func tipo_IA_move_atira():
+	#print('entreou em ia move')
+	tipo_IA = 1
+	ControleData.tipo_IA = tipo_IA
+	$A.hide()
+	$B.hide()
+	_on_Start_pressed()
+	
+func tipo_IA_parado():
+	#print('entreou em ia parado')
+	tipo_IA = 0
+	ControleData.tipo_IA = tipo_IA
+	$A.hide()
+	$B.hide()
+	_on_Start_pressed()
 
 ##############################################################################################
 ## BARRA DE BAIXO
@@ -240,34 +261,38 @@ func show_game_win():
 	
 
 func _on_Start_pressed():
-
-	$MessageLabel.text = 'Choose a Player'
-	if Player_IA != null :
+	#print('entreou em start')
+	if Player_IA == null:
+		 $MessageLabel.text = 'Choose a Player'
+		
+	if Player_IA == true and tipo_IA != null :
+		escolha_arma()
 		#$Start.show()
 		#$Waves.hide()
-		ControleData.Player_IA = Player_IA
+		
+	elif Player_IA == false:
 		escolha_arma()
+		
+	elif Player_IA != null:
+		$Start.hide()
+		$A.show()
+		$B.show()
+
+
+
 
 func _on_MessageTimer_timeout():
 	$MessageLabel.hide()
 
 func escolha_arma():
+	$Start.show()
 	if choose_weapon == false:
 		$MessageLabel.text = 'Choose a weapon'
-
-#	elif input_usuario_ondas == null : 
-#		$MessageLabel.text = 'Set Waves:'
-#		$Waves.show()
 	
 	else:
 		emit_signal("start_game", tipo_de_tiro)
 		$Start.hide()
-		#var wave = AI.start_experiment()
-		#start_next_wave_AI(wave)
-			
-#func start_next_wave_AI(wave): # roda quando da play e qd o player mata toda a onda
-#	yield(get_tree().create_timer(0.5), "timeout")#padding
-##	spawn_enemies(wave)
+
 
 
 func _on_Input_text_entered(new_text):

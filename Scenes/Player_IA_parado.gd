@@ -8,7 +8,7 @@ var bala_tipo_tiro
 var pode_atirar =  false
 #var velocity = Vector2()  # The player's movement vector.
  
-export var fire_rate = 0.8
+export var fire_rate = 0.1
 signal hit(area)
 
 ###################################################
@@ -37,6 +37,7 @@ func _ready():
 	hide()
 
 func _process(delta):
+	CenaPrincipal.posicao_jogador = global_position
 	pass
 
 
@@ -52,8 +53,8 @@ func is_colliding_IA(area):
 	#look_at(area.position)
 	#print(IA_player_is_shooting)
 	look_at(area.get_global_position())
-	if life != null and life > 0 and pode_atirar == true and area!= null:
-		IA_player_is_shooting = true
+	if life != null and life > 0 and pode_atirar == true and area!= null :
+
 		var bala_objeto = bala.instance()
 		bala_objeto.tipo_tiro = bala_tipo_tiro
 
@@ -64,10 +65,10 @@ func is_colliding_IA(area):
 		bala_objeto.sound()
 		pode_atirar = false
 
-		yield(get_tree().create_timer(0.3),'timeout')
+		yield(get_tree().create_timer(fire_rate),'timeout')
 		
 		pode_atirar = true
-		IA_player_is_shooting = false
+
 ###############################################################################
 #
 #		Player IA
