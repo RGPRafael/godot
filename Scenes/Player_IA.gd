@@ -14,7 +14,7 @@ signal hit(area)
 ###################################################
 var direction_IA
 var IA_player_is_shooting 
-
+var wait
 ###################################################
 
 
@@ -35,12 +35,13 @@ func _ready():
 	CenaPrincipal.tipo_de_tiro_escolhido = bala_tipo_tiro
 	screen_size = get_viewport_rect().size
 	direction_IA  = 1
+	wait = false
 	#print('screen:', screen_size)
 	#print('IA_player', IA_player)
 	hide()
 
 func _process(delta):
-	Player_IA(delta)
+	if !wait: Player_IA(delta)
 
 
 
@@ -94,11 +95,13 @@ func Player_IA(delta):
 	position.x = clamp(position.x, 0, screen_size.x) #retorna um valor entre o min e max ..
 	position.y = clamp(position.y, 0, screen_size.y)
 
-	#print('enterleft' )
 
 	if global_position.x == screen_size.x or global_position.x == 0: 
 		#yield(get_tree().create_timer(tempo_parado_cantos), "timeout")
+		wait = true
+		yield(get_tree().create_timer(tempo_parado_cantos), "timeout")
 		direction_IA = direction_IA * -1 
+		wait = false
 
 
 func is_colliding_IA(area):
