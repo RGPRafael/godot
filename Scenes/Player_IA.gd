@@ -99,12 +99,7 @@ func Player_IA(delta):
 	if global_position.x == screen_size.x or global_position.x == 0: 
 		#yield(get_tree().create_timer(tempo_parado_cantos), "timeout")
 		direction_IA = direction_IA * -1 
-		#yield(get_tree().create_timer(tempo_parado_cantos), "timeout")
-		#print('screen size:', screen_size.x, 'pos', global_position.x)
-	#elif global_position.x == 0:
-		#yield(get_tree().create_timer(tempo_parado_cantos), "timeout") 
-		#direction_IA = direction_IA * -1 
-		#print( global_position.x)
+
 
 func is_colliding_IA(area):
 	#look_at(area.position)
