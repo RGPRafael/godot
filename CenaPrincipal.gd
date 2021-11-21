@@ -31,39 +31,13 @@ var geracao_atual
 var array_inimigos = [] 
 var inimigo_atual # qt de inimigos instanciados
 
-var dados_inimigos = [['inimigos'] , ['inimigos'] , ['inimigos'], ['inimigos'], ['inimigos'] , ['inimigos']]
+var dados_inimigos = [['inimigos',1] , ['inimigos',1] , ['inimigos',1], ['inimigos',1], ['inimigos',1] , ['inimigos',1]]
 					  #['inimigos'] , ['inimigos'] , ['inimigos'], ['inimigos'], ['inimigos']]
 
 
 var num_inimigos = dados_inimigos.size()   # total de inimigos naquela fase 
 
-#var inimigos_data =  ControleData.inimigos_data
-var inimigos_data = {
-	"inimigos": {
-		"damage": 20,
-		"resist": 50,
-		"speed" : 500},
-		
-	"inimigo1": {
-		"damage": 45,
-		"resist": 30,
-		"speed" : 350},
-		
-	"inimigo2": {
-		"damage": 50,
-		"resist": 40,
-		"speed" : 470},
-		
-	"inimigo3": {
-		"damage": 60,
-		"resist": 40,
-		"speed" : 320},
-		
-	"inimigo4": {
-		"damage": 20,
-		"resist": 60,
-		"speed" : 550},
-}
+var inimigos_data 
 var input_user_text # quantidade de ondas que o usuario digitou q quer  enfrentar
 
 ###########################################################################
@@ -88,17 +62,8 @@ var jogador_existe = false
 var tipo_de_tiro_escolhido
 var Player_IA
 var Player
+var disparo_data
 
-#var disparo_data = ControleData.disparo_data
-var disparo_data = {
-	"Disparo": {
-		"damage":15 ,
-		"speed": 1200},
-	
-	"Disparo1": {
-		"damage": 30,
-		"speed": 600},
-}
 ###########################################################################
 #
 # Variaveis relacionados ao Player
@@ -123,6 +88,8 @@ var Wave = []
 
 func _ready():
 	rng = RandomNumberGenerator.new()
+	disparo_data  = ControleData.disparo_data
+	inimigos_data =  ControleData.inimigos_data
 	randomize()
 	pass
 
@@ -175,6 +142,7 @@ func Verifica_barradevida() :
 
 func criando_inimigos():
 	if geracao == 0:
+
 		for i in dados_inimigos :
 			var s = 'res://Scenes/Inimigos/' + i[0] + ".tscn"
 			var mob = load(s).instance()
@@ -183,6 +151,8 @@ func criando_inimigos():
 			mob.damage = inimigos_data[i[0]]["damage"]
 			mob.resist = inimigos_data[i[0]]["resist"]
 			mob.id = AI.id()
+			mob.padding = i[1] 
+			#var aux = [mob, i[1]]
 			array_inimigos.append(mob) # 
 
 	else:
@@ -190,12 +160,15 @@ func criando_inimigos():
 		print(geracao, ' new_population', new_population)
 		for i in new_population :
 			var s = 'res://Scenes/Inimigos/' + i[0] + ".tscn"
+			#print('i[1] ', i[1])
 			var mob = load(s).instance()
 			mob.tipo_de_inimigo = i[0]
 			mob.speed  = inimigos_data[i[0]]["speed"]
 			mob.damage = inimigos_data[i[0]]["damage"]
 			mob.resist = inimigos_data[i[0]]["resist"]
 			mob.id = AI.id()
+			mob.padding = i[1]
+			#var aux = [mob, i[1]]
 			array_inimigos.append(mob) # 
 
 	
@@ -243,11 +216,16 @@ func _on_MobTimer_timeout():
 		var x = rng.randf_range(200,1000)
 		mob.position.x = x
 		mob.position.y = $InimigoPosition_start.position.y
+		
+		#print('mob.padding : ' , mob.padding)
+		#yield(get_tree().create_timer(mob.padding), "timeout")#padding
 		get_node("Arvore_inimigos").add_child(mob)
 		inimigos_vivos += 1
-		yield(get_tree().create_timer(0.05), "timeout")#padding
+		print(array_inimigos[inimigo_atual])
+		
 		$HUD.qt_inimigos(str(inimigos_vivos))
 		inimigo_atual += 1
+		$StartTimer.set_wait_time(mob.padding)
 		$StartTimer.start()
 	
 	elif  inimigo_atual == num_inimigos and Player.life > 0:

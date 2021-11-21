@@ -13,6 +13,8 @@ var resist
 var life 
 var hit   # acertou ou nao o jogador
 var in_scene
+var padding
+
 
 var floating_text = preload('res://Scenes/Pop up.tscn')
 var particle = preload("res://Scenes/Inimigos/Particles2D.tscn")
