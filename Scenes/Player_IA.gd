@@ -1,5 +1,5 @@
 extends Area2D
-export var speed = 700  # How fast the player will move (pixels/sec).
+export var speed = 400  # How fast the player will move (pixels/sec).
 var life  
 var screen_size  # Size of the game window.
 var bala
@@ -10,6 +10,12 @@ var pode_atirar =  false
 export var fire_rate = 0.5
 signal hit(area)
 
+###################################################
+var IA_player     = CenaPrincipal.Player_IA
+var direction_IA  = 1
+var IA_player_mov
+
+###################################################
 
 
 
@@ -29,50 +35,41 @@ func _ready():
 	CenaPrincipal.tipo_de_tiro_escolhido = bala_tipo_tiro
 	screen_size = get_viewport_rect().size
 	#print('screen:', screen_size)
+	print('IA_player', IA_player)
 	hide()
 
 func _process(delta):
-	move_and_shoot(delta)
-		
-		
+	Player_IA(delta)
+
+
+
+
 ###############################################################################
 #
-#	Player Normal
+#	Player IA
 #
 ###############################################################################
+
+func _on_Left_screen_exited():
+	yield(get_tree().create_timer(3), "timeout")
+	direction_IA = direction_IA * -1
+	#print('enterleft' )
+
+func _on_Rigth_screen_exited():
+	yield(get_tree().create_timer(3), "timeout")
+	direction_IA = direction_IA * -1 
+	#print('enter rigth')
 	
-func move_and_shoot(delta):
+func Player_IA(delta):
 	CenaPrincipal.posicao_jogador = global_position
 	var velocity = Vector2()  # The player's movement vector.
-	look_at(get_global_mouse_position())
+	$Area_IA/CollisionPolygon2D.disabled = false
+	#$Area_IA/CollisionShape2D.disabled = false
+	velocity.x += direction_IA
 
-	if Input.is_action_pressed("shoot")  and life != null and life > 0 and pode_atirar:
-		var bala_objeto = bala.instance()
-		bala_objeto.tipo_tiro = bala_tipo_tiro
-
-		bala_objeto.position = $SaidaDeTiro.get_global_position()
-		bala_objeto.rotation_degrees = rotation_degrees
-		get_parent().add_child(bala_objeto)
-		#$AudioStreamPlayer2D.play()
-		bala_objeto.sound()
-		pode_atirar = false
-
-		yield(get_tree().create_timer(fire_rate),'timeout')
-		
-		pode_atirar = true
-
-		
-	if Input.is_action_pressed("move_right") or Input.is_action_pressed("ui_right"):
-		velocity.x += 1
-	if Input.is_action_pressed("move_left") or Input.is_action_pressed("ui_left"):
-		velocity.x -= 1
-	if Input.is_action_pressed("move_down") or Input.is_action_pressed("ui_down"):
-		velocity.y += 1
-	if Input.is_action_pressed("move_up") or Input.is_action_pressed("ui_up"):
-		velocity.y -= 1
-	
+	look_at($look_position.position)
 	if velocity.length() > 0:
-		velocity = velocity.normalized() * speed
+		velocity = velocity.normalized() * speed 
 		$AnimatedSprite.play()
 		#$AudioStreamPlayer2D.play()
 	
@@ -93,15 +90,31 @@ func move_and_shoot(delta):
 	position += velocity * delta
 	position.x = clamp(position.x, 0, screen_size.x)
 	position.y = clamp(position.y, 0, screen_size.y)
-	
-	
-###############################################################################
-#
-#	Player Normal
-#
-###############################################################################
 
 
+func is_colliding_IA(area):
+	look_at(area.position)
+	if life != null and life > 0 and pode_atirar == true and area!= null:
+		
+		var bala_objeto = bala.instance()
+		bala_objeto.tipo_tiro = bala_tipo_tiro
+
+		bala_objeto.position = $SaidaDeTiro.get_global_position()
+		bala_objeto.rotation_degrees = rotation_degrees
+		get_parent().add_child(bala_objeto)
+		#$AudioStreamPlayer2D.play()
+		bala_objeto.sound()
+		pode_atirar = false
+
+		yield(get_tree().create_timer(0.3),'timeout')
+		
+		pode_atirar = true
+
+###############################################################################
+#
+#		Player IA
+#
+###############################################################################
 func start(VIDAS):
 	#position = pos
 	life = VIDAS

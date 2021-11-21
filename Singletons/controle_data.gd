@@ -1,27 +1,11 @@
 extends Node
 
-var score
-var Fases = 5
-var rng
-
-
-
 
 ###########################################################################
 #
 # Variaveis relacionados ao Inimigo
 #
 ###########################################################################
-var ondas 
-var inimigos_vivos    # inimigos q vao sendo criados
-var dead_inimigos
-var geracao 
-var geracao_atual
-var array_inimigos 
-var inimigo_atual # qt de inimigos instanciados
-
-var dados_inimigos 
-var num_inimigos 
 
 var inimigos_data = {
 	"inimigos": {
@@ -50,7 +34,6 @@ var inimigos_data = {
 		"speed" : 550},
 }
 
-var input_user_text # quantidade de ondas que o usuario digitou q quer  enfrentar
 
 ###########################################################################
 #
@@ -65,12 +48,7 @@ var input_user_text # quantidade de ondas que o usuario digitou q quer  enfrenta
 #
 ###########################################################################
 
-var can_damage 
-var posicao_jogador
-var life_jogador
-var base_health
-var jogador_existe 
-var tipo_de_tiro_escolhido
+
 var Player_IA
 
 var disparo_data = {

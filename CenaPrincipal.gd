@@ -23,7 +23,6 @@ var rng
 # Variaveis relacionados ao Inimigo
 #
 ###########################################################################
-var ondas = 3
 var inimigos_vivos = 0   # inimigos q vao sendo criados
 var dead_inimigos
 var geracao = 0
@@ -38,8 +37,7 @@ var dados_inimigos = [['inimigos'] , ['inimigos'] , ['inimigos'], ['inimigos'], 
 
 var num_inimigos = dados_inimigos.size()   # total de inimigos naquela fase 
 
-#var current_wave = 0 # Contador de onda
-
+#var inimigos_data =  ControleData.inimigos_data
 var inimigos_data = {
 	"inimigos": {
 		"damage": 20,
@@ -66,7 +64,6 @@ var inimigos_data = {
 		"resist": 60,
 		"speed" : 550},
 }
-
 var input_user_text # quantidade de ondas que o usuario digitou q quer  enfrentar
 
 ###########################################################################
@@ -84,13 +81,15 @@ var input_user_text # quantidade de ondas que o usuario digitou q quer  enfrenta
 
 var can_damage = true
 var posicao_jogador = Vector2()
-var life_jogador
-var base_health  = 100
+#export var life_jogador = 3
+var life_jogador 
+export var base_health  = 100
 var jogador_existe = false
 var tipo_de_tiro_escolhido
 var Player_IA
+var Player
 
-
+#var disparo_data = ControleData.disparo_data
 var disparo_data = {
 	"Disparo": {
 		"damage":15 ,
@@ -100,7 +99,6 @@ var disparo_data = {
 		"damage": 30,
 		"speed": 600},
 }
-
 ###########################################################################
 #
 # Variaveis relacionados ao Player
@@ -141,8 +139,6 @@ func player_damage(area):
 		$HUD.update_health_bar(base_health , area.damage)
 		
 
-	
-
 
 func Verifica_barradevida() :
 	can_damage = false
@@ -158,7 +154,8 @@ func Verifica_barradevida() :
 		$HUD.prepare_bar(base_health)
 		yield(get_tree().create_timer(0.5), "timeout")#padding
 	
-	$Player.life = life_jogador
+	#$Player.life = life_jogador
+	Player.life = life_jogador
 	can_damage = true
 
 
@@ -187,7 +184,7 @@ func criando_inimigos():
 			mob.resist = inimigos_data[i[0]]["resist"]
 			mob.id = AI.id()
 			array_inimigos.append(mob) # 
-			#k += 1
+
 	else:
 		var new_population =  AI.start_experiment()
 		print(geracao, ' new_population', new_population)
@@ -200,7 +197,7 @@ func criando_inimigos():
 			mob.resist = inimigos_data[i[0]]["resist"]
 			mob.id = AI.id()
 			array_inimigos.append(mob) # 
-		#array_inimigos = AI.start_experiment()
+
 	
 	geracao +=1
 	print(geracao)
@@ -239,7 +236,7 @@ func add_inimigos_cena():
 func _on_MobTimer_timeout():
 	#print('entroue em mob timer..')
 
-	if inimigo_atual < num_inimigos and $Player.life > 0:
+	if inimigo_atual < num_inimigos and Player.life > 0:
 		#print('inimigo_atual: ', inimigo_atual)
 		var mob = array_inimigos[inimigo_atual]
 		#var x = randf_range(150.0, 1100.0)
@@ -253,7 +250,7 @@ func _on_MobTimer_timeout():
 		inimigo_atual += 1
 		$StartTimer.start()
 	
-	elif  inimigo_atual == num_inimigos and $Player.life > 0:
+	elif  inimigo_atual == num_inimigos and Player.life > 0:
 		$StartTimer.stop()
 		game_win()
 	
@@ -283,10 +280,11 @@ func show_death():
 ###########################################################################
 
 func desliga_tiro():
-	$Player.pode_atirar = false
-	
+	#$Player.pode_atirar = false
+	if Player != null: Player.pode_atirar = false
 func liga_tiro():
-	$Player.pode_atirar = true
+	#$Player.pode_atirar = true
+	if Player != null: Player.pode_atirar = false
 
 	
 
@@ -304,13 +302,27 @@ func desliga_som():
 
 func new_game(tipo_detiro):
 
+
+	Player_IA = ControleData.Player_IA
 	set_variaveis_globais()
 	criando_inimigos()
 	$HUD.show_message("READY?")
 	$Musicas/Ready.play()
 	
-	$Player._tiro(tipo_detiro)
-	$Player.start(life_jogador)
+	print('entrando em player')
+
+
+	if Player == null:	
+		Player = Carrega_player()
+		Player.position = $StartPosition.get_global_position()
+		add_child(Player)
+	
+		#$Player._tiro(tipo_detiro)
+		#$Player.start(life_jogador)
+	
+	Player._tiro(tipo_detiro)
+	Player.start(life_jogador)
+	
 	
 	$StartTimer.start()
 	
@@ -323,7 +335,19 @@ func new_game(tipo_detiro):
 	
 #	input_user_text = $HUD.qt_de_ondas_user()
 #	print(input_user_text)
-	
+
+func Carrega_player():
+	#print('carregar player variavel IA:' , Player_IA)
+	var Scene_player
+	if Player_IA:
+		Scene_player = preload("res://Scenes/Player_IA.tscn")
+		
+	elif Player_IA == false :
+		Scene_player = preload('res://Scenes/Player.tscn')
+
+
+	return Scene_player.instance()
+
 func clear_memory_and_copy_data():
 	array_inimigos.clear()
 	
@@ -341,7 +365,8 @@ func game_over():
 	#guarda_inimigos()
 	#debug_inimigos(array_inimigos)
 	
-	$Player.pode_atirar = false
+	#$Player.pode_atirar = false
+	Player.pode_atirar = false
 	$Musicas/Game_over_back.play()
 	
 	$ScoreTimer.stop()
@@ -356,7 +381,8 @@ func game_over():
 
 func game_win():
 	#guarda_inimigos()
-	$Player.pode_atirar = false
+	#$Player.pode_atirar = false
+	Player.pode_atirar = false
 	$ScoreTimer.stop()
 	$MobTimer.stop()
 	
@@ -375,7 +401,7 @@ func _on_ScoreTimer_timeout():
 
 func _on_StartTimer_timeout():
 	#print('entroue em start timer..')
-	if $Player.life > 0:
+	if Player.life > 0:
 		$MobTimer.start()
 		$ScoreTimer.start()
 	#add_inimigos_cena()
@@ -397,7 +423,7 @@ func _on_StartTimer_timeout():
 # Funçoes de ajuda para debug
 #
 ###########################################################################
-func debug_inimigos(array):
+func debug_inimigos(_array):
 	#guarda_inimigos()
 	print('entrou em deboug_inimigos')
 	var n =  get_node("Arvore_inimigos").get_children()

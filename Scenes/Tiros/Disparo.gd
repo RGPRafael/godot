@@ -49,7 +49,7 @@ func _process(delta):
 	position += mov.rotated(rotation) * speed * delta
 	#$AudioStreamPlayer2D.play()
 #
-func _on_Disparo_area_entered(_area):
+func _on_Disparo_area_entered(_area): ### Animacao...
 
 #	var p = particle.instance()
 #	p.set_position($Position2D_particle.get_position() )

@@ -62,7 +62,7 @@ func _ready():
 
 func _hit(area):
 	#particle_Bool = true
-	if area.name == 'Player':
+	if area.name == 'Player': #### precisa mudar 
 		desliga_colisao()
 		hit = true
 
