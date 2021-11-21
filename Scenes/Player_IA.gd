@@ -1,5 +1,6 @@
 extends Area2D
 export var speed = 400  # How fast the player will move (pixels/sec).
+export var tempo_parado_cantos = 5
 var life  
 var screen_size  # Size of the game window.
 var bala
@@ -11,9 +12,8 @@ export var fire_rate = 0.5
 signal hit(area)
 
 ###################################################
-var IA_player     = CenaPrincipal.Player_IA
-var direction_IA  = 1
-var IA_player_mov
+var direction_IA
+var IA_player_is_shooting 
 
 ###################################################
 
@@ -34,8 +34,9 @@ func _ready():
 	CenaPrincipal.jogador_existe  = true
 	CenaPrincipal.tipo_de_tiro_escolhido = bala_tipo_tiro
 	screen_size = get_viewport_rect().size
+	direction_IA  = 1
 	#print('screen:', screen_size)
-	print('IA_player', IA_player)
+	#print('IA_player', IA_player)
 	hide()
 
 func _process(delta):
@@ -51,23 +52,25 @@ func _process(delta):
 ###############################################################################
 
 func _on_Left_screen_exited():
-	yield(get_tree().create_timer(3), "timeout")
+	yield(get_tree().create_timer(tempo_parado_cantos), "timeout")
 	direction_IA = direction_IA * -1
 	#print('enterleft' )
 
 func _on_Rigth_screen_exited():
-	yield(get_tree().create_timer(3), "timeout")
+	yield(get_tree().create_timer(tempo_parado_cantos), "timeout")
 	direction_IA = direction_IA * -1 
 	#print('enter rigth')
 	
 func Player_IA(delta):
 	CenaPrincipal.posicao_jogador = global_position
 	var velocity = Vector2()  # The player's movement vector.
-	$Area_IA/CollisionPolygon2D.disabled = false
+	#$Area_IA/CollisionPolygon2D.disabled = false
 	#$Area_IA/CollisionShape2D.disabled = false
 	velocity.x += direction_IA
 
-	look_at($look_position.position)
+	look_at(self.get_global_position())
+	if IA_player_is_shooting == false and rotation_degrees != -90 :
+		 rotation_degrees = -90
 	if velocity.length() > 0:
 		velocity = velocity.normalized() * speed 
 		$AnimatedSprite.play()
@@ -88,14 +91,27 @@ func Player_IA(delta):
 		
 		
 	position += velocity * delta
-	position.x = clamp(position.x, 0, screen_size.x)
+	position.x = clamp(position.x, 0, screen_size.x) #retorna um valor entre o min e max ..
 	position.y = clamp(position.y, 0, screen_size.y)
 
+	#print('enterleft' )
+
+	if global_position.x == screen_size.x or global_position.x == 0: 
+		#yield(get_tree().create_timer(tempo_parado_cantos), "timeout")
+		direction_IA = direction_IA * -1 
+		#yield(get_tree().create_timer(tempo_parado_cantos), "timeout")
+		#print('screen size:', screen_size.x, 'pos', global_position.x)
+	#elif global_position.x == 0:
+		#yield(get_tree().create_timer(tempo_parado_cantos), "timeout") 
+		#direction_IA = direction_IA * -1 
+		#print( global_position.x)
 
 func is_colliding_IA(area):
-	look_at(area.position)
+	#look_at(area.position)
+	#print(IA_player_is_shooting)
+	look_at(area.get_global_position())
 	if life != null and life > 0 and pode_atirar == true and area!= null:
-		
+		IA_player_is_shooting = true
 		var bala_objeto = bala.instance()
 		bala_objeto.tipo_tiro = bala_tipo_tiro
 
@@ -109,7 +125,7 @@ func is_colliding_IA(area):
 		yield(get_tree().create_timer(0.3),'timeout')
 		
 		pode_atirar = true
-
+		IA_player_is_shooting = false
 ###############################################################################
 #
 #		Player IA

@@ -5,7 +5,6 @@ var screen_size  # Size of the game window.
 var bala
 var bala_tipo_tiro
 var pode_atirar =  false
-#var velocity = Vector2()  # The player's movement vector.
  
 export var fire_rate = 0.5
 signal hit(area)
@@ -111,6 +110,7 @@ func start(VIDAS):
 
 
 func _on_Player_area_entered(area):
+	#print('entrou em player detec area..')
 	if life == 0:
 		hide()  # Player disappears after being hit.
 		$CollisionShape2D.set_deferred("disabled", true)

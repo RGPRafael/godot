@@ -7,13 +7,13 @@
 extents = Vector2( 249.796, 543.798 )
 
 [node name="Player" instance=ExtResource( 1 )]
+position = Vector2( 600.596, 580.831 )
 script = ExtResource( 2 )
 speed = 700
 
 [node name="Area_IA" type="Area2D" parent="." index="5"]
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Area_IA" index="0"]
-visible = false
 position = Vector2( 177.386, 10.7292 )
 scale = Vector2( 21.5385, 35.0181 )
 polygon = PoolVector2Array( -2.75051, -1.95449, 4.94301, -6.27949, 19.0892, -13.7592, 19.0893, 14.9384, -2.83323, 1.14931 )
@@ -46,5 +46,3 @@ pause_animated_sprites = false
 position = Vector2( 557.702, 4.47264 )
 
 [connection signal="area_entered" from="Area_IA" to="." method="is_colliding_IA"]
-[connection signal="screen_exited" from="Left" to="." method="_on_Left_screen_exited"]
-[connection signal="screen_exited" from="Rigth" to="." method="_on_Rigth_screen_exited"]

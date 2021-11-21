@@ -139,7 +139,7 @@ func player_damage(area):
 		$HUD.update_health_bar(base_health , area.damage)
 		
 
-
+#### usado pela interface para mexer na barra de vida do player...
 func Verifica_barradevida() :
 	can_damage = false
 	life_jogador = life_jogador - 1
@@ -159,7 +159,7 @@ func Verifica_barradevida() :
 	can_damage = true
 
 
-######################################################ddd
+######################################################
 #
 ###########################################################################
 
@@ -284,7 +284,7 @@ func desliga_tiro():
 	if Player != null: Player.pode_atirar = false
 func liga_tiro():
 	#$Player.pode_atirar = true
-	if Player != null: Player.pode_atirar = false
+	if Player != null: Player.pode_atirar = true
 
 	
 
@@ -309,14 +309,14 @@ func new_game(tipo_detiro):
 	$HUD.show_message("READY?")
 	$Musicas/Ready.play()
 	
-	print('entrando em player')
+	#print('entrando em player')
 
 
 	if Player == null:	
 		Player = Carrega_player()
 		Player.position = $StartPosition.get_global_position()
 		add_child(Player)
-	
+		Player.connect('hit' , self, 'player_damage' )
 		#$Player._tiro(tipo_detiro)
 		#$Player.start(life_jogador)
 	
