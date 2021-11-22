@@ -15,3 +15,4 @@ scale = Vector2( 21.5385, 43.2941 )
 polygon = PoolVector2Array( -2.75051, -1.95449, -2.72114, -13.765, 19.0892, -13.7592, 19.0893, 14.9384, -2.4422, 14.9226 )
 
 [connection signal="area_entered" from="Area2D" to="." method="is_colliding_IA"]
+[connection signal="area_exited" from="Area2D" to="." method="is_not_colliding_IA"]

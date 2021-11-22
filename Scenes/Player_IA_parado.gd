@@ -1,20 +1,24 @@
 extends Area2D
 export var speed = 400  # How fast the player will move (pixels/sec).
-export var tempo_parado_cantos = 5
 var life  
 var screen_size  # Size of the game window.
 var bala
 var bala_tipo_tiro
-var pode_atirar =  false
+
 #var velocity = Vector2()  # The player's movement vector.
  
-export var fire_rate = 0.1
+export var fire_rate = 0.4
 signal hit(area)
 
 ###################################################
 var direction_IA
 var IA_player_is_shooting 
 var wait
+
+
+var inimigo_detectado
+var enemy_array = []
+var pode_atirar =  true
 ###################################################
 
 
@@ -38,37 +42,51 @@ func _ready():
 
 func _process(delta):
 	CenaPrincipal.posicao_jogador = global_position
+	if enemy_array.size() != 0:
+		select_enemy()
+		if  life != null and life > 0  and pode_atirar:
+			just_shoot()
+	else:
+		inimigo_detectado = null
+	pass
+###############################################################################
+#
+#		Player IA
+#
+###############################################################################
+
+func select_enemy ():
+	var enemy_progress_array = [] # o quanto o inimigo andou no caminho ...
+	for i in enemy_array:
+		enemy_progress_array.append(self.global_position - i.global_position)
+	
+	var distancia_min = enemy_progress_array.min()
+	var enemy_index = enemy_progress_array.find (distancia_min)
+	inimigo_detectado = enemy_array[enemy_index]
+
+
+func just_shoot():
+	look_at(inimigo_detectado.get_global_position())
+	var bala_objeto = bala.instance()
+	bala_objeto.tipo_tiro = bala_tipo_tiro
+	bala_objeto.position = $SaidaDeTiro.get_global_position()
+	bala_objeto.rotation_degrees = rotation_degrees
+	get_parent().add_child(bala_objeto)
+#	$AudioStreamPlayer2D.play()
+	pode_atirar = false
+	yield(get_tree().create_timer(fire_rate), "timeout")
+	pode_atirar = true
+	pass
+	
+func is_colliding_IA(area):
+	enemy_array.append(area)
 	pass
 
-
-###############################################################################
-#
-#	Player IA
-#
-###############################################################################
-
-
-
-func is_colliding_IA(area):
-	#look_at(area.position)
-	#print(IA_player_is_shooting)
-	look_at(area.get_global_position())
-	if life != null and life > 0 and pode_atirar == true and area!= null :
-
-		var bala_objeto = bala.instance()
-		bala_objeto.tipo_tiro = bala_tipo_tiro
-
-		bala_objeto.position = $SaidaDeTiro.get_global_position()
-		bala_objeto.rotation_degrees = rotation_degrees
-		get_parent().add_child(bala_objeto)
-		#$AudioStreamPlayer2D.play()
-		bala_objeto.sound()
-		pode_atirar = false
-
-		yield(get_tree().create_timer(fire_rate),'timeout')
-		
-		pode_atirar = true
-
+func is_not_colliding_IA(area):
+	enemy_array.erase(area)
+	pass
+	
+	
 ###############################################################################
 #
 #		Player IA
