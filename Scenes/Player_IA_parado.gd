@@ -79,6 +79,7 @@ func just_shoot():
 	pass
 	
 func is_colliding_IA(area):
+	#print('area.name', area.name)
 	enemy_array.append(area)
 	pass
 

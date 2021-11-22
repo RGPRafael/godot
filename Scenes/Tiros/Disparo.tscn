@@ -9,6 +9,8 @@ radius = 14.7165
 height = 48.8141
 
 [node name="Disparo" type="Area2D"]
+collision_layer = 4
+collision_mask = 2
 script = ExtResource( 2 )
 
 [node name="Sprite" type="Sprite" parent="."]

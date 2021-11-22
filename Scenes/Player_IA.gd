@@ -15,6 +15,8 @@ signal hit(area)
 var direction_IA
 var IA_player_is_shooting 
 var wait
+var enemy_array = []
+var inimigo_detectado
 ###################################################
 
 
@@ -41,8 +43,13 @@ func _ready():
 	hide()
 
 func _process(delta):
-	if !wait: Player_IA(delta)
-
+	if !wait: move_Player_IA(delta)
+	if enemy_array.size() != 0:
+		select_enemy()
+		if  life != null and life > 0  and pode_atirar:
+			just_shoot()
+	else:
+		inimigo_detectado = null
 
 
 
@@ -52,26 +59,26 @@ func _process(delta):
 #
 ###############################################################################
 
-func _on_Left_screen_exited():
-	yield(get_tree().create_timer(tempo_parado_cantos), "timeout")
-	direction_IA = direction_IA * -1
-	#print('enterleft' )
-
-func _on_Rigth_screen_exited():
-	yield(get_tree().create_timer(tempo_parado_cantos), "timeout")
-	direction_IA = direction_IA * -1 
-	#print('enter rigth')
+func select_enemy ():
+	var enemy_progress_array = [] # o quanto o inimigo andou no caminho ...
+	for i in enemy_array:
+		enemy_progress_array.append(self.global_position - i.global_position)
 	
-func Player_IA(delta):
+	var distancia_min = enemy_progress_array.min()
+	var enemy_index = enemy_progress_array.find (distancia_min)
+	inimigo_detectado = enemy_array[enemy_index]
+
+
+
+func move_Player_IA(delta):
 	CenaPrincipal.posicao_jogador = global_position
-	var velocity = Vector2()  # The player's movement vector.
-	#$Area_IA/CollisionPolygon2D.disabled = false
-	#$Area_IA/CollisionShape2D.disabled = false
+	var velocity = Vector2()  
 	velocity.x += direction_IA
 
 	look_at(self.get_global_position())
 	if IA_player_is_shooting == false and rotation_degrees != -90 :
 		 rotation_degrees = -90
+		
 	if velocity.length() > 0:
 		velocity = velocity.normalized() * speed 
 		$AnimatedSprite.play()
@@ -97,7 +104,7 @@ func Player_IA(delta):
 
 
 	if global_position.x == screen_size.x or global_position.x == 0: 
-		#yield(get_tree().create_timer(tempo_parado_cantos), "timeout")
+
 		wait = true
 		yield(get_tree().create_timer(tempo_parado_cantos), "timeout")
 		direction_IA = direction_IA * -1 
@@ -105,25 +112,31 @@ func Player_IA(delta):
 
 
 func is_colliding_IA(area):
-	#look_at(area.position)
-	#print(IA_player_is_shooting)
-	look_at(area.get_global_position())
-	if life != null and life > 0 and pode_atirar == true and area!= null:
-		IA_player_is_shooting = true
-		var bala_objeto = bala.instance()
-		bala_objeto.tipo_tiro = bala_tipo_tiro
+	enemy_array.append(area)
 
-		bala_objeto.position = $SaidaDeTiro.get_global_position()
-		bala_objeto.rotation_degrees = rotation_degrees
-		get_parent().add_child(bala_objeto)
-		#$AudioStreamPlayer2D.play()
-		bala_objeto.sound()
-		pode_atirar = false
+func is_not_colliding_IA(area):
+	enemy_array.erase(area)
 
-		yield(get_tree().create_timer(fire_rate),'timeout')
+
+func just_shoot():
+	#look_at(area.get_global_position())
+	look_at(inimigo_detectado.get_global_position())
+	IA_player_is_shooting = true
+	var bala_objeto = bala.instance()
+	bala_objeto.tipo_tiro = bala_tipo_tiro
+
+	bala_objeto.position = $SaidaDeTiro.get_global_position()
+	bala_objeto.rotation_degrees = rotation_degrees
+	get_parent().add_child(bala_objeto)
+	#$AudioStreamPlayer2D.play()
+	bala_objeto.sound()
+	pode_atirar = false
+
+	yield(get_tree().create_timer(fire_rate),'timeout')
+	
+	pode_atirar = true
+	IA_player_is_shooting = false
 		
-		pode_atirar = true
-		IA_player_is_shooting = false
 ###############################################################################
 #
 #		Player IA
