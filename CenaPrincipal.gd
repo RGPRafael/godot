@@ -31,7 +31,7 @@ var geracao_atual
 var array_inimigos = [] 
 var inimigo_atual # qt de inimigos instanciados
 
-var dados_inimigos = [['inimigos',1] , ['inimigos',1] , ['inimigos',1], ['inimigos',1], ['inimigos',1] , ['inimigos',1]]
+var dados_inimigos = [['inimigos',1] , ['inimigo1',1] , ['inimigo2',1], ['inimigo3',1], ['inimigo4',1] , ['inimigos',1]]
 					  #['inimigos'] , ['inimigos'] , ['inimigos'], ['inimigos'], ['inimigos']]
 
 
@@ -64,6 +64,7 @@ var Player_IA
 var Player
 var tipo_IA
 var disparo_data
+var total_damage = 0
 
 ###########################################################################
 #
@@ -101,8 +102,9 @@ func _ready():
 ###########################################################################
 
 func player_damage(area):
-	if 	can_damage:
+	if can_damage:
 		area.hit = true # nao atualiza o hit do inimigo
+		total_damage += area.damage
 		base_health = base_health - area.damage
 		$HUD.update_health_bar(base_health , area.damage)
 		
@@ -331,6 +333,9 @@ func Carrega_player():
 	return Scene_player.instance()
 
 func clear_memory_and_copy_data():
+	# Writes data and zeroes total damage
+	write_data(total_damage)
+	total_damage = 0
 	array_inimigos.clear()
 	
 	var n =  get_node("Arvore_inimigos").get_children()
@@ -422,7 +427,24 @@ func debug_inimigos(_array):
 		k.queue_free()
 		
 		
-
+# It is not using the default Godot directory ~/.local/share/godot/app_userdata
+# Instead goes straight into ~/.local/share
+# Probably related to the non-standart directory organization, needs fixing
+func write_data(data):
+	print(total_damage)
+	var path = 'user://ast_data.csv'
+	var file = File.new()
+	
+	# All this to be able to append to file
+	if file.file_exists(path):
+		file.open(path, File.READ_WRITE)
+		file.seek_end()
+		file.store_string('; ')
+	else:
+		file.open(path, File.WRITE)
+		
+	file.store_string(str(data))
+	file.close()
 
 
 
