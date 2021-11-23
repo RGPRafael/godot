@@ -5,17 +5,10 @@ var screen_size  # Size of the game window.
 var bala
 var bala_tipo_tiro
 var pode_atirar =  false
-#var velocity = Vector2()  # The player's movement vector.
  
 export var fire_rate = 0.5
 signal hit(area)
 
-###################################################
-var IA_player     = CenaPrincipal.Player_IA
-var direction_IA  = 1
-var IA_player_mov
-
-###################################################
 
 
 
@@ -38,10 +31,7 @@ func _ready():
 	hide()
 
 func _process(delta):
-	if IA_player and life != null and life > 0  :
-		Player_IA(delta)
-	else:
-		move_and_shoot(delta)
+	move_and_shoot(delta)
 		
 		
 ###############################################################################
@@ -111,78 +101,6 @@ func move_and_shoot(delta):
 ###############################################################################
 
 
-
-###############################################################################
-#
-#	Player IA
-#
-###############################################################################
-
-func _on_Left_screen_exited():
-	yield(get_tree().create_timer(3), "timeout")
-	direction_IA = direction_IA * -1
-	#print('enterleft' )
-
-func _on_Rigth_screen_exited():
-	yield(get_tree().create_timer(3), "timeout")
-	direction_IA = direction_IA * -1 
-	#print('enter rigth')
-	
-func Player_IA(delta):
-	CenaPrincipal.posicao_jogador = global_position
-	var velocity = Vector2()  # The player's movement vector.
-	$Area_IA/CollisionPolygon2D.disabled = false
-	#$Area_IA/CollisionShape2D.disabled = false
-	velocity.x += direction_IA
-
-	look_at($look_position.position)
-	if velocity.length() > 0:
-		velocity = velocity.normalized() * speed 
-		$AnimatedSprite.play()
-		#$AudioStreamPlayer2D.play()
-	
-	if velocity.x != 0:
-		$AnimatedSprite.animation = "CAMINHAR"
-		$AnimatedSprite.flip_v = false
-		$AnimatedSprite.flip_h = velocity.x < 0
-
-		
-	elif velocity.y != 0:
-		$AnimatedSprite.animation = "UP"
-		$AnimatedSprite.flip_v = velocity.y > 0
-	
-	else:
-		$AnimatedSprite.stop()
-		
-		
-	position += velocity * delta
-	position.x = clamp(position.x, 0, screen_size.x)
-	position.y = clamp(position.y, 0, screen_size.y)
-
-
-func is_colliding_IA(area):
-	look_at(area.position)
-	if life != null and life > 0 and pode_atirar == true and area!= null:
-		
-		var bala_objeto = bala.instance()
-		bala_objeto.tipo_tiro = bala_tipo_tiro
-
-		bala_objeto.position = $SaidaDeTiro.get_global_position()
-		bala_objeto.rotation_degrees = rotation_degrees
-		get_parent().add_child(bala_objeto)
-		#$AudioStreamPlayer2D.play()
-		bala_objeto.sound()
-		pode_atirar = false
-
-		yield(get_tree().create_timer(0.3),'timeout')
-		
-		pode_atirar = true
-
-###############################################################################
-#
-#		Player IA
-#
-###############################################################################
 func start(VIDAS):
 	#position = pos
 	life = VIDAS
@@ -192,6 +110,7 @@ func start(VIDAS):
 
 
 func _on_Player_area_entered(area):
+	#print('entrou em player detec area..')
 	if life == 0:
 		hide()  # Player disappears after being hit.
 		$CollisionShape2D.set_deferred("disabled", true)

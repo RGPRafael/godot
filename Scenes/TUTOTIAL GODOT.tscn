@@ -1,25 +1,25 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://Assets/UI/parallax-space-ring-planet.png" type="Texture" id=1]
 [ext_resource path="res://Scenes/CenaPrincipal.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Assets/UI/parallax-space-backgound.png" type="Texture" id=3]
 [ext_resource path="res://Assets/UI/parallax-space-far-planets.png" type="Texture" id=4]
 [ext_resource path="res://Assets/UI/parallax-space-big-planet.png" type="Texture" id=5]
+[ext_resource path="res://Scenes/ParallaxBackground.gd" type="Script" id=6]
 
 [node name="TutorialGODOT" type="Node2D"]
 
-[node name="Control" type="Control" parent="."]
+[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
+script = ExtResource( 6 )
+scrooling_speed = 500.0
+
+[node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_mirroring = Vector2( 0, 1433 )
+
+[node name="Background" type="TextureRect" parent="ParallaxBackground/ParallaxLayer"]
 margin_left = -3.0
 margin_top = 5.0
-margin_right = 1277.0
-margin_bottom = 726.0
-__meta__ = {
-"_edit_group_": true,
-"_edit_use_anchors_": false
-}
-
-[node name="Background" type="TextureRect" parent="Control"]
-margin_right = 1284.0
+margin_right = 1281.0
 margin_bottom = 721.0
 texture = ExtResource( 3 )
 expand = true
@@ -27,34 +27,90 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Planet" type="TextureRect" parent="Control"]
-margin_left = 1114.04
-margin_top = 6.66516
-margin_right = 1263.04
-margin_bottom = 153.665
+[node name="Planet" type="TextureRect" parent="ParallaxBackground/ParallaxLayer"]
+margin_left = 1111.04
+margin_top = 11.6652
+margin_right = 1260.04
+margin_bottom = 158.665
 texture = ExtResource( 5 )
 expand = true
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Otherplanets" type="TextureRect" parent="Control"]
-margin_left = 358.517
-margin_top = 100.104
-margin_right = 507.517
-margin_bottom = 247.104
+[node name="Otherplanets" type="TextureRect" parent="ParallaxBackground/ParallaxLayer"]
+margin_left = 355.517
+margin_top = 105.104
+margin_right = 504.517
+margin_bottom = 252.104
 texture = ExtResource( 4 )
 expand = true
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="planetLow" type="TextureRect" parent="Control"]
-margin_left = 18.1332
-margin_top = 489.877
-margin_right = 167.133
-margin_bottom = 636.877
+[node name="planetLow" type="TextureRect" parent="ParallaxBackground/ParallaxLayer"]
+margin_left = 15.1332
+margin_top = 494.877
+margin_right = 164.133
+margin_bottom = 641.877
 texture = ExtResource( 1 )
+expand = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Background_midle" type="TextureRect" parent="ParallaxBackground/ParallaxLayer"]
+margin_left = -1.09363
+margin_top = 718.076
+margin_right = 1278.91
+margin_bottom = 1439.08
+texture = ExtResource( 3 )
+expand = true
+flip_v = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="planetLow2" type="TextureRect" parent="ParallaxBackground/ParallaxLayer"]
+margin_left = 674.0
+margin_top = 626.0
+margin_right = 773.0
+margin_bottom = 787.0
+texture = ExtResource( 1 )
+expand = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Planet2" type="TextureRect" parent="ParallaxBackground/ParallaxLayer"]
+margin_left = 679.155
+margin_top = 1209.01
+margin_right = 828.155
+margin_bottom = 1356.01
+texture = ExtResource( 5 )
+expand = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Planet3" type="TextureRect" parent="ParallaxBackground/ParallaxLayer"]
+margin_left = 253.419
+margin_top = 947.389
+margin_right = 402.419
+margin_bottom = 1094.39
+texture = ExtResource( 5 )
+expand = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Planet4" type="TextureRect" parent="ParallaxBackground/ParallaxLayer"]
+margin_left = 1045.43
+margin_top = 679.817
+margin_right = 1194.43
+margin_bottom = 826.817
+texture = ExtResource( 5 )
 expand = true
 __meta__ = {
 "_edit_use_anchors_": false

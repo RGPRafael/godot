@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://Assets/playershooter/playerShip1_blue.png" type="Texture" id=1]
 [ext_resource path="res://Player.gd" type="Script" id=2]
@@ -23,15 +23,11 @@ animations = [ {
 "speed": 5.0
 } ]
 
-[sub_resource type="RectangleShape2D" id=3]
-extents = Vector2( 225.514, 475.097 )
-
 [node name="Player" type="Area2D"]
+position = Vector2( 579.084, 457.922 )
 rotation = -1.57079
+collision_mask = 2
 script = ExtResource( 2 )
-__meta__ = {
-"_edit_group_": true
-}
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 rotation = 1.5708
@@ -52,42 +48,4 @@ position = Vector2( 90, 0 )
 texture_scale = 10.0
 shadow_enabled = true
 
-[node name="Area_IA" type="Area2D" parent="."]
-
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Area_IA"]
-position = Vector2( 177.386, 10.7292 )
-scale = Vector2( 21.5385, 35.0181 )
-polygon = PoolVector2Array( -2.75051, -1.95449, 4.94301, -6.27949, 19.0892, -13.7592, 19.0893, 14.9384, -2.83323, 1.14931 )
-disabled = true
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area_IA"]
-visible = false
-position = Vector2( 332.75, 13.2536 )
-shape = SubResource( 3 )
-disabled = true
-
-[node name="Left" type="VisibilityEnabler2D" parent="."]
-position = Vector2( -4.70746, -257.726 )
-scale = Vector2( 0.593585, 1 )
-rect = Rect2( -10, 50, 50, 10 )
-pause_animations = false
-freeze_bodies = false
-pause_particles = false
-pause_animated_sprites = false
-
-[node name="Rigth" type="VisibilityEnabler2D" parent="."]
-position = Vector2( -8.48517, 210.039 )
-scale = Vector2( 0.606178, 1 )
-rect = Rect2( -10, -10, 50, 0 )
-pause_animations = false
-freeze_bodies = false
-pause_particles = false
-pause_animated_sprites = false
-
-[node name="look_position" type="Node2D" parent="."]
-position = Vector2( 557.702, 4.47264 )
-
 [connection signal="area_entered" from="." to="." method="_on_Player_area_entered"]
-[connection signal="area_entered" from="Area_IA" to="." method="is_colliding_IA"]
-[connection signal="screen_exited" from="Left" to="." method="_on_Left_screen_exited"]
-[connection signal="screen_exited" from="Rigth" to="." method="_on_Rigth_screen_exited"]

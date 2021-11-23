@@ -12,8 +12,12 @@ signal desliga_tudo
 var choose_weapon # avisa se esta no modo construcao
 var tipo_de_tiro 
 var Player_IA
+var tipo_IA
 
-var current_wave = 0 # Contador de onda
+
+var save_path = "user://save.dat"
+
+#var current_wave = 0 # Contador de onda
 
 var input_usuario_ondas 
 
@@ -29,6 +33,12 @@ func _ready():
 	
 	get_node("Start").connect('mouse_entered', get_parent(), 'desliga_tiro')
 	get_node("Start").connect('mouse_exited' , get_parent(), 'liga_tiro'   )
+	
+	get_node("Save").connect('mouse_entered', get_parent(), 'desliga_tiro')
+	get_node("Save").connect('mouse_exited' , get_parent(), 'liga_tiro'   )
+	
+	get_node("Load").connect('mouse_entered', get_parent(), 'desliga_tiro')
+	get_node("Load").connect('mouse_exited' , get_parent(), 'liga_tiro'   )
 	
 	#get_node("PlayPause").connect("pressed",get_parent(),'test_pause')
 	
@@ -57,6 +67,30 @@ func _process(_delta):
 ##############################################################################################
 ## BARRA DE CIMA
 ##############################################################################################
+func _on_Save_pressed():
+	var data = {
+		'populacao' : AI.population,
+		'geracao'   : ControleData.geracao,
+	}
+	var file = File.new()
+	var error = file.open(save_path,File.WRITE)
+	if error == OK:
+		file.store_var(data)
+		file.close()
+		
+	
+	pass # Replace with function body.
+
+
+func _on_Load_pressed():  ## falra pegar de volta as informações e usar no jogo kk
+	var file = File.new()
+	if file.file_exists(save_path):
+		var error = file.open(save_path, File.READ)
+		if error == OK:
+			var output = file.get_var()
+			file.close()
+			print('load: ', output, '\n')
+	pass # Replace with function body.
 
 
 func _on_Som_pressed():
@@ -91,6 +125,10 @@ func _on_QUIT_pressed():
 	print('quit')
 	get_tree().change_scene("res://RAiZ.tscn")
 	
+
+
+func show_geracao(s):
+	$BarraAlto/Gen_result.text = str(s)
 	
 ##############################################################################################
 ## BARRA DE CIMA
@@ -151,13 +189,33 @@ func qt_inimigos(text):
 	
 	
 func _Player_is_NOT_AI():
+	#print('entreou em nao ia ')
 	Player_IA = false
-	return Player_IA
+	ControleData.Player_IA = Player_IA
+	_on_Start_pressed()
 
 
 func _Player_is_AI():
+	#print('entreou em ia vdd')
 	Player_IA = true
-	return Player_IA
+	ControleData.Player_IA = Player_IA
+	_on_Start_pressed()
+
+func tipo_IA_move_atira():
+	#print('entreou em ia move')
+	tipo_IA = 1
+	ControleData.tipo_IA = tipo_IA
+	$A.hide()
+	$B.hide()
+	_on_Start_pressed()
+	
+func tipo_IA_parado():
+	#print('entreou em ia parado')
+	tipo_IA = 0
+	ControleData.tipo_IA = tipo_IA
+	$A.hide()
+	$B.hide()
+	_on_Start_pressed()
 
 ##############################################################################################
 ## BARRA DE BAIXO
@@ -203,40 +261,38 @@ func show_game_win():
 	
 
 func _on_Start_pressed():
-	#if CenaPrincipal.choose_weapon == false: # avisa se esta no modo construcao
-	$MessageLabel.text = 'Choose a Player'
-	if Player_IA != null :
+	#print('entreou em start')
+	if Player_IA == null:
+		 $MessageLabel.text = 'Choose a Player'
+		
+	if Player_IA == true and tipo_IA != null :
+		escolha_arma()
 		#$Start.show()
 		#$Waves.hide()
-		CenaPrincipal.Player_IA = Player_IA
+		
+	elif Player_IA == false:
 		escolha_arma()
+		
+	elif Player_IA != null:
+		$Start.hide()
+		$A.show()
+		$B.show()
+
+
+
 
 func _on_MessageTimer_timeout():
 	$MessageLabel.hide()
 
 func escolha_arma():
+	$Start.show()
 	if choose_weapon == false:
 		$MessageLabel.text = 'Choose a weapon'
-
-#	elif input_usuario_ondas == null : 
-#		$MessageLabel.text = 'Set Waves:'
-#		$Waves.show()
 	
 	else:
+		emit_signal("start_game", tipo_de_tiro)
+		$Start.hide()
 
-	
-		if current_wave == 0:
-			$Start.hide()
-			emit_signal("start_game", tipo_de_tiro)
-			print("wave 0")
-		else:
-			#var wave = AI.start_experiment()
-			#start_next_wave_AI(wave)
-			print("AI")
-			
-func start_next_wave_AI(wave): # roda quando da play e qd o player mata toda a onda
-	yield(get_tree().create_timer(0.5), "timeout")#padding
-#	spawn_enemies(wave)
 
 
 func _on_Input_text_entered(new_text):

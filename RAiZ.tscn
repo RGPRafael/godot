@@ -29,11 +29,11 @@ __meta__ = {
 }
 
 [node name="Label" type="Label" parent="BOTAO_0/Panel"]
-margin_left = 44.5675
-margin_top = 19.3406
-margin_right = 120.568
-margin_bottom = 33.3406
-text = "FIRST GAME"
+margin_left = 55.0
+margin_top = 20.0
+margin_right = 131.001
+margin_bottom = 34.0
+text = "Asteroids"
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -43,7 +43,7 @@ margin_left = 26.0
 margin_top = 48.0
 margin_right = 148.0
 margin_bottom = 68.0
-text = "CRAP GAME"
+text = "BEGIN"
 __meta__ = {
 "_edit_use_anchors_": false
 }

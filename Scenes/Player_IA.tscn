@@ -1,0 +1,33 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Scenes/Player.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Scenes/Player_IA.gd" type="Script" id=2]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 249.796, 543.798 )
+
+[node name="Player" instance=ExtResource( 1 )]
+position = Vector2( 600.596, 580.831 )
+script = ExtResource( 2 )
+speed = 700
+
+[node name="Area_IA" type="Area2D" parent="." index="5"]
+collision_layer = 32
+collision_mask = 2
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Area_IA" index="0"]
+position = Vector2( 131.609, 28.014 )
+scale = Vector2( 16.6175, 42.0798 )
+polygon = PoolVector2Array( -2.75051, -1.95449, -2.53751, -13.5218, 19.0892, -13.7592, 19.0893, 14.9384, -2.74591, 15.0169 )
+disabled = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area_IA" index="1"]
+visible = false
+position = Vector2( 310.033, 23.1614 )
+shape = SubResource( 1 )
+
+[node name="look_position" type="Node2D" parent="." index="6"]
+position = Vector2( 557.702, 4.47264 )
+
+[connection signal="area_entered" from="Area_IA" to="." method="is_colliding_IA"]
+[connection signal="area_exited" from="Area_IA" to="." method="is_not_colliding_IA"]

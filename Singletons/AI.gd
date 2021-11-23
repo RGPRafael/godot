@@ -10,7 +10,8 @@ var Enemy_Type = ['inimigos', 'inimigo1', 'inimigo2', 'inimigo3', 'inimigo4']
 
 var Max_time = 5
 
-var population = [['inimigos', 1], ['inimigos', 0.9], ['inimigos', 0.2], ['inimigos', 1], ['inimigos', 0.1], ['inimigos', 0.2]]
+var population = [['inimigos', 1], ['inimigo1', 0.9], ['inimigo2', 0.2], ['inimigo3', 1], ['inimigo4', 0.1] , ['inimigos', 0.1]]
+				  #['inimigos', 1], ['inimigos', 0.9], ['inimigos', 0.2], ['inimigos', 1], ['inimigos', 0.1]]
 
 ## receives the results that this generation achieved
 ## in this example, receives a vector [REACHED_GOAL_BIN, TIME_ALIVE]
@@ -20,12 +21,17 @@ var population_res = [[false, 0], [false, 0], [false, 0], [false, 0], [false, 0]
 var id = -1
 
 # inputs of the equation
-var n = 6
+var n = population.size()
 
 var num_weights = 2  # Number of the weights we are looking to optimize.
 
 # Is right?
-var pop_size = [6,2]
+var pop_size = [population.size(),2]
+
+# to get random values
+var rng = RandomNumberGenerator.new ()
+
+var mutation_prob = 10 #90%
 
 func _ready():
 	population_res.resize (pop_size[0])
@@ -110,61 +116,58 @@ func crossover (parents, offspring_size):
 
 	return offspring
 
+# use the 3 functions below (mutation_int, mutation_float, mutation_string) to
+# generate random values for the genes of the individual. You need to adapt for
+# your specific program
 func mutation_int (idx):
-	pass
+	return 0
 	
 func mutation_float (idx):
+	# the list of genes available
 	var gene
-	if idx == 2:
+	
+	# the index of the chromossome that contains a gene of type float.
+	if idx == 1:
 		gene = Max_time
-		
-	var rng = RandomNumberGenerator.new ()
 	
 	return rng.randf_range (-gene, gene)
 	
 func mutation_string (idx):
 	var gene
-	if (idx == 1):
+	if (idx == 0):
 		gene = Enemy_Type
 		
-	var rng = RandomNumberGenerator.new()
+	var random_index = rng.randi_range (0, gene.size() - 1)
 	
-	var random_index = rng.rangi_range (1, gene.size())
+	print ('gene: ', gene[random_index])
 	
-	print (gene[random_index])
-	
-	return gene [random_index]
+	return gene[random_index]
 
 # In certain situations in nature mutations can occur and will give more
-#diversity to the population 
+# diversity to the population 
 func mutation(offspring_crossover):
-
-	var rng = RandomNumberGenerator.new ()
-	
-	print (offspring_crossover[0].size())
-		
 	# Mutation changes a single gene in each offspring randomly.
 	for idx in range(offspring_crossover.size ()):
-
+		
 		# The random value to be added to the gene.
 
 		var random_index = rng.randi_range (0, offspring_crossover[idx].size() - 1)
 		
-		if offspring_crossover[idx] is String:
-			offspring_crossover[idx] = mutation_string (idx)
+		if offspring_crossover[idx][random_index] is String:
+			offspring_crossover[idx][random_index] = mutation_string (random_index)
 
-		elif offspring_crossover[idx] is int:		
-			offspring_crossover[idx] += mutation_int (idx)
+		elif offspring_crossover[idx][random_index] is int:		
+			offspring_crossover[idx][random_index] += mutation_int (random_index)
 		
-		elif offspring_crossover[idx] is float:
-			offspring_crossover[idx] += mutation_float (idx)
+		elif offspring_crossover[idx][random_index] is float:
+			offspring_crossover[idx][random_index] += mutation_float (random_index)
 
 	return offspring_crossover
 
 func start_experiment ():
-	var num_parents_mating = 4
+	var num_parents_mating = int(population.size() *2/3)
 	
-	print (population_res)
+	#print ('pop_res....', population_res)
 	
 	# Measuring the fitness of each chromosome in the population.
 	var fitness = cal_pop_fitness(population_res)
@@ -172,7 +175,7 @@ func start_experiment ():
 	# Selecting the best parents in the population for mating.
 	var parents = select_mating_pool(population, fitness, num_parents_mating)
 	
-	print (parents)
+	#print ('parents....', parents)
 	
 	# Generating next generation using crossover.
 	var offspring_size = [pop_size[0] - parents.size(), num_weights]
