@@ -44,7 +44,15 @@ func show_text(dano):
 	add_child(text)
 	
 	
-
+func carregar_dados(tipo_inimigo, tempo):
+	print(tipo_inimigo,'  ', tempo)
+	tipo_de_inimigo = tipo_inimigo
+	speed  = ControleData.inimigos_data[ tipo_inimigo]["speed"]
+	damage = ControleData.inimigos_data[tipo_inimigo]["damage"]
+	resist = ControleData.inimigos_data[tipo_inimigo]["resist"]
+	id = AI.id()
+	padding = tempo 
+	pass
 
 func _ready():
 	life = true
@@ -52,9 +60,11 @@ func _ready():
 	in_scene = true
 	v = global_position.direction_to(CenaPrincipal.posicao_jogador)
 	var node_visibility = get_node('VisibilityNotifier2D')
+# warning-ignore:return_value_discarded
 	.connect('killed',get_parent().get_parent(),'show_death',[],4) #isso é mt safadeza
 	node_visibility.connect('screen_exited', self, '_on_VisibilityNotifier2D_screen_exited')
 	node_visibility.connect('screen_exited', self, '_on_VisibilityNotifier2D_screen_exited')
+# warning-ignore:return_value_discarded
 	.connect("area_entered",self,'_hit')
 	
 	var node_flash = get_node('FlashTimer')
@@ -75,14 +85,7 @@ func _hit(area):
 		show_text(area.base_damage)
 		
 		flash() # animação adicionada
-		
-		#var p = particle.instance()
-		
-		#p.set_position(area.take_position())
-		#p.set_emitting(true)
-		#add_child(p)
-#		#particle_Bool = false
-		
+				
 		area.queue_free()
 
 		

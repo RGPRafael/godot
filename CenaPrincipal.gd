@@ -145,37 +145,18 @@ func Verifica_barradevida() :
 
 
 func criando_inimigos():
-	if geracao == 0:
-
-		for i in dados_inimigos :
-			var s = 'res://Scenes/Inimigos/' + i[0] + ".tscn"
-			var mob = load(s).instance()
-			mob.tipo_de_inimigo = i[0]
-			mob.speed  = inimigos_data[i[0]]["speed"]
-			mob.damage = inimigos_data[i[0]]["damage"]
-			mob.resist = inimigos_data[i[0]]["resist"]
-			mob.id = AI.id()
-			mob.padding = i[1] 
-			#var aux = [mob, i[1]]
-			array_inimigos.append(mob) # 
-
-	else:
-		var new_population =  AI.start_experiment()
-		print(geracao, ' new_population', new_population)
-		for i in new_population :
-			var s = 'res://Scenes/Inimigos/' + i[0] + ".tscn"
-			#print('i[1] ', i[1])
-			var mob = load(s).instance()
-			mob.tipo_de_inimigo = i[0]
-			mob.speed  = inimigos_data[i[0]]["speed"]
-			mob.damage = inimigos_data[i[0]]["damage"]
-			mob.resist = inimigos_data[i[0]]["resist"]
-			mob.id = AI.id()
-			mob.padding = i[1]
-			#var aux = [mob, i[1]]
-			array_inimigos.append(mob) # 
-
+	var new_population = []
+	if geracao == 0 : new_population = dados_inimigos
+	else            : new_population =  AI.start_experiment()
 	
+	print(geracao, ' new_population', new_population)
+	
+	for i in new_population :
+		var s = 'res://Scenes/Inimigos/' + i[0] + ".tscn"
+		var mob = load(s).instance()
+		mob.carregar_dados(i[0] , i[1])
+		array_inimigos.append(mob) # 
+		
 	geracao +=1
 	print('geracao:', geracao)
 ####################################

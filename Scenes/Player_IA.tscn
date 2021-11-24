@@ -9,6 +9,8 @@ radius = 356.154
 [node name="Player" instance=ExtResource( 1 )]
 position = Vector2( 600.596, 580.831 )
 script = ExtResource( 2 )
+speed = 700
+fire_rate = 0.5
 
 [node name="Area_IA" type="Area2D" parent="." index="5"]
 collision_layer = 32
