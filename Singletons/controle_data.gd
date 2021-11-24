@@ -6,6 +6,9 @@ extends Node
 # Variaveis relacionados ao Inimigo
 #
 ###########################################################################
+#var posiçoes_iniciais = 
+
+
 var geracao
 var inimigos_data = {
 	"inimigos": {

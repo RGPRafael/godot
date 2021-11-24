@@ -14,6 +14,7 @@ var life
 var hit   # acertou ou nao o jogador
 var in_scene
 var padding
+var start_pos
 
 
 var floating_text = preload('res://Scenes/Pop up.tscn')

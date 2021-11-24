@@ -28,7 +28,6 @@ _global_script_class_icons={
 
 config/name="Versao DEMO JOGO 3"
 run/main_scene="res://RAiZ.tscn"
-config/use_custom_user_dir=true
 config/icon="res://icon.png"
 
 [autoload]
