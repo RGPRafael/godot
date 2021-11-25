@@ -1,7 +1,7 @@
 [gd_scene load_steps=28 format=2]
 
 [ext_resource path="res://Assets/fonts/Xolonium-Regular.ttf" type="DynamicFontData" id=1]
-[ext_resource path="res://Interface.gd" type="Script" id=2]
+[ext_resource path="res://Scenes/Interface.gd" type="Script" id=2]
 [ext_resource path="res://Assets/tiro/towerDefense_tile297.png" type="Texture" id=3]
 [ext_resource path="res://Assets/UI/red_button06.png" type="Texture" id=4]
 [ext_resource path="res://Assets/UI/green_button12.png" type="Texture" id=5]
@@ -18,6 +18,7 @@
 [ext_resource path="res://Assets/UI/audioOn.png" type="Texture" id=16]
 [ext_resource path="res://Assets/UI/fastForward.png" type="Texture" id=17]
 [ext_resource path="res://Assets/UI/stop.png" type="Texture" id=18]
+
 
 [sub_resource type="DynamicFont" id=1]
 size = 64

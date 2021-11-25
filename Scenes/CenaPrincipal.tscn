@@ -1,6 +1,6 @@
 [gd_scene load_steps=7 format=2]
 
-[ext_resource path="res://CenaPrincipal.gd" type="Script" id=1]
+[ext_resource path="res://Scenes/CenaPrincipal.gd" type="Script" id=1]
 [ext_resource path="res://Assets/songs/ready.ogg" type="AudioStream" id=3]
 [ext_resource path="res://Scenes/Interface.tscn" type="PackedScene" id=4]
 [ext_resource path="res://Assets/songs/game_over.ogg" type="AudioStream" id=5]
@@ -22,7 +22,7 @@ one_shot = true
 position = Vector2( 630.188, 544.841 )
 
 [node name="Position2D1" type="Position2D" parent="."]
-position = Vector2( 90, -50 )
+position = Vector2( 600, -100 )
 
 [node name="Position2D2" type="Position2D" parent="."]
 position = Vector2( 90, 750 )

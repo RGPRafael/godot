@@ -8,16 +8,21 @@ extends Node
 
 var Enemy_Type = ['inimigos', 'inimigo1', 'inimigo2', 'inimigo3', 'inimigo4']
 
-var Max_time = 3
+var Max_time = 3 #
 #genes ( Enemy_Type, padding, posistion)
-var population = [['inimigos', 1, Vector2(90,-50)], 
-				  ['inimigo1', 0.9, Vector2(1200,800)], 
-				  ['inimigo2', 0.2, Vector2(1350,-50)], 
-				  ['inimigo3', 1, Vector2(1350,800)], 
-				  ['inimigo4', 0.1, Vector2(-100,100)], 
-				  ['inimigos', 0.1, Vector2(-50,800)] ]
+#var population = [['inimigos', 1, Vector2(90,-50)], 
+#				  ['inimigo1', 0.9, Vector2(1200,800)], 
+#				  ['inimigo2', 0.2, Vector2(1350,-50)], 
+#				  ['inimigo3', 1, Vector2(1350,800)], 
+#				  ['inimigo4', 0.1, Vector2(-100,100)], 
+#				  ['inimigos', 0.1, Vector2(-50,800)] ]
 
-
+var population = [['inimigos', 1 ], 
+				  ['inimigo1', 0.9], 
+				  ['inimigo2', 0.2], 
+				  ['inimigo3', 1], 
+				  ['inimigo4', 0.1], 
+				  ['inimigos', 0.1 ] ]
 ## receives the results that this generation achieved
 ## in this example, receives a vector [REACHED_GOAL_BIN, TIME_ALIVE]
 var population_res = [[false, 0], [false, 0], [false, 0], [false, 0], [false, 0], [false, 0]]

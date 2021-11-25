@@ -27,18 +27,26 @@ var inimigos_vivos = 0   # inimigos q vao sendo criados
 var dead_inimigos
 var geracao = 0
 var geracao_atual
+var posicao_base_randon = Vector2(600,-100)
+var tamanho_tela = [0,1280]
 #var current_wave = 0 # Contador de onda
 var array_inimigos = [] 
 var inimigo_atual # qt de inimigos instanciados
 
-var dados_inimigos = [['inimigos',1, Vector2(90,-50)], 
-					  ['inimigo1',1, Vector2(90,-50)], 
-					  ['inimigo2',1, Vector2(90,-50)], 
-					  ['inimigo3',1, Vector2(90,-50)], 
-					  ['inimigo4',1, Vector2(-90,-50)], 
-					  ['inimigos',1, Vector2(90,-50)] ]
+#var dados_inimigos = [['inimigos',1, Vector2(90,-50)], 
+#					  ['inimigo1',1, Vector2(90,-50)], 
+#					  ['inimigo2',1, Vector2(90,-50)], 
+#					  ['inimigo3',1, Vector2(90,-50)], 
+#					  ['inimigo4',1, Vector2(-90,-50)], 
+#					  ['inimigos',1, Vector2(90,-50)] ]
 
-
+var dados_inimigos = [['inimigos',1], 
+					  ['inimigo1',1], 
+					  ['inimigo2',1], 
+					  ['inimigo3',1], 
+					  ['inimigo4',1], 
+					  ['inimigos',1] ]
+					
 var num_inimigos = dados_inimigos.size()   # total de inimigos naquela fase 
 
 var inimigos_data 
@@ -158,7 +166,8 @@ func criando_inimigos():
 	for i in new_population :
 		var s = 'res://Scenes/Inimigos/' + i[0] + ".tscn"
 		var mob = load(s).instance()
-		mob.carregar_dados(i[0] , i[1], i[2])
+		#mob.carregar_dados(i[0] , i[1], i[2])
+		mob.carregar_dados(i[0] , i[1], posicao_base_randon)
 		array_inimigos.append(mob) # 
 		
 	geracao +=1
@@ -184,29 +193,19 @@ func add_inimigos_cena():
 		inimigos_vivos += 1
 		yield(get_tree().create_timer(0.8), "timeout")#padding
 		$HUD.qt_inimigos(str(inimigos_vivos))
-		
-		
-		
-		
-################################################################################
-# Ao implementar o pause a funcao add_inimigos_cena estava dando problema
-# os inimigos ainda eram instanciados e colocados em cena porem nao se moviam
-# depois do pause voltar os inimigos criados se moviem de novo... 
-# comportamento aceitavel ? XD 
-###############################################################################
 
 func _on_MobTimer_timeout():
 	
 	if inimigo_atual < num_inimigos and Player.life > 0:
 		var mob = array_inimigos[inimigo_atual]
 
-		#mob.random_position()
+		mob.random_position_x(tamanho_tela)
 		get_node("Arvore_inimigos").add_child(mob)
 		inimigos_vivos += 1
 		
 		$HUD.qt_inimigos(str(inimigos_vivos))
 		inimigo_atual += 1
-
+		#[tipo inimigo, 2, padding]
 		$StartTimer.set_wait_time(mob.padding)
 
 		$StartTimer.start()
@@ -309,7 +308,7 @@ func Carrega_player():
 		Scene_player = preload("res://Scenes/Player_IA_parado.tscn")
 		
 	elif Player_IA == false :
-		Scene_player = preload('res://Scenes/Player.tscn')
+		Scene_player = preload('res://Scenes/Player_user.tscn')
 
 
 	return Scene_player.instance()

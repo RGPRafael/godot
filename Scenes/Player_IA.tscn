@@ -9,21 +9,12 @@ radius = 356.154
 [node name="Player" instance=ExtResource( 1 )]
 position = Vector2( 600.596, 580.831 )
 script = ExtResource( 2 )
-speed = 700
-fire_rate = 0.5
 
 [node name="Area_IA" type="Area2D" parent="." index="5"]
 collision_layer = 32
 collision_mask = 2
 
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Area_IA" index="0"]
-visible = false
-position = Vector2( 131.609, 28.014 )
-scale = Vector2( 16.6175, 42.0798 )
-polygon = PoolVector2Array( -2.75051, -1.95449, -2.53751, -13.5218, 19.0892, -13.7592, 19.0893, 14.9384, -2.74591, 15.0169 )
-disabled = true
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area_IA" index="1"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area_IA" index="0"]
 position = Vector2( 218.636, 3.68393 )
 shape = SubResource( 1 )
 

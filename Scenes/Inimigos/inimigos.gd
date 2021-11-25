@@ -51,7 +51,13 @@ func random_position():
 	position = ControleData.enemy_locations[randi() % n]
 	start_pos = position
 	
+func random_position_x(tam):
+	var rng = RandomNumberGenerator.new()
+	rng.randomize()
+	position.x  = rand_range(tam[0], tam[1])
+	start_pos = position
 	
+		
 func carregar_dados(tipo_inimigo, tempo, pos):
 	print(tipo_inimigo,'  ', tempo)
 	tipo_de_inimigo = tipo_inimigo

@@ -32,7 +32,7 @@ config/icon="res://icon.png"
 
 [autoload]
 
-CenaPrincipal="*res://CenaPrincipal.gd"
+CenaPrincipal="*res://Scenes/CenaPrincipal.gd"
 AI="*res://Singletons/AI.gd"
 ControleData="*res://Singletons/controle_data.gd"
 
