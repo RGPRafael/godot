@@ -31,8 +31,12 @@ var geracao_atual
 var array_inimigos = [] 
 var inimigo_atual # qt de inimigos instanciados
 
-var dados_inimigos = [['inimigos',1] , ['inimigo1',1] , ['inimigo2',1], ['inimigo3',1], ['inimigo4',1] , ['inimigos',1]]
-					  #['inimigos'] , ['inimigos'] , ['inimigos'], ['inimigos'], ['inimigos']]
+var dados_inimigos = [['inimigos',1, Vector2(90,-50)], 
+					  ['inimigo1',1, Vector2(90,-50)], 
+					  ['inimigo2',1, Vector2(90,-50)], 
+					  ['inimigo3',1, Vector2(90,-50)], 
+					  ['inimigo4',1, Vector2(-90,-50)], 
+					  ['inimigos',1, Vector2(90,-50)] ]
 
 
 var num_inimigos = dados_inimigos.size()   # total de inimigos naquela fase 
@@ -154,7 +158,7 @@ func criando_inimigos():
 	for i in new_population :
 		var s = 'res://Scenes/Inimigos/' + i[0] + ".tscn"
 		var mob = load(s).instance()
-		mob.carregar_dados(i[0] , i[1])
+		mob.carregar_dados(i[0] , i[1], i[2])
 		array_inimigos.append(mob) # 
 		
 	geracao +=1
@@ -192,14 +196,11 @@ func add_inimigos_cena():
 ###############################################################################
 
 func _on_MobTimer_timeout():
-
+	
 	if inimigo_atual < num_inimigos and Player.life > 0:
 		var mob = array_inimigos[inimigo_atual]
 
-		var x = rng.randf_range(200,1000)
-		mob.position.x = x
-		mob.position.y = $InimigoPosition_start.position.y
-		#mob.start_pos = 
+		#mob.random_position()
 		get_node("Arvore_inimigos").add_child(mob)
 		inimigos_vivos += 1
 		
@@ -323,7 +324,7 @@ func clear_memory_and_copy_data():
 	for k in n:
 		var data = []
 		data.append(k.hit)   #reached goal
-		data.append(k.time_elapsed)
+		data.append(k.resist/ k.hp_total )
 		AI.population_res[k.id] = data
 		#k.tipo_de_inimigo k.speed  k.damage k.resist k.life k.hit k.id
 		k.free()

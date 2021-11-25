@@ -15,6 +15,7 @@ var hit   # acertou ou nao o jogador
 var in_scene
 var padding
 var start_pos
+var hp_total
 
 
 var floating_text = preload('res://Scenes/Pop up.tscn')
@@ -43,15 +44,24 @@ func show_text(dano):
 	text.dano = dano
 	add_child(text)
 	
+func random_position():
+	var rng = RandomNumberGenerator.new()
+	rng.randomize()
+	var n = ControleData.enemy_locations.size()
+	position = ControleData.enemy_locations[randi() % n]
+	start_pos = position
 	
-func carregar_dados(tipo_inimigo, tempo):
+	
+func carregar_dados(tipo_inimigo, tempo, pos):
 	print(tipo_inimigo,'  ', tempo)
 	tipo_de_inimigo = tipo_inimigo
 	speed  = ControleData.inimigos_data[ tipo_inimigo]["speed"]
 	damage = ControleData.inimigos_data[tipo_inimigo]["damage"]
 	resist = ControleData.inimigos_data[tipo_inimigo]["resist"]
+	hp_total = resist
 	id = AI.id()
-	padding = tempo 
+	padding = tempo
+	position = pos 
 	pass
 
 func _ready():

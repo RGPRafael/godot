@@ -8,10 +8,15 @@ extends Node
 
 var Enemy_Type = ['inimigos', 'inimigo1', 'inimigo2', 'inimigo3', 'inimigo4']
 
-var Max_time = 5
+var Max_time = 3
+#genes ( Enemy_Type, padding, posistion)
+var population = [['inimigos', 1, Vector2(90,-50)], 
+				  ['inimigo1', 0.9, Vector2(1200,800)], 
+				  ['inimigo2', 0.2, Vector2(1350,-50)], 
+				  ['inimigo3', 1, Vector2(1350,800)], 
+				  ['inimigo4', 0.1, Vector2(-100,100)], 
+				  ['inimigos', 0.1, Vector2(-50,800)] ]
 
-var population = [['inimigos', 1], ['inimigo1', 0.9], ['inimigo2', 0.2], ['inimigo3', 1], ['inimigo4', 0.1] , ['inimigos', 0.1]]
-				  #['inimigos', 1], ['inimigos', 0.9], ['inimigos', 0.2], ['inimigos', 1], ['inimigos', 0.1]]
 
 ## receives the results that this generation achieved
 ## in this example, receives a vector [REACHED_GOAL_BIN, TIME_ALIVE]
@@ -26,7 +31,7 @@ var n = population.size()
 var num_weights = 2  # Number of the weights we are looking to optimize.
 
 # Is right?
-var pop_size = [population.size(),2]
+var pop_size = [n,population[0].size()]
 
 # to get random values
 var rng = RandomNumberGenerator.new ()
@@ -43,20 +48,31 @@ func id ():
 	return id
 
 # IMPORTANT TO DEFINE THIS FUNCTION FOR EACH GAME
-func measure_fitness ():
-	pass
+func measure_fitness_SpaceShip(result):
+	# FItness dos asteroids = ( 5 x acertou-jogador + 5 x porcentagem-de-vida ) / 10 
+	var fit = 0
+	var hit = 0
+	var percent_hp = 0
+	if result[0] == true: #atingiu o player
+		hit = 5 
+	else: hit = 0
+	 
+	percent_hp = 5 * result[1]
+	
+	fit = ( hit + percent_hp )/10
+	return fit
 
 #    In this game, we measure the fitness with the time that the enemys survived 
 # or if they reached the destination
-func measure_fitness_TD (chromossome):
+func measure_fitness_TD (result):
 	var fit = 0
 	
-	if chromossome[0] == true:
+	if result[0] == true:
 		fit = 100
 	else:
 		fit = -100
 		
-	fit += chromossome[1] * 100
+	fit += result[1] * 100
 	return fit
 
 
@@ -67,7 +83,7 @@ func cal_pop_fitness(pop):
 	var fitness = []
 	
 	for i in pop:
-		fitness.append(measure_fitness_TD(i))
+		fitness.append(measure_fitness_SpaceShip(i))
 		
 	return fitness
 
@@ -89,10 +105,11 @@ func select_mating_pool(pop, fitness, num_parents):
 
 ## Cross over process, will take half of the genes of each parent.
 func crossover (parents, offspring_size):
+	#parent = [ [gene1, gene2 ], [gene1,gene2 ] ]
 	var offspring = []
 
 	# The point at which crossover takes place between two parents. Usually, it is at the center.
-	var crossover_point = offspring_size[1] / 2
+	var crossover_point = int (offspring_size[1] / 2 )
  
 	for k in range(offspring_size[0]):
 		var child = []
@@ -108,7 +125,7 @@ func crossover (parents, offspring_size):
 			child.append (parents [parent1_idx][i])
 
 		# The new offspring will have its second half of its genes taken from the second parent.
-		for i in range (crossover_point):
+		for i in range (offspring_size[1] - crossover_point ):
 			child.append (parents [parent2_idx][i + crossover_point])
 			##maybe  remove + 1
 
@@ -130,7 +147,7 @@ func mutation_float (idx):
 	if idx == 1:
 		gene = Max_time
 	
-	return rng.randf_range (-gene, gene)
+	return rng.randf_range (0, gene)
 	
 func mutation_string (idx):
 	var gene
@@ -142,6 +159,15 @@ func mutation_string (idx):
 	print ('gene: ', gene[random_index])
 	
 	return gene[random_index]
+
+
+func random_position():
+	var rng = RandomNumberGenerator.new()
+	rng.randomize()
+	var n = ControleData.enemy_locations.size()
+	return ControleData.enemy_locations[randi() % n]
+
+
 
 # In certain situations in nature mutations can occur and will give more
 # diversity to the population 
@@ -161,9 +187,13 @@ func mutation(offspring_crossover):
 		
 		elif offspring_crossover[idx][random_index] is float:
 			offspring_crossover[idx][random_index] += mutation_float (random_index)
+			
+		else:
+			offspring_crossover[idx][random_index] = random_position()
 
 	return offspring_crossover
-
+	
+	
 func start_experiment ():
 	var num_parents_mating = int(population.size() *2/3)
 	
@@ -178,7 +208,9 @@ func start_experiment ():
 	#print ('parents....', parents)
 	
 	# Generating next generation using crossover.
-	var offspring_size = [pop_size[0] - parents.size(), num_weights]
+	#  offspring_size[0] = quantidade de filhotes
+	#  offspring_size[1] = quantidade de genes
+	var offspring_size = [pop_size[0] - parents.size(), pop_size[1]]
 	
 	var offspring_crossover = crossover (parents, offspring_size)
 
