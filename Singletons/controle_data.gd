@@ -37,9 +37,12 @@ var inimigos_data = {
 		"speed" : 550},
 }
 
-var tower_locations = PoolVector2Array([Vector2(256, 448), Vector2(640, 384)])
-
-
+var locations= [ Vector2(90,-50), Vector2(200,-50), Vector2(500,-50), Vector2(800,-50), Vector2(1200,-50),
+				 Vector2(-100,300), Vector2(-100,500), Vector2(-100,800), Vector2(-100,100), Vector2(-100,600),
+				 Vector2(1350,300), Vector2(1350,100), Vector2(1350,-50), Vector2(1350,500), Vector2(1350,700),
+				 Vector2(620,800), Vector2(1200,800), Vector2(1350,800), Vector2(100,800), Vector2(-50,800)]
+				
+var enemy_locations = PoolVector2Array( locations )
 ###########################################################################
 #
 # Variaveis relacionados ao Inimigo
