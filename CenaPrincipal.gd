@@ -40,6 +40,7 @@ var num_inimigos = dados_inimigos.size()   # total de inimigos naquela fase
 var inimigos_data 
 var input_user_text # quantidade de ondas que o usuario digitou q quer  enfrentar
 
+
 ###########################################################################
 #
 # Variaveis relacionados ao Inimigo
@@ -144,39 +145,20 @@ func Verifica_barradevida() :
 
 
 func criando_inimigos():
-	if geracao == 0:
-
-		for i in dados_inimigos :
-			var s = 'res://Scenes/Inimigos/' + i[0] + ".tscn"
-			var mob = load(s).instance()
-			mob.tipo_de_inimigo = i[0]
-			mob.speed  = inimigos_data[i[0]]["speed"]
-			mob.damage = inimigos_data[i[0]]["damage"]
-			mob.resist = inimigos_data[i[0]]["resist"]
-			mob.id = AI.id()
-			mob.padding = i[1] 
-			#var aux = [mob, i[1]]
-			array_inimigos.append(mob) # 
-
-	else:
-		var new_population =  AI.start_experiment()
-		print(geracao, ' new_population', new_population)
-		for i in new_population :
-			var s = 'res://Scenes/Inimigos/' + i[0] + ".tscn"
-			#print('i[1] ', i[1])
-			var mob = load(s).instance()
-			mob.tipo_de_inimigo = i[0]
-			mob.speed  = inimigos_data[i[0]]["speed"]
-			mob.damage = inimigos_data[i[0]]["damage"]
-			mob.resist = inimigos_data[i[0]]["resist"]
-			mob.id = AI.id()
-			mob.padding = i[1]
-			#var aux = [mob, i[1]]
-			array_inimigos.append(mob) # 
-
+	var new_population = []
+	if geracao == 0 : new_population = dados_inimigos
+	else            : new_population =  AI.start_experiment()
 	
+	print(geracao, ' new_population', new_population)
+	
+	for i in new_population :
+		var s = 'res://Scenes/Inimigos/' + i[0] + ".tscn"
+		var mob = load(s).instance()
+		mob.carregar_dados(i[0] , i[1])
+		array_inimigos.append(mob) # 
+		
 	geracao +=1
-	print(geracao)
+	print('geracao:', geracao)
 ####################################
 	ControleData.geracao = geracao 
 ####################################
@@ -210,24 +192,24 @@ func add_inimigos_cena():
 ###############################################################################
 
 func _on_MobTimer_timeout():
-	#print('entroue em mob timer..')
 
 	if inimigo_atual < num_inimigos and Player.life > 0:
-		#print('inimigo_atual: ', inimigo_atual)
 		var mob = array_inimigos[inimigo_atual]
-		#var x = randf_range(150.0, 1100.0)
+
 		var x = rng.randf_range(200,1000)
 		mob.position.x = x
 		mob.position.y = $InimigoPosition_start.position.y
-		
-
+		#mob.start_pos = 
 		get_node("Arvore_inimigos").add_child(mob)
 		inimigos_vivos += 1
 		
 		$HUD.qt_inimigos(str(inimigos_vivos))
 		inimigo_atual += 1
+
 		$StartTimer.set_wait_time(mob.padding)
+
 		$StartTimer.start()
+		
 	
 	elif  inimigo_atual == num_inimigos and Player.life > 0:
 		$StartTimer.stop()
@@ -238,7 +220,15 @@ func _on_MobTimer_timeout():
 		game_over()
 	pass
 
-
+func _on_StartTimer_timeout():
+	#print('inimigo_index: ', inimigo_atual, ' start timer..:' , $StartTimer.get_wait_time() , ' mob timer: ', $MobTimer.get_wait_time())
+	if Player.life > 0:
+		$MobTimer.start()
+		$ScoreTimer.start()
+	#add_inimigos_cena()
+	pass
+	
+	
 func show_death():
 	dead_inimigos += 1
 	$HUD.show_dead_inimigos(dead_inimigos)
@@ -269,48 +259,39 @@ func liga_tiro():
 
 func set_variaveis_globais():
 	score = 0
-	#geracao = 0
 	dead_inimigos = 0
 	base_health = 100
 	inimigos_vivos = 0
 	life_jogador = 3
-	inimigo_atual = 0
 
 func desliga_som():
-	print('desliga-som')
+	#print('desliga-som')
+	pass
 
 func new_game(tipo_detiro):
-
-
-	Player_IA = ControleData.Player_IA
-	tipo_IA  = ControleData.tipo_IA
-
-
-	set_variaveis_globais()
-	criando_inimigos()
-	$HUD.show_message("READY?")
-	$Musicas/Ready.play()
-	
-	#print('entrando em player')
-
-
-	if Player == null:	
+	print('new_game')
+	inimigo_atual = 0
+	if geracao == 0 and Player == null:
+		Player_IA = ControleData.Player_IA
+		tipo_IA  = ControleData.tipo_IA
+		set_variaveis_globais()
+		
 		Player = Carrega_player()
 		Player.position = $StartPosition.get_global_position()
 		add_child(Player)
 		Player.connect('hit' , self, 'player_damage' )
-		#$Player._tiro(tipo_detiro)
-		#$Player.start(life_jogador)
-	
-	Player._tiro(tipo_detiro)
+		Player._tiro(tipo_detiro)
+		$HUD.update_score(score)
+		$HUD.prepare_bar(base_health)
+		$HUD.qt_vida(life_jogador)
+
 	Player.start(life_jogador)
-	
-	
+	criando_inimigos()
+	$HUD.show_message("GET READY")
+	$Musicas/Ready.play()
+
+	$StartTimer.set_wait_time(1)
 	$StartTimer.start()
-	
-	$HUD.update_score(score)
-	$HUD.prepare_bar(base_health)
-	$HUD.qt_vida(life_jogador)
 	
 	$HUD.show_geracao(geracao)
 	#add_inimigos_cena()
@@ -345,58 +326,48 @@ func clear_memory_and_copy_data():
 		data.append(k.time_elapsed)
 		AI.population_res[k.id] = data
 		#k.tipo_de_inimigo k.speed  k.damage k.resist k.life k.hit k.id
-		k.queue_free()
+		k.free()
 
 
 func game_over():
 	#guarda_inimigos()
 	#debug_inimigos(array_inimigos)
 	
-	#$Player.pode_atirar = false
+
 	Player.pode_atirar = false
 	$Musicas/Game_over_back.play()
 	
 	$ScoreTimer.stop()
 	$MobTimer.stop()
+	clear_memory_and_copy_data()
 	$HUD.show_game_over()
 	
 	$Musicas/Game_over.play()
 	$HUD.stop_bar()
-	clear_memory_and_copy_data()
+	#clear_memory_and_copy_data()
 	
-	#print(Wave)
 
 func game_win():
 	#guarda_inimigos()
-	#$Player.pode_atirar = false
+	print('win')
 	Player.pode_atirar = false
 	$ScoreTimer.stop()
 	$MobTimer.stop()
 	
-	#debug_inimigos(array_inimigos)
+	clear_memory_and_copy_data()
 	
 	$HUD.show_game_win()
 	$Musicas/win.play()
-	clear_memory_and_copy_data()
+	#clear_memory_and_copy_data()
 	
-	#print(Wave)
 
 
 func _on_ScoreTimer_timeout():
 	score += 1
 	$HUD.update_score(score)
 
-func _on_StartTimer_timeout():
-	#print('entroue em start timer..')
-	if Player.life > 0:
-		$MobTimer.start()
-		$ScoreTimer.start()
-	#add_inimigos_cena()
-	pass
 
 
-	
-	
 ###########################################################################
 #
 # Funções de controle do jogo
@@ -431,7 +402,7 @@ func debug_inimigos(_array):
 # Instead goes straight into ~/.local/share
 # Probably related to the non-standart directory organization, needs fixing
 func write_data(data):
-	print(total_damage)
+	print('total_damage: ', total_damage)
 	var path = 'user://ast_data.csv'
 	var file = File.new()
 	

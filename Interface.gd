@@ -232,8 +232,18 @@ func show_message(text):
 	$MessageLabel.show()
 	$MessageTimer.start()
 	
+	
+##############################################################################################
+#
+# Modificando show_game over e show game win de tal maneira que o jogador fique fadado
+# a usar o mesmo tiro ate morrer.. assim nao precisamos setar o tiro toda vez
+# auxiliando na autmaçao dos testes..caso queiramos voltar para o antigo comportament0
+# descomentar choose_weapon e $start.show()
+#
+###############################################################################################	
+
 func show_game_over():
-	choose_weapon = false
+	#choose_weapon = false
 	show_message("Game Over")
 	# Wait until the MessageTimer has counted down.
 	
@@ -241,36 +251,47 @@ func show_game_over():
 
 	$MessageLabel.text = "AGAIN?!"
 	$MessageLabel.show()
-	# Make a one-shot timer and wait for it to finish.
-	yield(get_tree().create_timer(1), "timeout")
-	$Start.show()
-	
+
+	yield(get_tree().create_timer(5), "timeout") # Make a one-shot timer and wait for it to finish.
+
+	get_tree().change_scene("res://Scenes/TUTOTIAL GODOT.tscn")
 	
 func show_game_win():
-	choose_weapon = false
+	#choose_weapon = false
 	show_message("You Win")
-	# Wait until the MessageTimer has counted down.
 	
-	yield($MessageTimer, "timeout")
+	yield($MessageTimer, "timeout")# Wait until the MessageTimer has counted down.
 
 	$MessageLabel.text = "AGAIN?!"
 	$MessageLabel.show()
-	# Make a one-shot timer and wait for it to finish.
-	yield(get_tree().create_timer(1), "timeout")
-	$Start.show()
+
+	yield(get_tree().create_timer(5), "timeout") # Make a one-shot timer and wait for it to finish.
+	#$Start.show()
+	emit_signal("start_game", tipo_de_tiro)
 	
+##############################################################################################
+#
+# Modificando show_game over e show game win de tal maneira que o jogador fique fadado
+# a usar o mesmo tiro ate morrer.. assim nao precisamos setar o tiro toda vez
+# auxiliando na autmaçao dos testes..caso queiramos voltar para o antigo comportament0
+# descomentar choose_weapon e $start.show()
+#
+###############################################################################################	
+
 
 func _on_Start_pressed():
-	#print('entreou em start')
+
 	if Player_IA == null:
 		 $MessageLabel.text = 'Choose a Player'
 		
-	if Player_IA == true and tipo_IA != null :
+	elif Player_IA == true and tipo_IA != null :
+		$Start.show()
 		escolha_arma()
 		#$Start.show()
 		#$Waves.hide()
 		
 	elif Player_IA == false:
+		$Start.show()
 		escolha_arma()
 		
 	elif Player_IA != null:
@@ -285,7 +306,7 @@ func _on_MessageTimer_timeout():
 	$MessageLabel.hide()
 
 func escolha_arma():
-	$Start.show()
+	#$Start.show()
 	if choose_weapon == false:
 		$MessageLabel.text = 'Choose a weapon'
 	
@@ -293,15 +314,3 @@ func escolha_arma():
 		emit_signal("start_game", tipo_de_tiro)
 		$Start.hide()
 
-
-
-func _on_Input_text_entered(new_text):
-
-	input_usuario_ondas = new_text
-	print('entrou em input text')
-	#$Start.show()
-	$Waves.hide()
-
-#func qt_de_ondas_user():
-#	return input_usuario_ondas
-	

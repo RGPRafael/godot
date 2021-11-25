@@ -6,6 +6,9 @@ extends Node
 # Variaveis relacionados ao Inimigo
 #
 ###########################################################################
+#var posiçoes_iniciais = 
+
+
 var geracao
 var inimigos_data = {
 	"inimigos": {
@@ -33,6 +36,8 @@ var inimigos_data = {
 		"resist": 60,
 		"speed" : 550},
 }
+
+var tower_locations = PoolVector2Array([Vector2(256, 448), Vector2(640, 384)])
 
 
 ###########################################################################

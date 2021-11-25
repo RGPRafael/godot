@@ -8,7 +8,7 @@ var bala_tipo_tiro
 var pode_atirar =  false
 #var velocity = Vector2()  # The player's movement vector.
  
-export var fire_rate = 0.5
+export var fire_rate = 0.8
 signal hit(area)
 
 ###################################################
