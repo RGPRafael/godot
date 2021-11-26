@@ -189,7 +189,7 @@ func criando_inimigos():
 func add_inimigos_cena():
 	for mob in array_inimigos:
 		get_node("Arvore_inimigos").add_child(mob)
-		mob.position = $InimigoPosition_start.position
+		mob.position = Vector2(580, - 150)
 		inimigos_vivos += 1
 		yield(get_tree().create_timer(0.8), "timeout")#padding
 		$HUD.qt_inimigos(str(inimigos_vivos))
@@ -288,7 +288,7 @@ func new_game(tipo_detiro):
 	Player.start(life_jogador)
 	criando_inimigos()
 	$HUD.show_message("GET READY")
-	$Musicas/Ready.play()
+	#$Musicas/Ready.play()
 
 	$StartTimer.set_wait_time(1)
 	$StartTimer.start()
@@ -335,14 +335,14 @@ func game_over():
 	
 
 	Player.pode_atirar = false
-	$Musicas/Game_over_back.play()
+	#$Musicas/Game_over_back.play()
 	
 	$ScoreTimer.stop()
 	$MobTimer.stop()
 	clear_memory_and_copy_data()
 	$HUD.show_game_over()
 	
-	$Musicas/Game_over.play()
+	#$Musicas/Game_over.play()
 	$HUD.stop_bar()
 	#clear_memory_and_copy_data()
 	
@@ -357,7 +357,7 @@ func game_win():
 	clear_memory_and_copy_data()
 	
 	$HUD.show_game_win()
-	$Musicas/win.play()
+	#$Musicas/win.play()
 	#clear_memory_and_copy_data()
 	
 

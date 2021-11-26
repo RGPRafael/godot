@@ -76,3 +76,22 @@ var disparo_data = {
 ###########################################################################
 
 
+###########################################################################
+#
+# Variaveis relacionados aos Testes
+#
+###########################################################################
+
+
+var inimigos_each = [['inimigos',1], ['inimigo1',1], ['inimigo2',1], ['inimigo3',1], ['inimigo4',1],['inimigos',1]]
+var inimigos = [['inimigos',1], ['inimigos',1], ['inimigos',1], ['inimigos',1], ['inimigos',1],['inimigos',1]]
+var inimigo1 = [['inimigo1',1], ['inimigo1',1], ['inimigo1',1], ['inimigo1',1], ['inimigo1',1],['inimigo1',1]]
+var inimigo2 = [['inimigo2',1], ['inimigo2',1], ['inimigo2',1], ['inimigo2',1], ['inimigo2',1],['inimigo2',1]]
+var inimigo3 = [['inimigo3',1], ['inimigo3',1], ['inimigo3',1], ['inimigo3',1], ['inimigo3',1],['inimigo3',1]]
+var inimigo4 = [['inimigo4',1], ['inimigo4',1], ['inimigo4',1], ['inimigo4',1], ['inimigo4',1],['inimigo4',1]]
+
+###########################################################################
+#
+# Variaveis relacionados aos Testes
+#
+###########################################################################

@@ -19,7 +19,6 @@
 [ext_resource path="res://Assets/UI/fastForward.png" type="Texture" id=17]
 [ext_resource path="res://Assets/UI/stop.png" type="Texture" id=18]
 
-
 [sub_resource type="DynamicFont" id=1]
 size = 64
 font_data = ExtResource( 1 )

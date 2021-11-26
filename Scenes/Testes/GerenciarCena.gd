@@ -1,4 +1,4 @@
-extends Node2D
+extends Node
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -11,19 +11,17 @@ func load_main_menu():
 	
 func new_game_pressed():
 	get_node("Menu").queue_free()
-	var scene = load('res://Scenes/Main_PlayerMode.tscn').instance()
+	var scene = load('res://Elements/MainScene.tscn').instance()
 	scene.connect("game_finished",self, 'unload_game')
 	add_child(scene)
-	var interface = load('res://Scenes/Interface.tscn').instance()
-	get_node('Main').add_child(interface)
 	
 func test_mode():
 	get_node("Menu").queue_free()
-	get_tree().change_scene("res://Scenes/Testes/TestMode.tscn")
+	get_tree().change_scene("res://Elements/TestMode.tscn")
 	
 func unload_game(result):
 	get_node("MainScene").queue_free()
-	var test_menu = load('res://Scenes/TUTOTIAL GODOT.tscn').instance()
+	var test_menu = load('res://Elements/GerenciarCena.tscn').instance()
 	add_child(test_menu)
 
 	

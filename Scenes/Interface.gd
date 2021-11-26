@@ -42,6 +42,9 @@ func _ready():
 	
 	#get_node("PlayPause").connect("pressed",get_parent(),'test_pause')
 	
+	.connect("start_game",get_parent(),'new_game')
+	
+	
 	connect("bar_is_low",get_parent(),"Verifica_barradevida")
 	choose_weapon = false
 	
