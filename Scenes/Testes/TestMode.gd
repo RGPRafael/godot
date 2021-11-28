@@ -6,11 +6,11 @@ func _ready():
 	load_test_menu()
 	
 func load_test_menu():
-	$TestMenu/towers/PlayersChoice.set_pressed(true)
+	$TestMenu/Players/PlayersChoice.set_pressed(true)
 	$TestMenu/enemies/AI.set_pressed(true)
 	$TestMenu/buttons/TestMode.connect("pressed",self,"test_mode_pressed")
 	$TestMenu/buttons/Return.connect("pressed",self,"return_main")
-	self.connect('comeca_teste',get_parent(),'test_start') 
+	#self.connect('comeca_teste',get_parent(),'test_start') 
 	
 func test_mode_pressed():
 	print('test_mode_pressed')
@@ -22,11 +22,12 @@ func test_mode_pressed():
 	var enemies = params[1]
 	get_node("TestMenu").queue_free()
 	var scene = load('res://Scenes/Testes/Main_TESTMODE.tscn').instance()
-	scene.connect("game_finished",self, 'unload_game')
+	#scene.connect("game_finished",self, 'unload_game')
 	scene.init_params(players, enemies)
 	add_child(scene)
 	if players != 'PlayersChoice':
 		scene.Set_Player_IA_AND_SHOOT()
+		print('set_player and shoot')
 		
 		
 func return_main():
@@ -36,9 +37,10 @@ func return_main():
 
 # Getter for Test Mode parameters
 func get_params():
-	var players = $TestMenu/Players/IA_STILL_RED_SHOOT.get_button_group().get_pressed_button().get_name()
+	var players = $TestMenu/Players/PlayersChoice.get_button_group().get_pressed_button().get_name()
 	var enemies = $TestMenu/enemies/AI.get_button_group().get_pressed_button().get_name()
-	return enemies
+	print( [players, enemies] )
+	return [players, enemies]
 
 func unload_game(result):
 	get_node("MainScene").queue_free()

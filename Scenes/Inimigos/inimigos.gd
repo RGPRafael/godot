@@ -59,7 +59,7 @@ func random_position_x(tam):
 	
 		
 func carregar_dados(tipo_inimigo, tempo, pos):
-	print(tipo_inimigo,'  ', tempo)
+	#print(tipo_inimigo,'  ', tempo)
 	tipo_de_inimigo = tipo_inimigo
 	speed  = ControleData.inimigos_data[ tipo_inimigo]["speed"]
 	damage = ControleData.inimigos_data[tipo_inimigo]["damage"]
@@ -74,7 +74,7 @@ func _ready():
 	life = true
 	hit = false
 	in_scene = true
-	v = global_position.direction_to(CenaPrincipal.posicao_jogador)
+	v = global_position.direction_to(get_parent().get_parent().posicao_jogador)
 	var node_visibility = get_node('VisibilityNotifier2D')
 # warning-ignore:return_value_discarded
 	.connect('killed',get_parent().get_parent(),'show_death',[],4) #isso é mt safadeza
@@ -121,7 +121,7 @@ func move(delta):
 	position += v * speed * delta
 
 func _process(delta):
-	if CenaPrincipal.jogador_existe != false :
+	if get_parent().get_parent().jogador_existe != false :
 		move(delta)
 		check_life()
 	if in_scene:
@@ -133,6 +133,7 @@ func _on_VisibilityNotifier2D_screen_exited():
 	if hit == null: hit =  false
 	var time_now = OS.get_unix_time()
 	time_elapsed = time_now - time_start
+	#print('on visivility', id)
 	pass
 	
 	

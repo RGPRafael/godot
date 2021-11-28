@@ -116,7 +116,7 @@ func _ready():
 
 func player_damage(area):
 	if can_damage:
-		area.hit = true # nao atualiza o hit do inimigo
+		#area.hit = true # nao atualiza o hit do inimigo
 		total_damage += area.damage
 		base_health = base_health - area.damage
 		$HUD.update_health_bar(base_health , area.damage)

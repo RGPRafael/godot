@@ -24,8 +24,8 @@ func _tiro(tipo_de_tiro):
 
 
 func _ready():
-	CenaPrincipal.jogador_existe  = true
-	CenaPrincipal.tipo_de_tiro_escolhido = bala_tipo_tiro
+	get_parent().jogador_existe  = true
+	get_parent().tipo_de_tiro_escolhido = bala_tipo_tiro
 	screen_size = get_viewport_rect().size
 	#print('screen:', screen_size)
 	hide()
@@ -41,7 +41,7 @@ func _process(delta):
 ###############################################################################
 	
 func move_and_shoot(delta):
-	CenaPrincipal.posicao_jogador = global_position
+	get_parent().posicao_jogador = global_position
 	var velocity = Vector2()  # The player's movement vector.
 	look_at(get_global_mouse_position())
 

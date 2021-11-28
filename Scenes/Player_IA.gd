@@ -33,8 +33,8 @@ func _tiro(tipo_de_tiro):
 
 
 func _ready():
-	CenaPrincipal.jogador_existe  = true
-	CenaPrincipal.tipo_de_tiro_escolhido = bala_tipo_tiro
+	get_parent().jogador_existe  = true
+	get_parent().tipo_de_tiro_escolhido = bala_tipo_tiro
 	screen_size = get_viewport_rect().size
 	direction_IA  = 1
 	wait = false
@@ -71,7 +71,7 @@ func select_enemy ():
 
 
 func move_Player_IA(delta):
-	CenaPrincipal.posicao_jogador = global_position
+	get_parent().posicao_jogador = global_position
 	var velocity = Vector2()  
 	velocity.x += direction_IA
 
