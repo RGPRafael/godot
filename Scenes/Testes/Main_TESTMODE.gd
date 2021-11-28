@@ -73,7 +73,7 @@ var TEST_HEALTH = 9223372036854775807 # signed 64bit int
 var total_damage = 0 # Damage logging for statistical purposes
 var wave_damage = 0
 
-var construindo_inimigos
+
 
 #####################################################
 #
@@ -124,11 +124,6 @@ func _ready():
 	Interface = load('res://Scenes/Interface.tscn').instance()
 	add_child(Interface)
 	geracao = 0
-	construindo_inimigos= false
-	
-	if StartTimer.is_one_shot():
-		print('entrou no if de ready') 
-		StartTimer.set_one_shot(false)
 
 # Test mode parameters
 # towers: 		'Player_IA_parado', 'Player_IA'...'
@@ -202,13 +197,12 @@ func random_enemies():
 
 func criando_inimigos():
 	var new_population
-	#print('criando inimigos construindo:', construindo_inimigos )
+	print('criando inimigos')
 	if test_mode:
 		if geracao == TEST_WAVES:
 			#print('test_mode finish')
 			write_file(total_damage, test_result_waves)
 			game_finished('over')
-			#get_tree().change_scene("res://Scenes/TUTOTIAL GODOT.tscn")
 		else:
 			match test_enemies:
 				'AI':
@@ -228,21 +222,13 @@ func criando_inimigos():
 
 			test_result_waves += str(new_population)
 			start_next_wave(new_population)
-			geracao +=1
-			construindo_inimigos = true
-
-	elif !test_mode and geracao == 0 : 
-		start_first_wave()
-		geracao +=1
-		construindo_inimigos = true
+			
+	elif !test_mode and geracao == 0 : start_first_wave()
 	else : 
 		new_population = AI.start_experiment()
 		print(new_population)
-		start_next_wave(new_population)  
-		geracao +=1
-		construindo_inimigos = true
-
-	#print('criando inimigos construindo: ', construindo_inimigos )
+		#start_next_wave(new_population)  
+	geracao +=1
 
 func start_next_wave(wave): # roda quando da play e qd o player mata toda a onda
 	num_inimigos = wave.size()
@@ -277,18 +263,18 @@ func start_first_wave(): # roda quando da play
 	
 	
 func carrega_inimigos(wave):
-	print('carrega_inimigos:' , wave)
+
 	for i in wave:
 		var new_inimigo = load('res://Scenes/Inimigos/' + i[0] + ".tscn").instance()
 		new_inimigo.carregar_dados(i[0] , i[1], posicao_base_randon)
 		new_inimigo.random_position_x(tamanho_tela)
 		array_inimigos.append(new_inimigo) # 
-		
-	#print('construindo_inimigos: ',construindo_inimigos)
-	
-	
-func _on_StartTimer_timeout():
-	
+		#Arvores_inimigos.add_child(new_inimigo)
+		#yield(get_tree().create_timer(i[1]), "timeout")#padding
+
+
+func _on_MobTimer_timeout():
+	#print('mob timer out ')
 	if inimigo_atual < num_inimigos and Player.life > 0 and array_inimigos.size()!= 0:
 		var mob = array_inimigos[inimigo_atual]
 		get_node("Arvore_inimigos").add_child(mob)
@@ -297,13 +283,14 @@ func _on_StartTimer_timeout():
 		inimigo_atual += 1
 		
 		StartTimer.set_wait_time(mob.padding) 		#[tipo inimigo, 2, padding]
+		StartTimer.start()
 		
 	elif  inimigo_atual == num_inimigos and Player.life > 0:
 		test_result_waves += '; ' + str(wave_damage) + '\n'
 		wave_damage = 0
 		game_finished('win')
 	
-	else: game_finished('over')	
+	else: game_finished('over')
 
 
 func game_finished(result):
@@ -312,8 +299,7 @@ func game_finished(result):
 	Player.pode_atirar = false
 	
 	ScoreTimer.stop()
-
-	construindo_inimigos = false
+	MobTimer.stop()
 	clear_memory_and_copy_data()
 	if result == 'win': Interface.show_game_win()
 	elif result == 'over' :  
@@ -321,6 +307,11 @@ func game_finished(result):
 		Interface.show_game_over() 
 		Interface.stop_bar()
 		
+func _on_StartTimer_timeout():
+	
+	if Player.life > 0:
+		MobTimer.start()
+		ScoreTimer.start()
 
 func set_variaveis_globais():
 	score = 0
@@ -342,7 +333,7 @@ func set_interface():
 	Interface.qt_vida(life_jogador)
 
 func new_game(tipo_de_tiro_escolhido):
-	print('new_game ')
+	#print('new_game ' , Player.name)
 	inimigo_atual = 0
 	if geracao == 0 and Player == null:
 		#print('player igual a null ')
@@ -366,15 +357,13 @@ func new_game(tipo_de_tiro_escolhido):
 		
 	Player.start(life_jogador)
 	criando_inimigos()
-	print('new game construindo_inimigos: ' , construindo_inimigos )
 	Interface.show_message("GET READY")
-	if construindo_inimigos:
-		print('new game if ')
-		StartTimer.set_wait_time(1)
-		StartTimer.start()
-		Interface.show_geracao(geracao)
-		ScoreTimer.start()
+
+	StartTimer.set_wait_time(1)
+	StartTimer.start()
 	
+	Interface.show_geracao(geracao)
+
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func clear_memory_and_copy_data():
 
