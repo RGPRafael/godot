@@ -41,7 +41,8 @@ func _ready():
 
 
 func sound():
-	$AudioStreamPlayer2D.play()
+	#$AudioStreamPlayer2D.play()
+	pass
 	
 func _process(delta):
 	
