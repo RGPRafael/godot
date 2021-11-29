@@ -70,9 +70,9 @@ var test_enemies = 'ai'
 var test_mode = false
 var TEST_WAVES = 3 # 30 waves de teste
 var TEST_HEALTH = 9223372036854775807 # signed 64bit int
-var total_damage = 0 # Damage logging for statistical purposes
-var wave_damage = 0
-
+var total_damage # Damage logging for statistical purposes
+var wave_damage 
+var construindo_inimigo
 
 
 #####################################################
@@ -124,7 +124,9 @@ func _ready():
 	Interface = load('res://Scenes/Interface.tscn').instance()
 	add_child(Interface)
 	geracao = 0
-
+	total_damage = 0 # Damage logging for statistical purposes
+	wave_damage = 0
+	construindo_inimigo = false
 # Test mode parameters
 # towers: 		'Player_IA_parado', 'Player_IA'...'
 # enemies: 'AI', 'Random', 'All_inimigos','All_inimigo1', 'All_inimigo2', 'All_inimigo3', 'All_inimigo4'
@@ -222,13 +224,20 @@ func criando_inimigos():
 
 			test_result_waves += str(new_population)
 			start_next_wave(new_population)
+			geracao +=1
+			construindo_inimigo = true
 			
-	elif !test_mode and geracao == 0 : start_first_wave()
+	elif !test_mode and geracao == 0 : 
+		start_first_wave()
+		geracao +=1
+		construindo_inimigo = true
+
 	else : 
 		new_population = AI.start_experiment()
 		print(new_population)
-		#start_next_wave(new_population)  
-	geracao +=1
+		start_next_wave(new_population)  
+		geracao +=1
+		construindo_inimigo = true
 
 func start_next_wave(wave): # roda quando da play e qd o player mata toda a onda
 	num_inimigos = wave.size()
@@ -275,7 +284,7 @@ func carrega_inimigos(wave):
 
 func _on_MobTimer_timeout():
 	#print('mob timer out ')
-	if inimigo_atual < num_inimigos and Player.life > 0 and array_inimigos.size()!= 0:
+	if inimigo_atual < num_inimigos and Player.life > 0 and array_inimigos.size():
 		var mob = array_inimigos[inimigo_atual]
 		get_node("Arvore_inimigos").add_child(mob)
 		inimigos_vivos += 1
@@ -358,16 +367,16 @@ func new_game(tipo_de_tiro_escolhido):
 	Player.start(life_jogador)
 	criando_inimigos()
 	Interface.show_message("GET READY")
-
-	StartTimer.set_wait_time(1)
-	StartTimer.start()
+	
+	if construindo_inimigo:
+		StartTimer.set_wait_time(1)
+		StartTimer.start()
 	
 	Interface.show_geracao(geracao)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func clear_memory_and_copy_data():
 
-	total_damage = 0
 	array_inimigos.clear()
 	
 	var n =  get_node("Arvore_inimigos").get_children()
