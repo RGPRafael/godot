@@ -129,7 +129,6 @@ func just_shoot():
 	bala_objeto.rotation_degrees = rotation_degrees
 	get_parent().add_child(bala_objeto)
 	#$AudioStreamPlayer2D.play()
-	bala_objeto.sound()
 	pode_atirar = false
 
 	yield(get_tree().create_timer(fire_rate),'timeout')

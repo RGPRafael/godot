@@ -85,8 +85,9 @@ var construindo_inimigo
 
 func player_damage(area):
 	if can_damage:
-		area.hit = true # nao atualiza o hit do inimigo
+		wave_damage  += area.damage
 		total_damage += area.damage
+		
 		base_health = base_health - area.damage
 		Interface.update_health_bar(base_health , area.damage)
 		
@@ -204,7 +205,7 @@ func criando_inimigos():
 		if geracao == TEST_WAVES:
 			#print('test_mode finish')
 			write_file(total_damage, test_result_waves)
-			game_finished('over')
+			#game_finished('over')
 		else:
 			match test_enemies:
 				'AI':
@@ -272,7 +273,8 @@ func start_first_wave(): # roda quando da play
 	
 	
 func carrega_inimigos(wave):
-
+	test_result_waves += '; ' + str(wave_damage) + '\n'
+	wave_damage = 0
 	for i in wave:
 		var new_inimigo = load('res://Scenes/Inimigos/' + i[0] + ".tscn").instance()
 		new_inimigo.carregar_dados(i[0] , i[1], posicao_base_randon)
