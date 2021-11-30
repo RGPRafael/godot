@@ -229,6 +229,7 @@ func criando_inimigos():
 			construindo_inimigo = true
 			
 	elif !test_mode and geracao == 0 : 
+		print('test mode falso')
 		start_first_wave()
 		geracao +=1
 		construindo_inimigo = true
@@ -273,7 +274,7 @@ func start_first_wave(): # roda quando da play
 	
 	
 func carrega_inimigos(wave):
-	test_result_waves += '; ' + str(wave_damage) + '\n'
+	#test_result_waves += '; ' + str(wave_damage) + '\n'
 	wave_damage = 0
 	for i in wave:
 		var new_inimigo = load('res://Scenes/Inimigos/' + i[0] + ".tscn").instance()
@@ -299,6 +300,7 @@ func _on_MobTimer_timeout():
 	elif  inimigo_atual == num_inimigos and Player.life > 0:
 		test_result_waves += '; ' + str(wave_damage) + '\n'
 		wave_damage = 0
+		print(test_result_waves , wave_damage )
 		game_finished('win')
 	
 	else: game_finished('over')
