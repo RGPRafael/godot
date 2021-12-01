@@ -33,23 +33,22 @@ func _tiro(tipo_de_tiro):
 
 
 func _ready():
-	get_parent().jogador_existe  = true
+	#get_parent().jogador_existe  = true
 	get_parent().tipo_de_tiro_escolhido = bala_tipo_tiro
 	screen_size = get_viewport_rect().size
 	direction_IA  = 1
 	wait = false
-	#print('screen:', screen_size)
-	#print('IA_player', IA_player)
 	hide()
 
 func _process(delta):
-	if !wait: move_Player_IA(delta)
-	if enemy_array.size() != 0:
-		select_enemy()
-		if  life != null and life > 0  and pode_atirar:
-			just_shoot()
-	else:
-		inimigo_detectado = null
+	if get_parent().jogador_existe :
+		if !wait: move_Player_IA(delta)
+		if enemy_array.size() != 0:
+			select_enemy()
+			if  life != null and life > 0  and pode_atirar:
+				just_shoot()
+		else:
+			inimigo_detectado = null
 
 
 
@@ -147,6 +146,7 @@ func start(VIDAS):
 	show()
 	$CollisionShape2D.disabled = false
 	pode_atirar =  true
+	get_parent().jogador_existe  = true
 
 
 func _on_Player_area_entered(area):

@@ -13,6 +13,7 @@ var choose_weapon # avisa se esta no modo construcao
 var tipo_de_tiro 
 var Player_IA
 var tipo_IA
+var main_scene
 
 
 var save_path = "user://save.dat"
@@ -57,6 +58,8 @@ func _ready():
 		i.connect('mouse_entered', get_parent(), 'desliga_tiro')
 		i.connect('mouse_exited' , get_parent() , 'liga_tiro'  )
 		
+		
+	main_scene = get_parent()
 
 func iniciar_botao(tipo):
 	tipo_de_tiro = tipo
@@ -106,15 +109,13 @@ func show_dead_inimigos(d):
 
 #setar botao como process para que ele nao pause a arvore toda
 func play_pause():
-	#print('entrou em play pause')
-	#GameData.jogo_comecou = true
-	#if mouse
+
 	if get_tree().is_paused():
 		get_tree().paused = false
 	else :
 		get_tree().paused = true
 		
-	
+
 
 func _on_speed_pressed():
 	if Engine.get_time_scale() == 2.0:
@@ -254,13 +255,8 @@ func show_game_over():
 
 	$MessageLabel.text = "AGAIN?!"
 	$MessageLabel.show()
-
-	yield(get_tree().create_timer(5), "timeout") # Make a one-shot timer and wait for it to finish.
-
-	get_tree().change_scene("res://Scenes/TUTOTIAL GODOT.tscn")
 	
 func show_game_win():
-	#choose_weapon = false
 	show_message("You Win")
 	
 	yield($MessageTimer, "timeout")# Wait until the MessageTimer has counted down.
@@ -269,8 +265,8 @@ func show_game_win():
 	$MessageLabel.show()
 
 	yield(get_tree().create_timer(5), "timeout") # Make a one-shot timer and wait for it to finish.
-	#$Start.show()
-	emit_signal("start_game", tipo_de_tiro)
+	$Start.show()
+	#emit_signal("start_game", tipo_de_tiro)
 	
 ##############################################################################################
 #

@@ -31,7 +31,9 @@ animations = [ {
 "speed": 5.0
 } ]
 
-[node name="inimigo1" type="Area2D"]
+[node name="inimigo1" type="Area2D" groups=[
+"inimigos",
+]]
 position = Vector2( 614.068, 389.412 )
 collision_layer = 2
 collision_mask = 5

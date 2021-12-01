@@ -26,11 +26,9 @@ var rng
 var inimigos_vivos = 0   # inimigos q vao sendo criados
 var dead_inimigos
 var geracao = 0
-var geracao_atual
 var posicao_base_randon = Vector2(600,-100)
 var tamanho_tela = [0,1280]
-#var current_wave = 0 # Contador de onda
-var array_inimigos = [] 
+
 var inimigo_atual # qt de inimigos instanciados
 
 #var dados_inimigos = [['inimigos',1, Vector2(90,-50)], 
@@ -45,7 +43,7 @@ var dados_inimigos = [['inimigos',1],
 					  ['inimigo2',1], 
 					  ['inimigo3',1], 
 					  ['inimigo4',1], 
-					  ['inimigos',1] ]
+					  ['inimigo5',1] ]
 					
 var num_inimigos = dados_inimigos.size()   # total de inimigos naquela fase 
 
@@ -69,7 +67,7 @@ var input_user_text # quantidade de ondas que o usuario digitou q quer  enfrenta
 var can_damage = true
 var posicao_jogador = Vector2()
 #export var life_jogador = 3
-var life_jogador 
+var life_jogador = 3
 export var base_health  = 100
 var jogador_existe = false
 var tipo_de_tiro_escolhido
@@ -99,7 +97,7 @@ var Wave = []
 #
 #
 ############################################################################
-
+var construindo_inimigo = false
 
 func _ready():
 	rng = RandomNumberGenerator.new()
@@ -116,7 +114,6 @@ func _ready():
 
 func player_damage(area):
 	if can_damage:
-		#area.hit = true # nao atualiza o hit do inimigo
 		#wave_damage += damage
 		total_damage += area.damage
 		base_health = base_health - area.damage
@@ -130,15 +127,19 @@ func Verifica_barradevida() :
 
 	if life_jogador == 0:
 		$HUD.qt_vida(life_jogador)
-		game_over()
+		Player.pode_atirar = false
+		$ScoreTimer.stop()
+		$HUD.show_game_over()
+		$HUD.stop_bar()
+		yield(get_tree().create_timer(4), "timeout")#padding
+		get_tree().change_scene("res://Scenes/TUTOTIAL GODOT.tscn")
 	
 	else:
 		base_health = 100
 		$HUD.qt_vida(life_jogador)
 		$HUD.prepare_bar(base_health)
 		yield(get_tree().create_timer(0.5), "timeout")#padding
-	
-	#$Player.life = life_jogador
+
 	Player.life = life_jogador
 	can_damage = true
 
@@ -156,78 +157,55 @@ func Verifica_barradevida() :
 ###########################################################################
 
 
-
 func criando_inimigos():
-	var new_population = []
-	if geracao == 0 : new_population = dados_inimigos
-	else            : new_population =  AI.start_experiment()
+	var new_population
+	print('criando inimigos')
+	if geracao == 0 :  start_first_wave()
+	else : 
+		new_population =  AI.start_experiment()
+		start_next_wave(new_population)
 	
-	print(geracao, ' new_population', new_population)
+func start_next_wave(wave): # roda quando da play e qd o player mata toda a onda
+	yield(get_tree().create_timer(0.5), "timeout")#padding
+	carrega_inimigos(wave)
+
+
+func start_first_wave(): # roda quando da play 
+
+	var wave = ControleData.inimigos_each
+	print('first wave')
+	print(wave)
+	carrega_inimigos(wave)
 	
-	for i in new_population :
-		var s = 'res://Scenes/Inimigos/' + i[0] + ".tscn"
-		var mob = load(s).instance()
-		#mob.carregar_dados(i[0] , i[1], i[2])
-		mob.carregar_dados(i[0] , i[1], posicao_base_randon)
-		array_inimigos.append(mob) # 
-		
-	geracao +=1
-	print('geracao:', geracao)
-####################################
-	ControleData.geracao = geracao 
-####################################
 
-
-
-
-################################################################################
-# Ao implementar o pause a funcao add_inimigos_cena estava dando problema
-# os inimigos ainda eram instanciados e colocados em cena porem nao se moviam
-# depois do pause voltar os inimigos criados se moviem de novo... 
-# comportamento aceitavel ? XD 
-###############################################################################
-
-func add_inimigos_cena():
-	for mob in array_inimigos:
-		get_node("Arvore_inimigos").add_child(mob)
-		mob.position = Vector2(580, - 150)
+func carrega_inimigos(wave):
+	#test_result_waves += '; ' + str(wave_damage) + '\n'
+	#wave_damage = 0
+	geracao += 1
+	$HUD.show_geracao(geracao)
+	print(geracao, ' new_population', wave)
+	
+	for i in wave:
+		var new_inimigo = load('res://Scenes/Inimigos/' + i[0] + ".tscn").instance()
+		new_inimigo.carregar_dados(i[0] , i[1], posicao_base_randon)
+		new_inimigo.random_position_x(tamanho_tela)
+		$Arvore_inimigos.add_child(new_inimigo)
+		yield(get_tree().create_timer(i[1]), "timeout")#padding
 		inimigos_vivos += 1
-		yield(get_tree().create_timer(0.8), "timeout")#padding
 		$HUD.qt_inimigos(str(inimigos_vivos))
 
-func _on_MobTimer_timeout():
-	
-	if inimigo_atual < num_inimigos and Player.life > 0:
-		var mob = array_inimigos[inimigo_atual]
+	construindo_inimigo = false
+	$HUD.show_message('...')
+	yield(get_tree().create_timer(5), "timeout")#padding
 
-		mob.random_position_x(tamanho_tela)
-		get_node("Arvore_inimigos").add_child(mob)
-		inimigos_vivos += 1
-		
-		$HUD.qt_inimigos(str(inimigos_vivos))
-		inimigo_atual += 1
-		#[tipo inimigo, 2, padding]
-		$StartTimer.set_wait_time(mob.padding)
 
-		$StartTimer.start()
-		
-	
-	elif  inimigo_atual == num_inimigos and Player.life > 0:
-		$StartTimer.stop()
-		game_win()
-	
-	else:
-		$StartTimer.stop()
-		game_over()
-	pass
+func _process(_delta):
+	if !construindo_inimigo and get_tree().get_nodes_in_group('inimigos').size() == 0 and geracao > 0 and life_jogador > 0:
+		print('entrei no process')
+		$HUD.show_geracao(geracao)
+		construindo_inimigo = true
+		criando_inimigos()
 
-func _on_StartTimer_timeout():
-	#print('inimigo_index: ', inimigo_atual, ' start timer..:' , $StartTimer.get_wait_time() , ' mob timer: ', $MobTimer.get_wait_time())
-	if Player.life > 0:
-		$MobTimer.start()
-		$ScoreTimer.start()
-	#add_inimigos_cena()
-	pass
 	
 	
 func show_death():
@@ -263,7 +241,6 @@ func set_variaveis_globais():
 	dead_inimigos = 0
 	base_health = 100
 	inimigos_vivos = 0
-	life_jogador = 3
 
 func desliga_som():
 	#print('desliga-som')
@@ -271,6 +248,7 @@ func desliga_som():
 
 func new_game(tipo_detiro):
 	print('new_game')
+	$ScoreTimer.start()
 	inimigo_atual = 0
 	if geracao == 0 and Player == null:
 		Player_IA = ControleData.Player_IA
@@ -287,16 +265,12 @@ func new_game(tipo_detiro):
 		$HUD.qt_vida(life_jogador)
 
 	Player.start(life_jogador)
-	criando_inimigos()
 	$HUD.show_message("GET READY")
-	#$Musicas/Ready.play()
-
-	$StartTimer.set_wait_time(1)
+	$StartTimer.set_wait_time(2)
 	$StartTimer.start()
-	
-	$HUD.show_geracao(geracao)
-	#add_inimigos_cena()
-	
+	$HUD.show_message("GO!")
+	start_first_wave()
+
 
 
 func Carrega_player():
@@ -314,52 +288,18 @@ func Carrega_player():
 
 	return Scene_player.instance()
 
-func clear_memory_and_copy_data():
-	# Writes data and zeroes total damage
-	write_data(total_damage)
-	total_damage = 0
-	array_inimigos.clear()
-	
-	var n =  get_node("Arvore_inimigos").get_children()
-	for k in n:
-		var data = []
-		data.append(k.hit)   #reached goal
-		data.append(k.resist/ k.hp_total )
-		AI.population_res[k.id] = data
-		#k.tipo_de_inimigo k.speed  k.damage k.resist k.life k.hit k.id
-		k.free()
-
 
 func game_over():
-	#guarda_inimigos()
-	#debug_inimigos(array_inimigos)
-	
-
-	Player.pode_atirar = false
-	#$Musicas/Game_over_back.play()
-	
-	$ScoreTimer.stop()
-	$MobTimer.stop()
-	clear_memory_and_copy_data()
-	$HUD.show_game_over()
-	
-	#$Musicas/Game_over.play()
-	$HUD.stop_bar()
-	#clear_memory_and_copy_data()
+	pass
 	
 
 func game_win():
-	#guarda_inimigos()
 	print('win')
 	Player.pode_atirar = false
 	$ScoreTimer.stop()
 	$MobTimer.stop()
 	
-	clear_memory_and_copy_data()
-	
 	$HUD.show_game_win()
-	#$Musicas/win.play()
-	#clear_memory_and_copy_data()
 	
 
 

@@ -3,7 +3,7 @@ extends Node
 #
 #https://gdscript.com/solutions/signals-godot/
 
-#signal game_finished(result)
+signal game_finished(result)
 
 var score
 
@@ -43,7 +43,7 @@ var ScoreTimer
 var StartTimer
 var StartPosition
 var Interface
-var Arvores_inimigos
+var Arvore_inimigos
 
 
 #####################################################
@@ -52,7 +52,7 @@ var Arvores_inimigos
 #
 ####################################################
 
-var geracao 
+var geracao  = 0
 var inimigo_atual 
 var num_inimigos    # total de inimigos naquela fase 
 var tamanho_tela = [0,1280]
@@ -70,11 +70,10 @@ var test_enemies = 'ai'
 var test_mode = false
 var TEST_WAVES = 3 # 30 waves de teste
 var TEST_HEALTH = 9223372036854775807 # signed 64bit int
-var total_damage # Damage logging for statistical purposes
-var wave_damage 
-var construindo_inimigo
-
-
+var total_damage  = 0 # Damage logging for statistical purposes
+var wave_damage  = 0
+var construindo_inimigo = false
+var players_types = []
 #####################################################
 #
 # testes variaveis
@@ -97,7 +96,9 @@ func Verifica_barradevida() :
 
 	if life_jogador == 0:
 		Interface.qt_vida(life_jogador)
+		ScoreTimer.stop()
 		game_finished('over')
+		emit_signal("game_finished", false)
 	
 	elif !test_mode: base_health = 100
 		
@@ -106,7 +107,6 @@ func Verifica_barradevida() :
 		Interface.prepare_bar(base_health)
 		yield(get_tree().create_timer(0.5), "timeout")#padding
 	
-	#$Player.life = life_jogador
 	Player.life = life_jogador
 	can_damage = true
 
@@ -120,14 +120,12 @@ func _ready():
 	ScoreTimer    = get_node("ScoreTimer") 
 	StartTimer    = get_node("StartTimer")
 	StartPosition = get_node("StartPosition")
-	Arvores_inimigos = get_node("Arvore_inimigos") 
+	Arvore_inimigos = get_node("Arvore_inimigos") 
 
 	Interface = load('res://Scenes/Interface.tscn').instance()
 	add_child(Interface)
-	geracao = 0
-	total_damage = 0 # Damage logging for statistical purposes
-	wave_damage = 0
-	construindo_inimigo = false
+	if test_mode: Interface.show_message('')
+	
 # Test mode parameters
 # towers: 		'Player_IA_parado', 'Player_IA'...'
 # enemies: 'AI', 'Random', 'All_inimigos','All_inimigo1', 'All_inimigo2', 'All_inimigo3', 'All_inimigo4'
@@ -163,7 +161,6 @@ func Carrega_PlayerTiro(players_types):
 
 func Set_Player_IA_AND_SHOOT(): 	#tipo_IA = 0 =>_IA_move_atira , tipo_IA = 1 => IA_parado
 
-	var players_types = []
 	match test_players:
 		'IA_STILL _RED_SHOOT':
 			players_types = ['Player_IA_parado', 'Disparo1']
@@ -198,14 +195,28 @@ func random_enemies():
 	
 	return enemy_list 
 
+
+func _process(_delta):
+	if !construindo_inimigo and get_tree().get_nodes_in_group('inimigos').size() == 0 and geracao > 0 :
+		print('entrei no process')
+		Interface.show_geracao(geracao)
+		construindo_inimigo = true
+		criando_inimigos()
+
+
+
 func criando_inimigos():
 	var new_population
 	print('criando inimigos')
 	if test_mode:
 		if geracao == TEST_WAVES:
-			#print('test_mode finish')
+			print('test_mode finish')
 			write_file(total_damage, test_result_waves)
-			#game_finished('over')
+
+			Interface.show_game_over() 
+			yield(get_tree().create_timer(5), "timeout")
+			emit_signal("game_finished", false)
+			return
 		else:
 			match test_enemies:
 				'AI':
@@ -222,32 +233,28 @@ func criando_inimigos():
 					new_population = ControleData.inimigo3
 				'All_inimigo4':
 					new_population = ControleData.inimigo4
+				'All_inimigo5':
+					new_population = ControleData.inimigo5
 
 			test_result_waves += str(new_population)
 			start_next_wave(new_population)
-			geracao +=1
-			construindo_inimigo = true
 			
 	elif !test_mode and geracao == 0 : 
 		print('test mode falso')
 		start_first_wave()
-		geracao +=1
-		construindo_inimigo = true
 
 	else : 
 		new_population = AI.start_experiment()
 		print(new_population)
 		start_next_wave(new_population)  
-		geracao +=1
-		construindo_inimigo = true
 
 func start_next_wave(wave): # roda quando da play e qd o player mata toda a onda
-	num_inimigos = wave.size()
 	yield(get_tree().create_timer(0.5), "timeout")#padding
 	carrega_inimigos(wave)
 
 
-func start_first_wave(): # roda quando da play
+func start_first_wave(): # roda quando da play 
+	ScoreTimer.start()
 	var wave = ControleData.inimigos_each
 	match test_enemies:
 		'AI':
@@ -264,6 +271,8 @@ func start_first_wave(): # roda quando da play
 			wave = ControleData.inimigo3
 		'All_inimigo4':
 			wave = ControleData.inimigo4
+		'All_inimigo5':
+			wave = ControleData.inimigo5
 		
 	test_result_waves += str(wave)
 	yield(get_tree().create_timer(0.5), "timeout")#padding
@@ -275,56 +284,38 @@ func start_first_wave(): # roda quando da play
 	
 func carrega_inimigos(wave):
 	#test_result_waves += '; ' + str(wave_damage) + '\n'
-	wave_damage = 0
+	#wave_damage = 0
+	geracao += 1
 	for i in wave:
 		var new_inimigo = load('res://Scenes/Inimigos/' + i[0] + ".tscn").instance()
 		new_inimigo.carregar_dados(i[0] , i[1], posicao_base_randon)
 		new_inimigo.random_position_x(tamanho_tela)
-		array_inimigos.append(new_inimigo) # 
-		#Arvores_inimigos.add_child(new_inimigo)
-		#yield(get_tree().create_timer(i[1]), "timeout")#padding
-
-
-func _on_MobTimer_timeout():
-	#print('mob timer out ')
-	if inimigo_atual < num_inimigos and Player.life > 0 and array_inimigos.size():
-		var mob = array_inimigos[inimigo_atual]
-		get_node("Arvore_inimigos").add_child(mob)
+		Arvore_inimigos.add_child(new_inimigo)
 		inimigos_vivos += 1
 		Interface.qt_inimigos(str(inimigos_vivos))
-		inimigo_atual += 1
+		yield(get_tree().create_timer(i[1]), "timeout")#padding
 		
-		StartTimer.set_wait_time(mob.padding) 		#[tipo inimigo, 2, padding]
-		StartTimer.start()
-		
-	elif  inimigo_atual == num_inimigos and Player.life > 0:
-		test_result_waves += '; ' + str(wave_damage) + '\n'
-		wave_damage = 0
-		print(test_result_waves , wave_damage )
-		game_finished('win')
-	
-	else: game_finished('over')
-
+	#geracao += 1	
+	test_result_waves += '; ' + str(wave_damage) + '\n'
+	wave_damage = 0	
+	construindo_inimigo = false
+	print('t:',test_result_waves)
 
 func game_finished(result):
 	print('game finished' , result)
-	StartTimer.stop()
 	Player.pode_atirar = false
 	
-	ScoreTimer.stop()
-	MobTimer.stop()
-	clear_memory_and_copy_data()
 	if result == 'win': Interface.show_game_win()
 	elif result == 'over' :  
-		#print('over')
+		print('result = over ')
 		Interface.show_game_over() 
 		Interface.stop_bar()
+
+func _on_MobTimer_timeout():
+	pass
 		
 func _on_StartTimer_timeout():
-	
-	if Player.life > 0:
-		MobTimer.start()
-		ScoreTimer.start()
+	pass
 
 func set_variaveis_globais():
 	score = 0
@@ -346,8 +337,7 @@ func set_interface():
 	Interface.qt_vida(life_jogador)
 
 func new_game(tipo_de_tiro_escolhido):
-	#print('new_game ' , Player.name)
-	inimigo_atual = 0
+
 	if geracao == 0 and Player == null:
 		#print('player igual a null ')
 		Player_IA = ControleData.Player_IA
@@ -367,38 +357,17 @@ func new_game(tipo_de_tiro_escolhido):
 		#print('new_game test mode')
 		set_player_test()
 		set_interface()
-		
+
+	Interface.show_message("GO!!")
 	Player.start(life_jogador)
-	criando_inimigos()
-	Interface.show_message("GET READY")
-	
-	if construindo_inimigo:
-		StartTimer.set_wait_time(1)
-		StartTimer.start()
-	
 	Interface.show_geracao(geracao)
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func clear_memory_and_copy_data():
-
-	array_inimigos.clear()
-	
-	var n =  get_node("Arvore_inimigos").get_children()
-	for k in n:
-		var data = []
-		data.append(k.hit)   #reached goal
-		data.append(k.resist/ k.hp_total )
-		AI.population_res[k.id] = data
-		#k.tipo_de_inimigo k.speed  k.damage k.resist k.life k.hit k.id
-		k.free()
+	start_first_wave()
 
 
 func _on_ScoreTimer_timeout():
 	score += 1
 	Interface.update_score(score)
 
-#func _process(_delta):
-#	pass
 
 
 # File writing at

@@ -89,12 +89,19 @@ func _ready():
 	
 	time_start = OS.get_unix_time()
 
+func on_destroy():
+	var data = []
+	data.append(self.hit)   #reached goal
+	data.append(resist/ hp_total )
+	AI.population_res[id] = data
+	self.queue_free()
+
 func _hit(area):
 	#particle_Bool = true
 	if area.name == 'Player': #### precisa mudar 
 		desliga_colisao()
 		hit = true
-
+		on_destroy()
 	
 	elif area.has_method('is_Disparo') :
 		resist = resist - area.base_damage
@@ -133,6 +140,7 @@ func _on_VisibilityNotifier2D_screen_exited():
 	if hit == null: hit =  false
 	var time_now = OS.get_unix_time()
 	time_elapsed = time_now - time_start
+	on_destroy()
 	#print('on visivility', id)
 	pass
 	

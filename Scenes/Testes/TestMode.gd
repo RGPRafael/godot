@@ -10,19 +10,17 @@ func load_test_menu():
 	$TestMenu/enemies/AI.set_pressed(true)
 	$TestMenu/buttons/TestMode.connect("pressed",self,"test_mode_pressed")
 	$TestMenu/buttons/Return.connect("pressed",self,"return_main")
-	#self.connect('comeca_teste',get_parent(),'test_start') 
+
 	
 func test_mode_pressed():
 	print('test_mode_pressed')
-	#var enemies = get_params()
-	#CenaPrincipal.init_params(enemies)
-	#emit_signal("comeca_teste")
+
 	var params = get_params()
 	var players = params[0]
 	var enemies = params[1]
 	get_node("TestMenu").queue_free()
 	var scene = load('res://Scenes/Testes/Main_TESTMODE.tscn').instance()
-	#scene.connect("game_finished",self, 'unload_game')
+	scene.connect("game_finished",self, 'unload_game')
 	scene.init_params(players, enemies)
 	add_child(scene)
 	if players != 'PlayersChoice':
@@ -43,5 +41,5 @@ func get_params():
 	return [players, enemies]
 
 func unload_game(result):
-	get_node("MainScene").queue_free()
-	get_tree().change_scene("res://Elements/TestMode.tscn")
+	get_node("Main").queue_free()
+	get_tree().change_scene("res://Scenes/TUTOTIAL GODOT.tscn")

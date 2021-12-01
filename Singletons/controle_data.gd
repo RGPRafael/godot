@@ -35,6 +35,11 @@ var inimigos_data = {
 		"damage": 20,
 		"resist": 60,
 		"speed" : 550},
+		
+	"inimigo5": {
+		"damage": 10,
+		"resist": 120,
+		"speed" : 900},
 }
 
 var locations= [ Vector2(90,-50), Vector2(200,-50), Vector2(500,-50), Vector2(800,-50), Vector2(1200,-50),
@@ -83,13 +88,13 @@ var disparo_data = {
 ###########################################################################
 
 
-var inimigos_each = [['inimigos',1], ['inimigo1',1], ['inimigo2',1], ['inimigo3',1], ['inimigo4',1],['inimigos',1]]
+var inimigos_each = [['inimigos',1], ['inimigo1',1], ['inimigo2',1], ['inimigo3',1], ['inimigo4',1],['inimigo5',1]]
 var inimigos = [['inimigos',1], ['inimigos',1], ['inimigos',1], ['inimigos',1], ['inimigos',1],['inimigos',1]]
 var inimigo1 = [['inimigo1',1], ['inimigo1',1], ['inimigo1',1], ['inimigo1',1], ['inimigo1',1],['inimigo1',1]]
 var inimigo2 = [['inimigo2',1], ['inimigo2',1], ['inimigo2',1], ['inimigo2',1], ['inimigo2',1],['inimigo2',1]]
 var inimigo3 = [['inimigo3',1], ['inimigo3',1], ['inimigo3',1], ['inimigo3',1], ['inimigo3',1],['inimigo3',1]]
 var inimigo4 = [['inimigo4',1], ['inimigo4',1], ['inimigo4',1], ['inimigo4',1], ['inimigo4',1],['inimigo4',1]]
-
+var inimigo5 = [['inimigo5',1], ['inimigo5',1], ['inimigo5',1], ['inimigo5',1], ['inimigo5',1],['inimigo5',1]]
 ###########################################################################
 #
 # Variaveis relacionados aos Testes

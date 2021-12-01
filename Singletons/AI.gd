@@ -6,7 +6,7 @@ extends Node
 
 # [['inimigos'] , ['inimigo1'] , ['inimigo2'], ['inimigo3'], ['inimigo4']]
 
-var Enemy_Type = ['inimigos', 'inimigo1', 'inimigo2', 'inimigo3', 'inimigo4']
+var Enemy_Type = ['inimigos', 'inimigo1', 'inimigo2', 'inimigo3', 'inimigo4', 'inimigo5']
 
 var Max_time = 3 #
 #genes ( Enemy_Type, padding, posistion)
@@ -22,7 +22,7 @@ var population = [['inimigos', 1 ],
 				  ['inimigo2', 0.2], 
 				  ['inimigo3', 1], 
 				  ['inimigo4', 0.1], 
-				  ['inimigos', 0.1 ] ]
+				  ['inimigo5', 0.1 ] ]
 ## receives the results that this generation achieved
 ## in this example, receives a vector [REACHED_GOAL_BIN, TIME_ALIVE]
 var population_res = [[false, 0], [false, 0], [false, 0], [false, 0], [false, 0], [false, 0]]
