@@ -8,7 +8,7 @@ extends Node
 
 var Enemy_Type = ['inimigos', 'inimigo1', 'inimigo2', 'inimigo3', 'inimigo4', 'inimigo5']
 
-var Max_time = 3 #
+var Max_time = 2 #
 #genes ( Enemy_Type, padding, posistion)
 #var population = [['inimigos', 1, Vector2(90,-50)], 
 #				  ['inimigo1', 0.9, Vector2(1200,800)], 
