@@ -46,10 +46,10 @@ var mutation_prob = 10 #90%
 func _ready():
 	population_res.resize (pop_size[0])
 	
-func id ():
+func f_id  ():
 	id += 1
 	if id >= pop_size[0]:
-		id = -1
+		id = 0
 	return id
 
 # IMPORTANT TO DEFINE THIS FUNCTION FOR EACH GAME

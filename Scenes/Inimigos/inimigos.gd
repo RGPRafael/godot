@@ -65,7 +65,7 @@ func carregar_dados(tipo_inimigo, tempo, pos):
 	damage = ControleData.inimigos_data[tipo_inimigo]["damage"]
 	resist = ControleData.inimigos_data[tipo_inimigo]["resist"]
 	hp_total = resist
-	id = AI.id()
+	id = AI.f_id()
 	padding = tempo
 	position = pos 
 	pass
