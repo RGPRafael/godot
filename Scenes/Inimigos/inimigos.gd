@@ -58,7 +58,7 @@ func random_position_x(tam):
 	start_pos = position
 	
 		
-func carregar_dados(tipo_inimigo, tempo, pos):
+func carregar_dados(tipo_inimigo, pos):
 	#print(tipo_inimigo,'  ', tempo)
 	tipo_de_inimigo = tipo_inimigo
 	speed  = ControleData.inimigos_data[ tipo_inimigo]["speed"]
@@ -66,7 +66,7 @@ func carregar_dados(tipo_inimigo, tempo, pos):
 	resist = ControleData.inimigos_data[tipo_inimigo]["resist"]
 	hp_total = resist
 	id = AI.f_id()
-	padding = tempo
+	padding = 1
 	position = pos 
 	pass
 

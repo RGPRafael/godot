@@ -16,7 +16,7 @@ one_shot = true
 one_shot = true
 
 [node name="StartPosition" type="Position2D" parent="."]
-position = Vector2( 630.188, 544.841 )
+position = Vector2( 616.703, 378.529 )
 
 [node name="Arvore_inimigos" type="Node2D" parent="."]
 position = Vector2( 0.070816, 3.815 )
