@@ -7,7 +7,7 @@ var bala_tipo_tiro
 
 #var velocity = Vector2()  # The player's movement vector.
  
-export var fire_rate = 0.4
+export var fire_rate = 0.8
 signal hit(area)
 
 ###################################################
@@ -35,13 +35,13 @@ func _tiro(tipo_de_tiro):
 
 
 func _ready():
-	CenaPrincipal.jogador_existe  = true
-	CenaPrincipal.tipo_de_tiro_escolhido = bala_tipo_tiro
+	get_parent().jogador_existe  = true
+	get_parent().tipo_de_tiro_escolhido = bala_tipo_tiro
 	screen_size = get_viewport_rect().size
 	hide()
 
 func _process(delta):
-	CenaPrincipal.posicao_jogador = global_position
+	get_parent().posicao_jogador = global_position
 	if enemy_array.size() != 0:
 		select_enemy()
 		if  life != null and life > 0  and pode_atirar:
@@ -67,6 +67,7 @@ func select_enemy ():
 
 func just_shoot():
 	look_at(inimigo_detectado.get_global_position())
+	#if bala != null : print('bala')
 	var bala_objeto = bala.instance()
 	bala_objeto.tipo_tiro = bala_tipo_tiro
 	bala_objeto.position = $SaidaDeTiro.get_global_position()

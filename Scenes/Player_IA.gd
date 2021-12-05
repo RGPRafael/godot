@@ -33,23 +33,22 @@ func _tiro(tipo_de_tiro):
 
 
 func _ready():
-	CenaPrincipal.jogador_existe  = true
-	CenaPrincipal.tipo_de_tiro_escolhido = bala_tipo_tiro
+	#get_parent().jogador_existe  = true
+	get_parent().tipo_de_tiro_escolhido = bala_tipo_tiro
 	screen_size = get_viewport_rect().size
 	direction_IA  = 1
 	wait = false
-	#print('screen:', screen_size)
-	#print('IA_player', IA_player)
 	hide()
 
 func _process(delta):
-	if !wait: move_Player_IA(delta)
-	if enemy_array.size() != 0:
-		select_enemy()
-		if  life != null and life > 0  and pode_atirar:
-			just_shoot()
-	else:
-		inimigo_detectado = null
+	if get_parent().jogador_existe :
+		if !wait: move_Player_IA(delta)
+		if enemy_array.size() != 0:
+			select_enemy()
+			if  life != null and life > 0  and pode_atirar:
+				just_shoot()
+		else:
+			inimigo_detectado = null
 
 
 
@@ -71,7 +70,7 @@ func select_enemy ():
 
 
 func move_Player_IA(delta):
-	CenaPrincipal.posicao_jogador = global_position
+	get_parent().posicao_jogador = global_position
 	var velocity = Vector2()  
 	velocity.x += direction_IA
 
@@ -99,11 +98,11 @@ func move_Player_IA(delta):
 		
 		
 	position += velocity * delta
-	position.x = clamp(position.x, 0, screen_size.x) #retorna um valor entre o min e max ..
+	position.x = clamp(position.x, 150, screen_size.x-200) #retorna um valor entre o min e max ..
 	position.y = clamp(position.y, 0, screen_size.y)
 
 
-	if global_position.x == screen_size.x or global_position.x == 0: 
+	if global_position.x == screen_size.x-200 or global_position.x == 150: 
 
 		wait = true
 		yield(get_tree().create_timer(tempo_parado_cantos), "timeout")
@@ -129,7 +128,6 @@ func just_shoot():
 	bala_objeto.rotation_degrees = rotation_degrees
 	get_parent().add_child(bala_objeto)
 	#$AudioStreamPlayer2D.play()
-	bala_objeto.sound()
 	pode_atirar = false
 
 	yield(get_tree().create_timer(fire_rate),'timeout')
@@ -148,6 +146,7 @@ func start(VIDAS):
 	show()
 	$CollisionShape2D.disabled = false
 	pode_atirar =  true
+	get_parent().jogador_existe  = true
 
 
 func _on_Player_area_entered(area):

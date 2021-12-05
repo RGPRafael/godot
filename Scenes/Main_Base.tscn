@@ -1,14 +1,11 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=5 format=2]
 
-[ext_resource path="res://Scenes/CenaPrincipal.gd" type="Script" id=1]
 [ext_resource path="res://Assets/songs/ready.ogg" type="AudioStream" id=3]
-[ext_resource path="res://Scenes/Interface.tscn" type="PackedScene" id=4]
 [ext_resource path="res://Assets/songs/game_over.ogg" type="AudioStream" id=5]
 [ext_resource path="res://Assets/songs/mixkit-dark-synth-oscillator-646.wav" type="AudioStream" id=6]
 [ext_resource path="res://Assets/songs/you_win.ogg" type="AudioStream" id=7]
 
 [node name="Main" type="Node"]
-script = ExtResource( 1 )
 
 [node name="MobTimer" type="Timer" parent="."]
 one_shot = true
@@ -19,24 +16,7 @@ one_shot = true
 one_shot = true
 
 [node name="StartPosition" type="Position2D" parent="."]
-position = Vector2( 630.188, 544.841 )
-
-[node name="Position2D1" type="Position2D" parent="."]
-position = Vector2( 600, -100 )
-
-[node name="Position2D2" type="Position2D" parent="."]
-position = Vector2( 90, 750 )
-
-[node name="Position2D3" type="Position2D" parent="."]
-position = Vector2( 1250, 750 )
-
-[node name="Position2D4" type="Position2D" parent="."]
-position = Vector2( 1250, -50 )
-
-[node name="InimigoPosition_start" type="Position2D" parent="."]
-position = Vector2( 98.972, 82.9842 )
-
-[node name="HUD" parent="." instance=ExtResource( 4 )]
+position = Vector2( 616.703, 378.529 )
 
 [node name="Arvore_inimigos" type="Node2D" parent="."]
 position = Vector2( 0.070816, 3.815 )
@@ -60,4 +40,3 @@ stream = ExtResource( 6 )
 [connection signal="timeout" from="MobTimer" to="." method="_on_MobTimer_timeout"]
 [connection signal="timeout" from="ScoreTimer" to="." method="_on_ScoreTimer_timeout"]
 [connection signal="timeout" from="StartTimer" to="." method="_on_StartTimer_timeout"]
-[connection signal="start_game" from="HUD" to="." method="new_game"]

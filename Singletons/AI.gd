@@ -6,23 +6,23 @@ extends Node
 
 # [['inimigos'] , ['inimigo1'] , ['inimigo2'], ['inimigo3'], ['inimigo4']]
 
-var Enemy_Type = ['inimigos', 'inimigo1', 'inimigo2', 'inimigo3', 'inimigo4']
+var Enemy_Type = ['inimigos', 'inimigo1', 'inimigo2', 'inimigo3', 'inimigo4', 'inimigo5']
 
-var Max_time = 3 #
+var Max_time = 2 #
 #genes ( Enemy_Type, padding, posistion)
-#var population = [['inimigos', 1, Vector2(90,-50)], 
-#				  ['inimigo1', 0.9, Vector2(1200,800)], 
-#				  ['inimigo2', 0.2, Vector2(1350,-50)], 
-#				  ['inimigo3', 1, Vector2(1350,800)], 
-#				  ['inimigo4', 0.1, Vector2(-100,100)], 
-#				  ['inimigos', 0.1, Vector2(-50,800)] ]
+var population = [['inimigos',Vector2(90,-50)], 
+				  ['inimigo1', Vector2(1200,800)], 
+				  ['inimigo2', Vector2(1350,-50)], 
+				  ['inimigo3', Vector2(1350,800)], 
+				  ['inimigo4', Vector2(-100,100)], 
+				  ['inimigo5', Vector2(-50,800)] ]
 
-var population = [['inimigos', 1 ], 
-				  ['inimigo1', 0.9], 
-				  ['inimigo2', 0.2], 
-				  ['inimigo3', 1], 
-				  ['inimigo4', 0.1], 
-				  ['inimigos', 0.1 ] ]
+#var population = [['inimigos', 1 ], 
+#				  ['inimigo1', 0.9], 
+#				  ['inimigo2', 0.2], 
+#				  ['inimigo3', 1], 
+#				  ['inimigo4', 0.1], 
+#				  ['inimigo5', 0.1 ] ]
 ## receives the results that this generation achieved
 ## in this example, receives a vector [REACHED_GOAL_BIN, TIME_ALIVE]
 var population_res = [[false, 0], [false, 0], [false, 0], [false, 0], [false, 0], [false, 0]]
@@ -46,7 +46,7 @@ var mutation_prob = 1 #starts at 100%
 func _ready():
 	population_res.resize (pop_size[0])
 	
-func id ():
+func f_id  ():
 	id += 1
 	if id >= pop_size[0]:
 		id = 0
