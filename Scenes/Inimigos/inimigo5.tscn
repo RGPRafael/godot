@@ -8,6 +8,7 @@
 radius = 22.0482
 
 [sub_resource type="ShaderMaterial" id=2]
+resource_local_to_scene = true
 shader = ExtResource( 3 )
 shader_param/flash_color = Color( 0, 1, 0, 3 )
 shader_param/flash_modifier = 0.0
