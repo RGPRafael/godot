@@ -41,7 +41,7 @@ var pop_size = [n,population[0].size()]
 # to get random values
 var rng = RandomNumberGenerator.new ()
 
-var mutation_prob = 10 #90%
+var mutation_prob = 1 #starts at 100%
 
 func _ready():
 	population_res.resize (pop_size[0])
@@ -49,7 +49,7 @@ func _ready():
 func id ():
 	id += 1
 	if id >= pop_size[0]:
-		id = -1
+		id = 0
 	return id
 
 # IMPORTANT TO DEFINE THIS FUNCTION FOR EACH GAME
@@ -65,19 +65,6 @@ func measure_fitness_SpaceShip(result):
 	percent_hp = 5 * result[1]
 	
 	fit = ( hit + percent_hp )/10
-	return fit
-
-#    In this game, we measure the fitness with the time that the enemys survived 
-# or if they reached the destination
-func measure_fitness_TD (result):
-	var fit = 0
-	
-	if result[0] == true:
-		fit = 100
-	else:
-		fit = -100
-		
-	fit += result[1] * 100
 	return fit
 
 
@@ -130,9 +117,8 @@ func crossover (parents, offspring_size):
 			child.append (parents [parent1_idx][i])
 
 		# The new offspring will have its second half of its genes taken from the second parent.
-		for i in range (offspring_size[1] - crossover_point ):
+		for i in range (offspring_size[1] - crossover_point):
 			child.append (parents [parent2_idx][i + crossover_point])
-			##maybe  remove + 1
 
 		offspring.append (child)
 
@@ -184,7 +170,12 @@ func mutation(offspring_crossover):
 
 		var random_index = rng.randi_range (0, offspring_crossover[idx].size() - 1)
 		
-		if offspring_crossover[idx][random_index] is String:
+		var mutation_chance = rng.randf()
+		
+		if mutation_chance >= mutation_prob:
+			pass
+			
+		elif offspring_crossover[idx][random_index] is String:
 			offspring_crossover[idx][random_index] = mutation_string (random_index)
 
 		elif offspring_crossover[idx][random_index] is int:		
