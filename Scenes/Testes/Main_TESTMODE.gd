@@ -70,7 +70,6 @@ var test_enemies = 'ai'
 var test_mode = false
 var TEST_WAVES = 3 # 30 waves de teste
 var TEST_HEALTH = 9223372036854775807 # signed 64bit int
-var total_damage  = 0 # Damage logging for statistical purposes
 var wave_damage  = 0
 var construindo_inimigo = false
 var players_types = []
@@ -85,7 +84,6 @@ var players_types = []
 func player_damage(area):
 	if can_damage:
 		wave_damage  += area.damage
-		total_damage += area.damage
 		
 		base_health = base_health - area.damage
 		Interface.update_health_bar(base_health , area.damage)
@@ -95,10 +93,15 @@ func Verifica_barradevida() :
 	life_jogador = life_jogador - 1
 
 	if life_jogador == 0:
-		Interface.qt_vida(life_jogador)
-		ScoreTimer.stop()
-		game_finished('over')
-		emit_signal("game_finished", false)
+		if !test_mode:
+			Interface.qt_vida(life_jogador)
+			ScoreTimer.stop()
+			game_finished('over')
+			emit_signal("game_finished", false)
+		else:
+			Interface.qt_vida(life_jogador)
+			ScoreTimer.stop()
+			game_finished('over')
 	
 	elif !test_mode: base_health = 100
 		
@@ -209,9 +212,10 @@ func criando_inimigos():
 	print('criando inimigos')
 	if test_mode:
 		if geracao == TEST_WAVES:
+			# Logs the last wave damage
+			test_result_waves += str(wave_damage) + '\n'
 			print('test_mode finish')
-			write_file(total_damage, test_result_waves)
-
+			write_file()
 			Interface.show_game_over() 
 			yield(get_tree().create_timer(5), "timeout")
 			emit_signal("game_finished", false)
@@ -235,7 +239,6 @@ func criando_inimigos():
 				'All_inimigo5':
 					new_population = ControleData.inimigo5
 
-			test_result_waves += str(new_population)
 			start_next_wave(new_population)
 			
 	elif !test_mode and geracao == 0 : 
@@ -248,6 +251,10 @@ func criando_inimigos():
 		start_next_wave(new_population)  
 
 func start_next_wave(wave): # roda quando da play e qd o player mata toda a onda
+	# Damage logging. The damage for the last wave is not logged here
+	# Since it is written with a 1 wave delay. Added to the _process()
+	if test_mode:
+		test_result_waves += str(wave_damage) + '\n'
 	yield(get_tree().create_timer(0.5), "timeout")#padding
 	carrega_inimigos(wave)
 
@@ -273,7 +280,6 @@ func start_first_wave(): # roda quando da play
 		'All_inimigo5':
 			wave = ControleData.inimigo5
 		
-	test_result_waves += str(wave)
 	yield(get_tree().create_timer(0.5), "timeout")#padding
 	print('first wave')
 	print(wave)
@@ -282,10 +288,18 @@ func start_first_wave(): # roda quando da play
 	
 	
 func carrega_inimigos(wave):
-	#test_result_waves += '; ' + str(wave_damage) + '\n'
-	#wave_damage = 0
+
 	geracao += 1
-	Interface.show_geracao(geracao)
+
+	# Test logging, saves wave number and the wave
+	# Damage logging happens before, whena a new wave is called
+	if test_mode:
+		test_result_waves += str(geracao) + '; '
+	for each in wave:
+		test_result_waves += str(each) + '; '
+			
+	wave_damage = 0
+
 	for i in wave:
 		var new_inimigo = load('res://Scenes/Inimigos/' + i[0] + ".tscn").instance()
 		#new_inimigo.carregar_dados(i[0] , i[1], posicao_base_randon)
@@ -298,13 +312,8 @@ func carrega_inimigos(wave):
 		inimigos_vivos += 1
 		Interface.qt_inimigos(str(inimigos_vivos))
 
-		
-		
-	#geracao += 1	
-	test_result_waves += '; ' + str(wave_damage) + '\n'
-	wave_damage = 0	
 	construindo_inimigo = false
-	print('t:',test_result_waves)
+
 
 func game_finished(result):
 	print('game finished' , result)
@@ -334,7 +343,6 @@ func set_player_test():
 	dead_inimigos = 0
 	inimigos_vivos = 0
 	life_jogador = 3
-	pass
 
 func set_interface():
 	Interface.update_score(score)
@@ -380,7 +388,7 @@ func _on_ScoreTimer_timeout():
 #   macOS: ~/Library/Application Support/Godot/
 #   Linux: ~/.local/share/godot/
 # Only in test mode
-func write_file(dmg, _list_waves):
+func write_file():
 	var path = 'user://' + test_players + ' - ' + test_enemies + '.txt'
 	var file = File.new()
 
@@ -391,5 +399,5 @@ func write_file(dmg, _list_waves):
 	else:
 		file.open(path, File.WRITE)
 	
-	file.store_string(test_result_waves + '\n' + str(dmg) + '\n')
+	file.store_string(test_result_waves + '\n')
 	file.close()
