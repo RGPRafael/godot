@@ -98,11 +98,11 @@ func move_Player_IA(delta):
 		
 		
 	position += velocity * delta
-	position.x = clamp(position.x, 0, screen_size.x) #retorna um valor entre o min e max ..
+	position.x = clamp(position.x, 150, screen_size.x-200) #retorna um valor entre o min e max ..
 	position.y = clamp(position.y, 0, screen_size.y)
 
 
-	if global_position.x == screen_size.x or global_position.x == 0: 
+	if global_position.x == screen_size.x-200 or global_position.x == 150: 
 
 		wait = true
 		yield(get_tree().create_timer(tempo_parado_cantos), "timeout")

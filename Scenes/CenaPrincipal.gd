@@ -31,19 +31,19 @@ var tamanho_tela = [0,1280]
 
 var inimigo_atual # qt de inimigos instanciados
 
-#var dados_inimigos = [['inimigos',1, Vector2(90,-50)], 
-#					  ['inimigo1',1, Vector2(90,-50)], 
-#					  ['inimigo2',1, Vector2(90,-50)], 
-#					  ['inimigo3',1, Vector2(90,-50)], 
-#					  ['inimigo4',1, Vector2(-90,-50)], 
-#					  ['inimigos',1, Vector2(90,-50)] ]
+var dados_inimigos = [['inimigos', Vector2(90,-50)], 
+					  ['inimigo1', Vector2(90,-50)], 
+					  ['inimigo2', Vector2(90,-50)], 
+					  ['inimigo3', Vector2(90,-50)], 
+					  ['inimigo4', Vector2(-90,-50)], 
+					  ['inimigos', Vector2(90,-50)] ]
 
-var dados_inimigos = [['inimigos',1], 
-					  ['inimigo1',1], 
-					  ['inimigo2',1], 
-					  ['inimigo3',1], 
-					  ['inimigo4',1], 
-					  ['inimigo5',1] ]
+#var dados_inimigos = [['inimigos',1], 
+#					  ['inimigo1',1], 
+#					  ['inimigo2',1], 
+#					  ['inimigo3',1], 
+#					  ['inimigo4',1], 
+#					  ['inimigo5',1] ]
 					
 var num_inimigos = dados_inimigos.size()   # total de inimigos naquela fase 
 
@@ -187,10 +187,13 @@ func carrega_inimigos(wave):
 	
 	for i in wave:
 		var new_inimigo = load('res://Scenes/Inimigos/' + i[0] + ".tscn").instance()
-		new_inimigo.carregar_dados(i[0] , i[1], posicao_base_randon)
-		new_inimigo.random_position_x(tamanho_tela)
+		#new_inimigo.carregar_dados(i[0] , i[1], posicao_base_randon)
+		#new_inimigo.random_position_x(tamanho_tela)
+		
+		new_inimigo.carregar_dados(i[0], i[1])
+		new_inimigo.random_position()
 		$Arvore_inimigos.add_child(new_inimigo)
-		yield(get_tree().create_timer(i[1]), "timeout")#padding
+		yield(get_tree().create_timer(new_inimigo.padding), "timeout")#padding
 		inimigos_vivos += 1
 		$HUD.qt_inimigos(str(inimigos_vivos))
 

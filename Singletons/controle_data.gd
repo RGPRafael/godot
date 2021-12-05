@@ -11,12 +11,12 @@ extends Node
 
 var geracao
 var inimigos_data = {
-	"inimigos": {
+	"inimigos": {  #BRANCO E PEQUENO
 		"damage": 20,
 		"resist": 50,
 		"speed" : 500},
 		
-	"inimigo1": {
+	"inimigo1": { # ESFERA VERMELHA
 		"damage": 45,
 		"resist": 30,
 		"speed" : 350},
@@ -26,20 +26,20 @@ var inimigos_data = {
 		"resist": 40,
 		"speed" : 470},
 		
-	"inimigo3": {
+	"inimigo3": { # ESFERA AUL
 		"damage": 60,
 		"resist": 40,
 		"speed" : 320},
 		
-	"inimigo4": {
+	"inimigo4": { #ASTEROID GRANDE BRANCO
 		"damage": 20,
 		"resist": 60,
 		"speed" : 550},
 		
-	"inimigo5": {
+	"inimigo5": { # ESFERA AMARELA OU LARANJA 
 		"damage": 10,
 		"resist": 120,
-		"speed" : 900},
+		"speed" : 700},
 }
 
 var locations= [ Vector2(90,-50), Vector2(200,-50), Vector2(500,-50), Vector2(800,-50), Vector2(1200,-50),
@@ -65,11 +65,11 @@ var enemy_locations = PoolVector2Array( locations )
 var Player_IA
 var tipo_IA
 var disparo_data = {
-	"Disparo": {
+	"Disparo": {  ## TIRO AMARELO BASTAO
 		"damage":15 ,
 		"speed": 1200},
 	
-	"Disparo1": {
+	"Disparo1": {      # TIRO VERMELHO e GRANDE 
 		"damage": 30,
 		"speed": 600},
 }
@@ -88,13 +88,54 @@ var disparo_data = {
 ###########################################################################
 
 
-var inimigos_each = [['inimigos',1], ['inimigo1',1], ['inimigo2',1], ['inimigo3',1], ['inimigo4',1],['inimigo5',1]]
-var inimigos = [['inimigos',1], ['inimigos',1], ['inimigos',1], ['inimigos',1], ['inimigos',1],['inimigos',1]]
-var inimigo1 = [['inimigo1',1], ['inimigo1',1], ['inimigo1',1], ['inimigo1',1], ['inimigo1',1],['inimigo1',1]]
-var inimigo2 = [['inimigo2',1], ['inimigo2',1], ['inimigo2',1], ['inimigo2',1], ['inimigo2',1],['inimigo2',1]]
-var inimigo3 = [['inimigo3',1], ['inimigo3',1], ['inimigo3',1], ['inimigo3',1], ['inimigo3',1],['inimigo3',1]]
-var inimigo4 = [['inimigo4',1], ['inimigo4',1], ['inimigo4',1], ['inimigo4',1], ['inimigo4',1],['inimigo4',1]]
-var inimigo5 = [['inimigo5',1], ['inimigo5',1], ['inimigo5',1], ['inimigo5',1], ['inimigo5',1],['inimigo5',1]]
+var inimigos_each = [['inimigos',Vector2(90,-50)], 
+					 ['inimigo1',Vector2(90,-50)], 
+					 ['inimigo2',Vector2(90,-50)], 
+					 ['inimigo3',Vector2(90,-50)], 
+					 ['inimigo4',Vector2(90,-50)],
+					 ['inimigo5',Vector2(90,-50)]]
+					
+var inimigos = [['inimigos',Vector2(90,-50)], 
+				['inimigos',Vector2(90,-50)], 
+				['inimigos',Vector2(90,-50)], 
+				['inimigos',Vector2(90,-50)], 
+				['inimigos',Vector2(90,-50)],
+				['inimigos',Vector2(90,-50)]]
+				
+var inimigo1 = [['inimigo1',Vector2(90,-50)], 
+				['inimigo1',Vector2(90,-50)], 
+				['inimigo1',Vector2(90,-50)], 
+				['inimigo1',Vector2(90,-50)],
+				['inimigo1',Vector2(90,-50)],
+				['inimigo1',Vector2(90,-50)]]
+				
+var inimigo2 = [['inimigo2',Vector2(90,-50)],
+				['inimigo2',Vector2(90,-50)], 
+				['inimigo2',Vector2(90,-50)], 
+				['inimigo2',Vector2(90,-50)], 
+				['inimigo2',Vector2(90,-50)],
+				['inimigo2',Vector2(90,-50)]]
+				
+var inimigo3 = [['inimigo3',Vector2(90,-50)], 
+				['inimigo3',Vector2(90,-50)], 
+				['inimigo3',Vector2(90,-50)], 
+				['inimigo3',Vector2(90,-50)], 
+				['inimigo3',Vector2(90,-50)],
+				['inimigo3',Vector2(90,-50)]]
+				
+var inimigo4 = [['inimigo4',Vector2(90,-50)], 
+				['inimigo4',Vector2(90,-50)], 
+				['inimigo4',Vector2(90,-50)], 
+				['inimigo4',Vector2(90,-50)], 
+				['inimigo4',Vector2(90,-50)],
+				['inimigo4',Vector2(90,-50)]]
+				
+var inimigo5 = [['inimigo5',Vector2(90,-50)], 
+				['inimigo5',Vector2(90,-50)], 
+				['inimigo5',Vector2(90,-50)],
+				['inimigo5',Vector2(90,-50)],
+				['inimigo5',Vector2(90,-50)],
+				['inimigo5',Vector2(90,-50)]]
 ###########################################################################
 #
 # Variaveis relacionados aos Testes

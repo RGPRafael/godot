@@ -202,10 +202,9 @@ func random_enemies():
 func _process(_delta):
 	if !construindo_inimigo and get_tree().get_nodes_in_group('inimigos').size() == 0 and geracao > 0 :
 		print('entrei no process')
-		Interface.show_geracao(geracao)
 		construindo_inimigo = true
 		criando_inimigos()
-
+		
 
 
 func criando_inimigos():
@@ -291,6 +290,7 @@ func start_first_wave(): # roda quando da play
 func carrega_inimigos(wave):
 
 	geracao += 1
+
 	# Test logging, saves wave number and the wave
 	# Damage logging happens before, whena a new wave is called
 	if test_mode:
@@ -299,14 +299,18 @@ func carrega_inimigos(wave):
 		test_result_waves += str(each) + '; '
 			
 	wave_damage = 0
+
 	for i in wave:
 		var new_inimigo = load('res://Scenes/Inimigos/' + i[0] + ".tscn").instance()
-		new_inimigo.carregar_dados(i[0] , i[1], posicao_base_randon)
-		new_inimigo.random_position_x(tamanho_tela)
+		#new_inimigo.carregar_dados(i[0] , i[1], posicao_base_randon)
+		#new_inimigo.random_position_x(tamanho_tela)
+		
+		new_inimigo.carregar_dados(i[0], i[1])
+		new_inimigo.random_position()
 		Arvore_inimigos.add_child(new_inimigo)
+		yield(get_tree().create_timer(new_inimigo.padding), "timeout")#padding
 		inimigos_vivos += 1
 		Interface.qt_inimigos(str(inimigos_vivos))
-		yield(get_tree().create_timer(i[1]), "timeout")#padding
 
 	construindo_inimigo = false
 
