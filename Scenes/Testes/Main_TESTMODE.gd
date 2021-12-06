@@ -290,7 +290,7 @@ func start_first_wave(): # roda quando da play
 func carrega_inimigos(wave):
 
 	geracao += 1
-
+	Interface.show_geracao(geracao)
 	# Test logging, saves wave number and the wave
 	# Damage logging happens before, whena a new wave is called
 	if test_mode:
