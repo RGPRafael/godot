@@ -266,7 +266,8 @@ func start_first_wave(): # roda quando da play
 	var wave = ControleData.inimigos_each
 	match test_enemies:
 		'AI':
-			wave = AI.start_experiment()
+			#wave = AI.start_experiment()
+			wave = ControleData.inimigos_each
 		'Random':
 			wave = random_enemies()
 		'All_inimigos':
