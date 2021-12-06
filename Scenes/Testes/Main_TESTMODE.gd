@@ -68,7 +68,7 @@ var test_result_waves = ''
 var test_players = 'players'
 var test_enemies = 'ai'
 var test_mode = false
-var TEST_WAVES = 3 # 30 waves de teste
+var TEST_WAVES = 30 #30 waves de teste
 var TEST_HEALTH = 9223372036854775807 # signed 64bit int
 var wave_damage  = 0
 var construindo_inimigo = false
@@ -238,6 +238,8 @@ func criando_inimigos():
 					new_population = ControleData.inimigo4
 				'All_inimigo5':
 					new_population = ControleData.inimigo5
+				'One_EACH':
+					new_population = ControleData.inimigos_each
 
 			start_next_wave(new_population)
 			
@@ -279,6 +281,8 @@ func start_first_wave(): # roda quando da play
 			wave = ControleData.inimigo4
 		'All_inimigo5':
 			wave = ControleData.inimigo5
+		'One_EACH':
+			wave = ControleData.inimigos_each
 		
 	yield(get_tree().create_timer(0.5), "timeout")#padding
 	print('first wave')
