@@ -163,10 +163,14 @@ func random_position():
 # In certain situations in nature mutations can occur and will give more
 # diversity to the population 
 func mutation(offspring_crossover):
+	#mutation chance now decreases as the number of generations increases
+	if mutation_prob >= 0:
+		mutation_prob -= 0.05
+
 	# Mutation changes a single gene in each offspring randomly.
 	for idx in range(offspring_crossover.size ()):
 		
-		# The random value to be added to the gene.
+		# The random gene to mutate.
 
 		var random_index = rng.randi_range (0, offspring_crossover[idx].size() - 1)
 		
