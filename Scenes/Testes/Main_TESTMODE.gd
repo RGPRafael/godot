@@ -243,10 +243,6 @@ func criando_inimigos():
 
 			start_next_wave(new_population)
 			
-	elif !test_mode and geracao == 0 : 
-		#print('test mode falso')
-		start_first_wave()
-
 	else : 
 		new_population = AI.start_experiment()
 		print(new_population)
@@ -264,6 +260,7 @@ func start_next_wave(wave): # roda quando da play e qd o player mata toda a onda
 
 func start_first_wave(): # roda quando da play 
 	ScoreTimer.start()
+	construindo_inimigo = true
 	var wave = ControleData.inimigos_each
 	match test_enemies:
 		'AI':
@@ -309,19 +306,14 @@ func carrega_inimigos(wave):
 
 	for i in wave:
 		var new_inimigo = load('res://Scenes/Inimigos/' + i[0] + ".tscn").instance()
-		#new_inimigo.carregar_dados(i[0] , i[1], posicao_base_randon)
-		#new_inimigo.random_position_x(tamanho_tela)
 		
 		new_inimigo.carregar_dados(i[0], i[1])
-		new_inimigo.random_position()
 		Arvore_inimigos.add_child(new_inimigo)
 		yield(get_tree().create_timer(new_inimigo.padding), "timeout")#padding
 		inimigos_vivos += 1
 		Interface.qt_inimigos(str(inimigos_vivos))
 
 	construindo_inimigo = false
-	yield(get_tree().create_timer(6), "timeout")#padding
-	Interface.show_message('time')
 
 func game_finished(result):
 	print('game finished' , result)
@@ -358,7 +350,7 @@ func set_interface():
 	Interface.qt_vida(life_jogador)
 
 func new_game(tipo_de_tiro_escolhido):
-	print('new_game')
+	print('new_game, geracao:', geracao)
 	if geracao == 0 and Player == null:
 		#print('player igual a null ')
 		Player_IA = ControleData.Player_IA
