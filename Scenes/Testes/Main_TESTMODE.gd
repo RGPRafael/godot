@@ -204,12 +204,12 @@ func _process(_delta):
 		#print('................process')
 		construindo_inimigo = true
 		criando_inimigos()
-		
+		print('................process')
 
 
 func criando_inimigos():
 	var new_population
-	#print('................................criando inimigos')
+	print('................................criando inimigos')
 	if test_mode:
 		if geracao == TEST_WAVES:
 			# Logs the last wave damage
@@ -320,7 +320,8 @@ func carrega_inimigos(wave):
 		Interface.qt_inimigos(str(inimigos_vivos))
 
 	construindo_inimigo = false
-
+	yield(get_tree().create_timer(6), "timeout")#padding
+	Interface.show_message('time')
 
 func game_finished(result):
 	print('game finished' , result)
