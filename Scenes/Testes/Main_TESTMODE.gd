@@ -284,7 +284,8 @@ func start_first_wave(): # roda quando da play
 			wave = ControleData.inimigo5
 		'One_EACH':
 			wave = ControleData.inimigos_each
-		
+	
+	AI.reset(wave)
 	yield(get_tree().create_timer(0.5), "timeout")#padding
 	print('first wave')
 	print(wave)
