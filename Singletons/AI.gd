@@ -67,6 +67,9 @@ func measure_fitness_SpaceShip(result):
 	fit = ( hit + percent_hp )/10
 	return fit
 
+func reset (wave):
+	mutation_prob = 1.0
+	population = wave
 
 # Calculating the fitness value of each solution in the current population.
 # The fitness function calculates the sum of products between each input 

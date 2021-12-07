@@ -171,8 +171,8 @@ func start_next_wave(wave): # roda quando da play e qd o player mata toda a onda
 
 
 func start_first_wave(): # roda quando da play 
-
 	var wave = ControleData.inimigos_each
+	AI.reset(wave)
 	print('first wave')
 	print(wave)
 	carrega_inimigos(wave)
