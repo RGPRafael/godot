@@ -88,12 +88,12 @@ var disparo_data = {
 ###########################################################################
 
 
-var inimigos_each = [['inimigos',Vector2(90,-50)], 
-					 ['inimigo1',Vector2(90,-50)], 
-					 ['inimigo2',Vector2(90,-50)], 
-					 ['inimigo3',Vector2(90,-50)], 
-					 ['inimigo4',Vector2(90,-50)],
-					 ['inimigo5',Vector2(90,-50)]]
+var inimigos_each = [['inimigos',Vector2(90,-50)  ], 
+					 ['inimigo1',Vector2(-100,300)], 
+					 ['inimigo2',Vector2(1350,100)], 
+					 ['inimigo3',Vector2(-100,100)], 
+					 ['inimigo4',Vector2(200,-50) ],
+					 ['inimigo5',Vector2(1350,500)]]
 					
 var inimigos = [['inimigos',Vector2(-100,300)], 
 				['inimigos',Vector2(-100,300)], 
@@ -123,12 +123,12 @@ var inimigo3 = [['inimigo3', Vector2(200,-50)],
 				['inimigo3', Vector2(200,-50)],
 				['inimigo3', Vector2(200,-50)]]
 				
-var inimigo4 = [['inimigo4',Vector2(90,-50)], 
-				['inimigo4',Vector2(90,-50)], 
-				['inimigo4',Vector2(90,-50)], 
-				['inimigo4',Vector2(90,-50)], 
-				['inimigo4',Vector2(90,-50)],
-				['inimigo4',Vector2(90,-50)]]
+var inimigo4 = [['inimigo4',Vector2(1350,500)], 
+				['inimigo4',Vector2(1350,500)], 
+				['inimigo4',Vector2(1350,500)], 
+				['inimigo4',Vector2(1350,500)], 
+				['inimigo4',Vector2(1350,500)],
+				['inimigo4',Vector2(1350,500)]]
 				
 var inimigo5 = [['inimigo5',Vector2(1350,300)], 
 				['inimigo5',Vector2(1350,300)], 

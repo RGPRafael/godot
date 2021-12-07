@@ -10,12 +10,12 @@ var Enemy_Type = ['inimigos', 'inimigo1', 'inimigo2', 'inimigo3', 'inimigo4', 'i
 
 var Max_time = 2 #
 #genes ( Enemy_Type, padding, posistion)
-var population = [['inimigos',Vector2(90,-50)], 
-				  ['inimigo1', Vector2(1200,800)], 
-				  ['inimigo2', Vector2(1350,-50)], 
-				  ['inimigo3', Vector2(1350,800)], 
-				  ['inimigo4', Vector2(-100,100)], 
-				  ['inimigo5', Vector2(-50,800)] ]
+var population =     [['inimigos',Vector2(90,-50) ], 
+					 ['inimigo1',Vector2(-100,300)], 
+					 ['inimigo2',Vector2(1350,100)], 
+					 ['inimigo3',Vector2(-100,100)], 
+					 ['inimigo4',Vector2(200,-50) ],
+					 ['inimigo5',Vector2(1350,500)]]
 
 #var population = [['inimigos', 1 ], 
 #				  ['inimigo1', 0.9], 

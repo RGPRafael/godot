@@ -308,6 +308,10 @@ func carrega_inimigos(wave):
 		var new_inimigo = load('res://Scenes/Inimigos/' + i[0] + ".tscn").instance()
 		
 		new_inimigo.carregar_dados(i[0], i[1])
+		
+		if test_enemies != 'AI': 
+			new_inimigo.random_position()
+			
 		Arvore_inimigos.add_child(new_inimigo)
 		yield(get_tree().create_timer(new_inimigo.padding), "timeout")#padding
 		inimigos_vivos += 1
