@@ -201,7 +201,7 @@ func random_enemies():
 
 func _process(_delta):
 	if !construindo_inimigo and get_tree().get_nodes_in_group('inimigos').size() == 0 and geracao > 0 :
-		print('entrei no process')
+		#print('................process')
 		construindo_inimigo = true
 		criando_inimigos()
 		
@@ -209,7 +209,7 @@ func _process(_delta):
 
 func criando_inimigos():
 	var new_population
-	print('criando inimigos')
+	#print('................................criando inimigos')
 	if test_mode:
 		if geracao == TEST_WAVES:
 			# Logs the last wave damage
@@ -244,7 +244,7 @@ func criando_inimigos():
 			start_next_wave(new_population)
 			
 	elif !test_mode and geracao == 0 : 
-		print('test mode falso')
+		#print('test mode falso')
 		start_first_wave()
 
 	else : 
@@ -255,6 +255,7 @@ func criando_inimigos():
 func start_next_wave(wave): # roda quando da play e qd o player mata toda a onda
 	# Damage logging. The damage for the last wave is not logged here
 	# Since it is written with a 1 wave delay. Added to the _process()
+	print('start_next_wave : geracao', geracao)
 	if test_mode:
 		test_result_waves += str(wave_damage) + '\n'
 	yield(get_tree().create_timer(0.5), "timeout")#padding
@@ -356,7 +357,7 @@ func set_interface():
 	Interface.qt_vida(life_jogador)
 
 func new_game(tipo_de_tiro_escolhido):
-
+	print('new_game')
 	if geracao == 0 and Player == null:
 		#print('player igual a null ')
 		Player_IA = ControleData.Player_IA

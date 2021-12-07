@@ -186,6 +186,7 @@ __meta__ = {
 }
 
 [node name="Som" type="TextureButton" parent="BarraAlto"]
+visible = false
 margin_left = 1174.25
 margin_top = -5.03968
 margin_right = 1274.25
@@ -206,10 +207,12 @@ texture_pressed = ExtResource( 18 )
 
 [node name="PlayPause" type="TextureButton" parent="BarraAlto"]
 pause_mode = 2
+visible = false
 margin_left = 1096.95
 margin_top = 16.3393
 margin_right = 1161.95
 margin_bottom = 80.3393
+toggle_mode = true
 texture_normal = ExtResource( 10 )
 texture_pressed = ExtResource( 11 )
 expand = true
