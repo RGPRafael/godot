@@ -41,7 +41,7 @@ var pop_size = [n,population[0].size()]
 # to get random values
 var rng = RandomNumberGenerator.new ()
 
-var mutation_prob = 1 #starts at 100%
+var mutation_prob = 1.0 /12 #starts at 100%
 
 func _ready():
 	population_res.resize (pop_size[0])
@@ -68,7 +68,7 @@ func measure_fitness_SpaceShip(result):
 	return fit
 
 func reset (wave):
-	mutation_prob = 1.0
+	#mutation_prob = 1.0
 	population = wave
 
 # Calculating the fitness value of each solution in the current population.
@@ -167,8 +167,8 @@ func random_position():
 # diversity to the population 
 func mutation(offspring_crossover):
 	#mutation chance now decreases as the number of generations increases
-	if mutation_prob >= 0:
-		mutation_prob -= 0.05
+	#if mutation_prob >= 0:
+	#	mutation_prob -= 0.05
 
 	# Mutation changes a single gene in each offspring randomly.
 	for idx in range(offspring_crossover.size ()):
