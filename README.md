@@ -3,7 +3,8 @@
 
 ### Authors:
  - Daniel Hotta
- - 
+ - Rafael Silva
+ - Ricardo Tanaka
 
 
 ## Simple description
