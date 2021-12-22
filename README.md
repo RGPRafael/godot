@@ -20,7 +20,7 @@ Esse repositório foi criado para armazenar o jogo feito em Godot para experimen
 
 A seguir, se encontram links para as versões das taxas de mutações utilizadas e da função fitness testadas:
 
-## Function fitness and mutation:
+## Função fitness e taxa de mutação:
 
 ## Versões
 
