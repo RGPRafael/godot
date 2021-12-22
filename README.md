@@ -1,38 +1,35 @@
 
-# MAC0499 - TCC (2021)
+# MAC0499 - TCC - Space Shooter (2021)
 
-### Authors:
+### Autor:
  - Daniel Hotta
  - Rafael Silva
  - Ricardo Tanaka
 
 
-## Simple description
+## Descrição
 
-This notebook uses the the classes that we have created in order to describe and read our dataset of objects.
+Esse repositório foi criado para armazenar o jogo feito em Godot para experimentos com Algoritmos Genéticos em Criação de Waves. Mais detalhes podem ser encontrados abaixo:
 
-- The libs can be found in this [repository](https://github.com/suayder/computer_vision_eps_usp.git) in a branch named EP2
+- Os tutoriais usados para a criação do jogo podem ser encontrados [aqui](https://www.youtube.com/playlist?list=PLcvN6tV-jzclkNcROGVSKEZjsPss5bIhO).
 
-- The full dataset of images can be found [here](https://drive.google.com/drive/folders/1GJD9P-zUVVOHRNSenVLbm_XS1joCXYm-?usp=sharing).
+- O outro jogo criado para testes (Tower Defense) pode ser encontrado [aqui](https://github.com/raktanaka/tccTD)
 
-- The augmented dataset can be found [here](https://drive.google.com/drive/folders/12VkujKaxqRLSw0WmiearpAcSVmWcGUaL?usp=sharing)
-
-- The normalized dataset can be found [here](https://drive.google.com/drive/folders/1GiaHAkYCSkgVvktgkbBAYJIR9ETHqxpw?usp=sharing)
+- O dataset com os resultados pode ser encontrado [aqui](https://github.com/raktanaka/tcc-results).
 
 
-Based on the goals of the EP2 we listed each result in separate sections as follows:
+A seguir, se encontram links para as versões das taxas de mutações utilizadas e da função fitness testadas:
 
 ## Function fitness and mutation:
 
+## Versões
 
-## Versions
+A diferença entre as versões está na taxa de mutação e a função fitness foi igual para ambas.
 
+### v1
 
+A versão v1 usou uma taxa de mutação que decrementa com o tempo (começa em 100% e decai 5% a cada iteração, até chegar em 0%). O código pode ser encontrado [aqui](https://github.com/RGPRafael/godot/blob/75b105c9fb2341809857c846e5d8567a2c38a37a/Singletons/AI.gd)
 
+### v3
 
-# v1
-
-
-
-# v3
-
+A versão v1 usou uma taxa de mutação constante de 1/12 e pode ser encontrada aqui [here](https://github.com/RGPRafael/godot/commit/d2bad1efb8588b2d21efdcfd1738b513e0ad272e)
