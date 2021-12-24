@@ -22,6 +22,8 @@ A seguir, se encontram links para as versões das taxas de mutações utilizadas
 
 ## Função fitness e taxa de mutação:
 
+A função de fitness e mutação tem grande importância na exploração das possíveis soluções do problema, a função fitness irá ditar quem são os indivíduos mais aptos de uma população (selecionar os melhores candidatos) enquanto a taxa de mutação permite que você explore as diversas combinações de indivíduos possíveis, evitando que fique preso em máximos locais nas primeiras interações.
+
 ## Versões
 
 A diferença entre as versões está na taxa de mutação e a função fitness foi igual para ambas.
