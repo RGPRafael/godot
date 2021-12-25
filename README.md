@@ -11,7 +11,7 @@
 
 Esse repositório foi criado para armazenar um jogo feito em Godot para experimentos com Algoritmos Genéticos em Criação de Waves. Mais detalhes podem ser encontrados abaixo:
 
-- O outro jogo criado para comparação (Space Shooter) pode ser encontrado [aqui](https://github.com/RGPRafael/godot/)
+- O outro jogo criado para comparação (Tower Defense) pode ser encontrado [aqui](https://github.com/raktanaka/tccTD)
 
 - O dataset com os resultados pode ser encontrado [aqui](https://github.com/raktanaka/tcc-results).
 
