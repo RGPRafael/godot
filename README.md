@@ -34,10 +34,10 @@ A diferença entre as versões está na taxa de mutação e a função *fitness*
 
 ### Função fitness
 
-    (reached_goal(x) + offset(x)) / 2
+    (reached_goal(x) + hp(x)) / 2
     
     reached_goal (x) := se o inimigo x chegou ao final do trajeto (1 se chegou, 0 caso contrário)
-    offset(x) := quanto do trajeto o inimigo x percorreu.
+    hp(x) := quanto do de HP sobrou do inimigo x
 
 ### v1
     
